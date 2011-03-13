@@ -17,6 +17,7 @@
 	echo $this->headLink()->appendStylesheet('themes/default/css/main.css'), PHP_EOL;
 	echo $this->headTitle($this->pageTitle), PHP_EOL;
 	echo $this->headScript(), PHP_EOL;
+	echo $this->jQuery(), PHP_EOL;
 ?>
 </head>
 <body>
@@ -41,15 +42,14 @@
 			</div>
 			<div id="location">
 				<span id="locationRightBox">
-				<?php
-					$auth = Zend_Auth::getInstance();
-					if($auth->hasIdentity()):
-					$identity = $auth->getIdentity();
-				?>
-					<a class="userSmallIcon smallIcon" href="<?php echo $this->baseUrl() . '/users/read/id/' . $identity->id;?>" title="<?php echo $this->translate('View profile');?>"><span><?php echo $this->escape($identity->username);?></span></a> -
-					<a class="logoutSmallIcon smallIcon" href="<?php echo $this->baseUrl() . '/account/logout';?>" type="<?php echo $this->translate('Logout');?>"><span><?php echo $this->translate('Logout');?></span></a>
+				<?php if($this->user()->isLogged()):?>
+					<a class="userSmallIcon smallIcon" href="<?php echo $this->baseUrl() . '/users/show/id/' . $this->user()->id;?>" title="<?php echo $this->translate('Show profile');?>">
+						<span><?php echo $this->escape($this->user());?></span>
+					</a>
+					<span>-</span>
+					<a class="logoutSmallIcon smallIcon" href="<?php echo $this->url(array(), 'account_logout');?>" type="<?php echo $this->translate('Logout');?>"><span><?php echo $this->translate('Logout');?></span></a>
 				<?php else:?>
-					<a href="#" title="<?php echo $this->translate('Create account');?>"><span><?php echo $this->translate('Register');?></span></a> |
+					<a href="#" title="<?php echo $this->translate('Create new account');?>"><span><?php echo $this->translate('Register');?></span></a> |
 					<a  href="#" title="<?php echo $this->translate('Lost Password');?>"><span><?php echo $this->translate('Lost Password');?></span></a>
 				<?php endif;?>
 				</span>
@@ -69,7 +69,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		<img id="footerImageLeft" src="themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework" />
+		<img id="footerImageLeft" src="/themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework" />
 		<ul id="footerLinks">
 			<li class="first"><a href="#"><span>About</span></a></li>
 			<li><a href="#"><span>Contact</span></a></li>

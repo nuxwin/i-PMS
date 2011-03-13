@@ -20,7 +20,7 @@
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @version     1.0.0
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -67,7 +67,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$fc = $this->getResource('FrontController');
 		//$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
 		$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
-
 	}
 
 	/**
@@ -75,25 +74,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 * @return Zend_View
 	 */
-	public function _initOverrideView() {
+	public function _initSetupView() {
 
 		$this->bootstrap('View');
         $view = $this->getResource('View');
 
-		//echo '<pre>';
-		//print_r($view);
-		//echo '</pre>';
-
-		//exit;
-
 		//$view->doctype('XHTML5');
 		$view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site');
-
-		// Define common Meta
-		//$view->headMeta()
-			//->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
-			//->appendHttpEquiv('Content-Style-Type', 'text/css')
-			//->appendHttpEquiv('Content-Script-Type', 'text/javascript');
 
 		// Define favicon
 		$view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
@@ -106,12 +93,24 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// Add our view helper path
 		$view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
 
-		// Add it to the ViewRenderer
-		//$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
-		//$viewRenderer->setView($view);
+		// Add jQuery support
+		$view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
 
-		// The view will be registered by the bootstrap
-		//return $view;
+		/**
+		 * @var $jquery ZendX_JQuery_View_Helper
+		 */
+		$jquery = $view->jQuery();
+
+		// Set jquery core and ui versions to be used
+		// See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
+		$jquery->setVersion('1.4.4');
+		$jquery->setUiVersion('1.8.10');
+		$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/smoothness/jquery-ui.css');
+
+		// Will enable both jquery (core) and jquery (UI)
+		$jquery->uiEnable();
+
+		return $view;
 	}
 
 	/**
@@ -120,24 +119,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	public function _initRouter() {
 
 		$this->bootstrap('frontController');
+        /**
+         * @var $fc Zend_Controller_Front
+         */
 		$fc = $this->getResource('FrontController');
-		$router = $fc->getRouter();
 		$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
+		$router = $fc->getRouter();
 		$router->addConfig($configRoutes, 'routes');
-		//$restRoute = new Zend_Rest_Route($fc);
-		//$router->addRoute('rest', $restRoute);
-
-		//$this->bootstrap('FrontController');
-		//$router = $this->getResource('FrontController')->getRouter();
-		//$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
-
-		// Add all routes in it
-		//$router->addConfig($configRoutes, 'routes');
-
-		// Removing default routes
 		$router->removeDefaultRoutes();
 
 		return $router;
 	}
 }
-

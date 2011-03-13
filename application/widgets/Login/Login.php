@@ -111,8 +111,11 @@ class Widget_Login_Login extends iPMS_Widget {
      * Returns HTML login form
      * @return Zend_Form
      */
-    protected function _getForm() {
+    protected function _getForm()
+    {
         $form = new Form_Login();
-        return $form->setElementsBelongTo('login');
+        $form->setElementsBelongTo('login');
+
+	    return $form;
     }
 }
