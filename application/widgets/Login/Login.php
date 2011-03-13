@@ -37,39 +37,42 @@
  */
 class Widget_Login_Login extends iPMS_Widget {
 
-	/**
-	 * Tell whether or not partial must be used for widget rendering
-	 * @var bool
-	 */
-	protected $_partial = true;
+    /**
+     * Tell whether or not partial must be used for widget rendering
+     * @var bool
+     */
+    protected $_partial = true;
 
-	/**
-	 * Widget initialization - Implements {@link iPMS_Widget::init()}
-	 *
-	 * @return void
-	 */
-	public function init() {}
+    /**
+     * Widget initialization - Implements {@link iPMS_Widget::init()}
+     *
+     * @return void
+     */
+    public function init()
+    {
+        
+    }
 
-	/**
-	 * Make widget content available for the view (Here the login form)  - Implements {@link iPMS_Widget::widget()}
-	 *
-	 * @return string content to render
-	 */
-	public function widget()
-	{
-		$auh = Zend_Auth::getInstance();
+    /**
+     * Make widget content available for the view (Here the login form)  - Implements {@link iPMS_Widget::widget()}
+     *
+     * @return string content to render
+     */
+    public function widget()
+    {
+        $auh = Zend_Auth::getInstance();
 
-        if(!$auh->hasIdentity()) {
+        if (!$auh->hasIdentity()) {
             $request = $this->getRequest();
-            if($request->isPost() && is_array($request->getPost('login'))) {
+            if ($request->isPost() && is_array($request->getPost('login'))) {
                 $form = $this->_getForm();
-                if($form->isValid($request->getPost())) {
+                if ($form->isValid($request->getPost())) {
                     // Perform authentication against database
-				    $userModel = new Model_DbTable_Users();
-				    $userModel->setIdentity($form->getValue('username'))
-					    ->setCredential($form->getValue('password'));
-				    $authResult = $auh->authenticate($userModel);
-                    if($authResult->isValid()) {
+                    $userModel = new Model_DbTable_Users();
+                    $userModel->setIdentity($form->getValue('username'))
+                            ->setCredential($form->getValue('password'));
+                    $authResult = $auh->authenticate($userModel);
+                    if ($authResult->isValid()) {
                         Zend_Session::regenerateId(); // Protection against session's fixation attacks
                         return '';
                     }
@@ -80,32 +83,32 @@ class Widget_Login_Login extends iPMS_Widget {
         }
 
         return '';
-	}
+    }
 
-	/**
-	 * Widget dashboard settings form - - Implements {@link iPMS_Widget::dashBoardSettingsForm()}
-	 *
-	 * This methods contains the widget settings form that will be shown on the Widgets dashboard screen
-	 *
-	 * @abstract
-	 * @param  $instance
-	 * @return void
-	 */
-	public function dashBoardSettingsForm($instance) {
-		return $this->buildDashboardSettingsForm($this->getParams())->render();
-	}
+    /**
+     * Widget dashboard settings form - - Implements {@link iPMS_Widget::dashBoardSettingsForm()}
+     *
+     * This methods contains the widget settings form that will be shown on the Widgets dashboard screen
+     *
+     * @abstract
+     * @param  $instance
+     * @return void
+     */
+    public function dashBoardSettingsForm($instance)
+    {
+        return $this->buildDashboardSettingsForm($this->getParams())->render();
+    }
 
-	/**
-	 * Read param from the widget xml file (will be in abstract class)
-	 * @return
-	 */
-	public function getParams()
-	{
-		$config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
-		$config = $config->toArray();
-
-		return $config['params']['param'];
-	}
+    /**
+     * Read param from the widget xml file (will be in abstract class)
+     * @return
+     */
+    public function getParams()
+    {
+        $config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
+        $config = $config->toArray();
+        return $config['params']['param'];
+    }
 
     /**
      * Returns HTML login form
@@ -115,7 +118,6 @@ class Widget_Login_Login extends iPMS_Widget {
     {
         $form = new Form_Login();
         $form->setElementsBelongTo('login');
-
-	    return $form;
+        return $form;
     }
 }
