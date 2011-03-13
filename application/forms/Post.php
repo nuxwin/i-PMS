@@ -98,7 +98,6 @@ class Form_Post extends Zend_Form
 	$category->setName('categorie')
 		->setValue('home');
 
-	/// Add Title field
 	$title = new Zend_Form_Element_Text('title');
 	$title->setLabel('Title')
 		->setRequired(true)
@@ -106,7 +105,6 @@ class Form_Post extends Zend_Form
 		->addFilter('StringTrim')
 		->addValidator('NotEmpty');
 
-	// Teaser field
 	$teaser = new Zend_Form_Element_Textarea('teaser');
 	$teaser->setLabel('Teaser')
 		->setRequired(true)
@@ -118,7 +116,6 @@ class Form_Post extends Zend_Form
 		->addFilter('StringTrim')
 		->addValidator('NotEmpty');
 
-	// Body field
 	$body = clone $teaser;
 	$body->setName('body')
 		->setLabel('Content');
@@ -128,11 +125,11 @@ class Form_Post extends Zend_Form
 	$allowComments->setLabel('Open for new comments ?')
 		->setValue('1');
 
-	// Submit field
+
 	$submit = new Zend_Form_Element_Submit('submit');
 	$submit->setLabel('Submit');
 
-	// Add elements to the form
+
 	$this->addElements(array($id, $category, $title, $teaser, $body, $allowComments, $submit));
     }
 

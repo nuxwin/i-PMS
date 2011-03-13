@@ -28,7 +28,10 @@
  */
 
 /**
+ * Error controller
  *
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 1.0.0
  */
 class ErrorController extends Zend_Controller_Action
 {
@@ -60,7 +63,8 @@ class ErrorController extends Zend_Controller_Action
 	}
 
 	// Log exception, if logger available
-	if ($log = $this->getLog()) {
+	$log = $this->getLog();
+	if ($log) {
 	    $log->log($this->view->message, $priority, $errors->exception);
 	    $log->log('Request Parameters', $priority, $request->getParams());
 	}
@@ -73,6 +77,10 @@ class ErrorController extends Zend_Controller_Action
 	$this->view->request = $errors->request;
     }
 
+    /**
+     * Get log
+     * @return Zend_Log
+     */
     public function getLog()
     {
 	$bootstrap = $this->getInvokeArg('bootstrap');
@@ -85,8 +93,7 @@ class ErrorController extends Zend_Controller_Action
 
     public function denyAction()
     {
-	// action body
+	$this->getResponse()->setHttpResponseCode(403);
     }
 
 }
-

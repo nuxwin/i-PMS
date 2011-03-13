@@ -22,7 +22,6 @@
  * @package     iPMS_Controllers
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -40,7 +39,7 @@ class CommentsController extends Zend_Controller_Action
 {
 
     /**
-     * List all comments linked to one object
+     * List all comments belong to one object
      *
      * @return void
      */
@@ -61,8 +60,6 @@ class CommentsController extends Zend_Controller_Action
     {
 
 	$parentId = (int) $this->_request->getParam('id');
-
-	// Getting comment form
 	$form = new Form_Comments();
 
 	if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
@@ -96,7 +93,6 @@ class CommentsController extends Zend_Controller_Action
 	    $commentsModel->delete($commentId);
 	}
 
-	// Todo redirect to origin
 	$this->_redirect('/');
     }
 

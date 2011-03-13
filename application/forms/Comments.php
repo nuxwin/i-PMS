@@ -87,10 +87,6 @@ class Form_Comments extends Zend_Form
 	$submit = new Zend_Form_Element_Submit('submit');
 	$submit->setLabel('Comment')->setAttribs(array('id' => 'comment-submit'));
 
-	//echo '<pre>';
-	//print_r($submit->getDecorators());
-	//echo '</pre>';
-	//exit;
 	// Add elements to the form
 	$this->addElements(array($comment, $submit));
     }

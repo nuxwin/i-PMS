@@ -67,7 +67,6 @@ class Form_Login extends Zend_Form
 		->addValidator('NotEmpty');
 
 	$submit = new Zend_Form_Element_Submit('submit');
-	//$redirect = new Zend_Form_Element_Hidden('redirect');
 
 	$submit->setAttrib('id', 'submit')
 		->setLabel('Connection');

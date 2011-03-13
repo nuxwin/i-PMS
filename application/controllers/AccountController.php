@@ -21,7 +21,6 @@
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -70,7 +69,7 @@ class AccountController extends Zend_Controller_Action
     }
 
     /**
-     * Log out user and redirect to home page
+     * Log out user and redirect to front page
      *
      * @return void
      */
@@ -211,15 +210,8 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _invalidCredentials(Zend_Auth_Result $authResult)
     {
-
-	//echo '<pre>';
-	//print_r($authenticationResult->getMessages());
-	//echo '</pre>';
-	//exit;
 	$messages = $authResult->getMessages();
 	$this->view->errorMessage = $messages[0];
-
-	//$this->_redirect('/');
 	// Log -> "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}";
 	// Flash error -> invalid credential
     }

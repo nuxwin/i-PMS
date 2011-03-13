@@ -59,7 +59,7 @@ class FrontPageController extends Zend_Controller_Action
 	$rssDoc = new DOMDocument();
 	$arrFeeds = array();
 
-	// todo get link from database
+	// TODO get link from database
 	if ($rssDoc->load(
 			'http://forum.i-mscp.net/syndication.php?fid=1,2,3,4,5,6,7,24,8,10,9,11,12,13,14,33,15,16,17,18&limit=5'
 	)) {
@@ -68,6 +68,8 @@ class FrontPageController extends Zend_Controller_Action
 
 	    foreach ($rssDoc->getElementsByTagName('item') as $item) {
 		$title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
+
+		// TODO create view helper for it
 		$normalizedTitle = $title;
 		if (strlen($normalizedTitle) >= $maxTitleLength) {
 		    $normalizedTitle = substr($normalizedTitle, 0, $maxTitleLength);

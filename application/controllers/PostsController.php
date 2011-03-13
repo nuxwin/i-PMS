@@ -65,7 +65,7 @@ class PostsController extends Zend_Controller_Action
 
 	if (!$row) {
 	    $this->getResponse()->setHttpResponseCode(404);
-	    throw new Zend_Controller_Action_Exception('Requested post not found!', 404);
+	    throw new Zend_Controller_Action_Exception('Post not found!', 404);
 	    return;
 	}
 
@@ -107,7 +107,7 @@ class PostsController extends Zend_Controller_Action
 	$postsModel = new Model_DbTable_Posts();
 
 	if (null == ($postRow = $postsModel->find($postId)->current())) {
-	    throw new Zend_Controller_Action_Exception("Post ID $postId not found!", 404);
+	    throw new Zend_Controller_Action_Exception("Post not found!", 404);
 	} else {
 	    $form = new Form_Post();
 
@@ -128,7 +128,7 @@ class PostsController extends Zend_Controller_Action
      *
      * @return void
      */
-    public function olddeleteAction()
+    public function deleteAction()
     {
 	$postModel = new Model_DbTable_Posts();
 	$postModel->delete((int) $this->_request->getParam('id'));

@@ -43,7 +43,6 @@ class Model_Token extends Zend_Db_Table_Abstract
      */
     public function create(array $attributes = array())
     {
-
 	self::deletePreviousTokens();
 
 	$object = new self();
