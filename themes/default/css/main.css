@@ -1,0 +1,1043 @@
+/**
+ * i-PMS - internet Project Management System
+ * Copyright (C) 2011 by Laurent Declercq
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @category    iPMS
+ * @copyright   2011 by Laurent Declercq
+ * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://www.i-pms.net i-PMS Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
+
+/***********************************************************************************************************************
+/* General css
+*/
+
+* {
+	margin : 0;
+	padding : 0;
+}
+
+a {
+	text-decoration : underline;
+}
+
+a:hover {
+	text-decoration : none;
+}
+
+body {
+	font-family : Arial, Helvetica, Tahoma, sans-serif;
+	font-size : 0.8em;
+	text-align : center;
+}
+
+#wrapperOuter {
+	width : 100%;
+	min-width : 960px;
+	min-height : 100%;
+	text-align : left;
+}
+
+* html #wrapperOuter{
+	width : 100%; /* fallback value */
+	width : expression(document.body.clientWidth < 960 ? "960px" : document.body.clientWidth); /*ie < 7 hack for min-width */
+	height : 100%;
+}
+
+.clearer {
+	display : block;
+	clear : both;
+	/*height : 1px;
+	margin-bottom : -1px;
+	font-size : 1px;
+	line-height : 1px;*/
+}
+
+.hidden {
+	display:none;
+	/*position : absolute;
+	left : -10000px;*/
+}
+
+/***********************************************************************************************************************
+/* Header css
+*/
+
+#header {
+	height : 89px;
+}
+
+/***********************************************************************************************************************
+/* Logo css
+*/
+
+#logo {
+	position : absolute;
+	float:none;
+	/*overflow : hidden;*/
+	z-index : 20;
+	width : 281px;
+	height : 89px;
+	/*margin-top : 0;*/
+}
+
+#logo a {
+	display : block;
+	height : 89px;
+	overflow : hidden;
+	line-height : 89px;
+}
+
+#logo a:hover {
+	cursor : pointer;
+	cursor : hand;
+}
+
+#logo span.replacement {
+	display : none;
+	position : absolute;
+	top : 0;
+	width : 281px;
+	height : 89px;
+	background-repeat : no-repeat;
+}
+
+* h\tml #logo span.replacement {
+	display : block;
+	z-index : 30;
+	background-image : url(../images/imscp_logo.png);
+}
+
+#logo a span.replacement {
+	display : block;
+	z-index : 35;
+	background-image : url(../images/imscp_logo.png);
+}
+
+#logo span.linkText {
+	position : relative;
+	z-index : 25;
+	left : 100px;
+}
+
+#logo a {
+	text-decoration : none;
+}
+
+/***********************************************************************************************************************
+/* Navigation css
+*/
+/*
+ul#navigation {
+	float : right;
+	margin-right : 5px;
+}
+
+ul#navigation {
+	list-style-type : none;
+}
+
+ul#navigation li {
+	display : inline;
+}
+
+#navigation li a {
+	line-height : 25px;
+	border : 1px solid;
+	border-top : none;
+	-moz-border-radius : 0 0 5px 5px;
+	border-radius : 0 0 5px 5px;
+	padding : 5px;
+	font-size : 110%;
+	font-variant : small-caps;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+#navigation li a:hover,
+#navigation li.active a {
+	padding-bottom : 8px;
+}
+*/
+
+ul#navigation {
+	float : right;
+	margin-right : 5px;
+	list-style-type : none;
+}
+
+ul#navigation li{
+	float : left; /* for IE*/
+	margin-left : 5px;
+}
+
+ul#navigation li a {
+	display : block;
+	float : left;
+	text-decoration : none;
+	text-align : center;
+	padding : 5px;
+	border-width : 1px;
+	border-style : solid;
+	border-top : none;
+	-moz-border-radius : 0 0 5px 5px;
+	border-radius : 0 0 5px 5px;
+}
+
+ul#navigation li a:hover,
+ul#navigation li.active a {
+	padding-bottom : 8px;
+}
+
+/***********************************************************************************************************************
+/* Location css
+*/
+
+#location {
+	border-top : 1px solid;
+	border-bottom:1px solid;
+	font-size : 0.8em;
+	font-variant : small-caps;
+	/*font-weight : bold;*/
+}
+
+/*
+#breadcrumbs {
+}
+
+#register {
+	background : rgb(103, 165, 75) url("../images/formbg.png") 0px 28% no-repeat;
+	border-left:1px solid;
+	border-bottom:1px solid;
+	-margin-top : 1px;
+	padding : 0 5px;
+	top:0px;
+	outline:none;
+}
+
+#logged-as {
+	float : right;
+	margin-right :5px;
+	line-height:22px;
+}
+*/
+
+#breadcrumbs {
+	display:block;
+	padding:5px;
+}
+
+#locationRightBox {
+	float : right;
+	padding : 5px;
+}
+
+/***********************************************************************************************************************
+/* Page css
+*/
+
+#page {
+	padding-bottom : 130px;
+}
+
+/***********************************************************************************************************************
+/* Content css
+*/
+
+#content {
+	display : inline;
+	float : left;
+	width : 71%;
+	/*margin-top : 0;*/
+	margin-left : 16px;
+	clear : both;
+}
+
+h1 {
+	margin-top : 10px;
+	/*margin-right : 16px;*/
+	/*-margin-bottom : -0.25em;*/ /* ie > 7 hack - review this*/
+	/*padding-top : 10px;*/
+	font-size : 1.6em;
+	text-transform : uppercase;
+	/*letter-spacing : -0.05em;*/
+	/*clear : both;*/
+}
+
+h1 a {
+	text-decoration:none;
+}
+
+h1 a:hover{
+	text-decoration:underline;
+}
+
+.subTitle {
+	border : 1px solid;
+	-moz-border-radius-topright : 10px;
+	-moz-border-radius-bottomleft : 10px;
+	border-top-right-radius : 10px;
+	border-bottom-left-radius : 10px;
+	padding : 5px 5px;
+	font-size : 0.8em;
+	font-weight:bold;
+	text-transform : none;
+
+}
+
+.metadata {}
+
+.fastLinks {
+	float:right;
+}
+
+h2 {
+	margin-top : 10px;
+	-margin-bottom : -0.25em; /* ie < 7 hack  review this*/
+	border-bottom : 1px solid;
+	padding-bottom : 0.5em;
+	font-size : 1.5em;
+	font-family : Arial, Helvetica, sans-serif;
+	/*clear : both;*/
+}
+
+#content .postBody h2 {
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * h2 {
+	margin-right : 0;
+}
+
+h3 {
+	margin-top : 1.5em;
+	margin-bottom : -0.75em;
+	font-size : 1.4em;
+}
+
+#content .postBody h3 {
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * h3 {
+	margin-right : 0;
+}
+
+h4 {
+	margin-top : 1.5em;
+	margin-bottom : -0.75em;
+	font-size : 1.3em;
+}
+
+#content postBody h4 {
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * h4 {
+	margin-right : 0;
+}
+
+ol {
+	margin-top : 1.5em;
+	margin-left : 1.5em;
+}
+
+#content .postBody ol {
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * ol {
+	margin-right : 0;
+}
+
+#content p {
+	margin-top : 1.5em;
+	overflow:hidden;
+}
+
+#content .postBody p {
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * p {
+	margin-right : 0;
+}
+
+/***********************************************************************************************************************
+/* Pagination css
+*/
+
+#paginationOuter {
+	width : 100%;
+	margin-top : 20px;
+}
+
+#paginationInner {
+	position : relative;
+	border-top : 1px solid;
+	height : 26px;
+	line-height : 26px;
+	/*margin-right : 16px;*/
+	padding : 0 5px 0 5px;
+}
+
+#paginationInner p {
+	margin : 0;
+	clear : right;
+}
+
+#paginationPrevious {
+	float : left;
+	width : 48%;
+	background : transparent url(../images/arrow_left.gif) 0% 50% no-repeat;
+	padding-left : 10px;
+}
+
+#paginationNumbered {
+	float : left;
+	width : 30%;
+}
+
+#paginationNext{
+	float : right;
+	background : transparent url(../images/arrow_right.gif) 100% 50% no-repeat;
+	padding-right : 10px;
+}
+
+#content ul {
+	margin-top : 1.5em;
+	margin-left : 1.5em;
+}
+
+#content .postBody ul {
+	margin-left : 32px;
+	/*margin-right : 16px;*/
+}
+
+#content .postBody * ul {
+	margin-right : 0;
+}
+
+img {
+	border : 0 none transparent;
+}
+
+img.postImageLeft {
+	float : left;
+	border : none; /* ie 5 */
+	border/**/:/**/1px solid;
+	padding : 0; /* ie 5 */
+	padding/**/:/**/4px;
+	margin-right : 5px;
+}
+
+img.postImageRight {
+	float : right;
+	border : none; /* ie 5 */
+	border/**/:/**/1px solid;
+	padding : 0; /* ie 5 */
+	padding/**/:/**/4px;
+	margin-left : 5px;
+}
+
+.note {
+	border-right : 2px solid;
+	border-left : 2px solid;
+	margin-top : 2.5em;
+	/*margin-right : 16px;*/
+	padding : 16px 16px 16px 50px;
+	font-weight:bold;
+}
+
+.note .first {
+	margin-top : 0;
+}
+
+/***********************************************************************************************************************
+/* Post css
+*/
+
+.post {
+	/*border:1px solid red;*/
+}
+
+
+
+.post textarea {
+	/*padding:5px;*/
+	background-color : rgb(203, 209, 224);
+	background-color : rgb(205, 205, 205);
+}
+
+.postBody {}
+
+/***********************************************************************************************************************
+/* Comments css
+*/
+
+#comments {
+	margin-top : 10px;
+}
+
+#commentsHeading {
+	border-top : 1px solid;
+	/*margin-right : 16px;*/
+	padding : 5px;
+}
+
+#commentsHeading h2 {
+
+	border:none;
+	margin : 0;
+	padding : 0;
+}
+
+.comment {
+	position:relative;
+	margin-top:2px;
+	/*margin-right:16px;*/
+	padding:5px;
+}
+
+.commentAvatar {
+	display:block;
+	position:relative;
+	float:left;
+	margin-right:5px;
+	text-align:center;
+}
+
+.commentAuthor {
+	margin-left:70px;
+	margin-bottom:5px;
+	font-weight:bold;
+}
+
+.commentBody {
+	position:relative;
+	margin-left:70px;
+}
+
+#newComment {}
+
+/***********************************************************************************************************************
+/* Sidebar css
+*/
+
+#sidebar {
+	display : inline;
+	float : right;
+	width : 26%;
+	/*font-size:0.8em;*/
+}
+
+#profileBox {
+	/*margin-top:-1px;*/
+}
+
+.box, #profileBox {
+	border-bottom : 1px solid;
+	border-left : 1px solid;
+	-moz-border-radius-bottomleft : 10px;
+	border-bottom-left-radius : 10px;
+}
+
+.box {
+	position:relative;
+	border-top : 1px solid;
+	border-right : 1px solid;
+	-moz-border-radius-topleft : 10px;
+	border-top-left-radius : 10px;
+	-moz-border-radius-bottomright : 10px;
+	border-bottom-right-radius : 10px;
+	margin-top:1.5em;
+	margin:20px 16px 0px 0px;
+}
+
+.boxHeader {
+	border-bottom : 1px solid;
+	-moz-border-radius-topleft : 10px;
+	border-top-left-radius : 10px;
+	padding:5px;
+	text-align:center;
+}
+
+.boxHeader h1,
+.boxHeader h2,
+.boxHeader h3,
+.boxHeader h4 {
+	margin:0;
+	padding:0;
+	text-transform : none;
+}
+
+.box h2, .box h3, .box h4 {
+	border : none;
+	border-bottom : 1px solid;
+	margin : 5px 5px 10px 5px;
+	padding : 0;
+}
+
+.box a {
+	font-weight:bold;
+}
+
+.box p {
+	margin-top:0;
+	padding:5px;
+}
+
+/*
+#profileBox dl.zend_form {
+	position:relative;
+	width:100%;
+	padding-top:10px;
+	font-size:100%;
+}
+
+#profileBox .zend_form dt {
+	width:42%;
+	float: left;
+	padding: 0.8em 0.5em;
+	font-weight: bold;
+}
+*/
+
+/* hack for ie5 mac \*/
+#profileBox dt {
+	clear: both;
+}
+/* end hack */
+
+/*
+.zend_form dd {
+	padding: .5em 0em;
+	text-align:center;
+}
+*/
+/*
+.zend_form dd input {
+	width : 9em;
+	border : 1px solid;
+	padding : 5px;
+	font-size : 100%;
+}
+
+.zend_form dd input:focus{
+	border : 1px solid;
+	outline: none;
+}
+
+.zend_form #submit-label {
+	position:absolute;
+	left:-100000px;
+}
+
+.zend_form #submit-element {
+	text-align:center;
+	clear:both;
+}
+
+.zend_form #submit-element input {
+	border: 1px solid;
+	font-variant : small-caps;
+	font-weight : bold;
+	cursor : pointer;
+}
+
+.zend_form #submit-element input:hover {
+	letter-spacing : 3px;
+}
+*/
+
+p.moreLink {
+	border-top: 1px dashed;
+	margin-top: 10px;
+	/*margin-right: 16px;*/
+	padding-top: 10px;
+	text-align: right;
+}
+
+/***********************************************************************************************************************
+/* Footer css
+*/
+
+#footer {
+	width : 100%;
+	line-height : 1.6em;
+	margin-left : 25px;
+	padding-bottom : 1.3em;
+	font-size:0.7em;
+	text-align : center;
+}
+
+#footer #footerImageLeft {
+	position:absolute;
+	left:10px;
+	top:26px;
+}
+
+#footerLinks {
+	margin-top : 0;
+	margin-left : 0;
+	padding-top : 1.5em;
+	list-style : none;
+}
+
+#footerLinks li {
+	display : inline;
+	border-left : 1px solid;
+	padding-right : 1em;
+	padding-left : 1em;
+}
+
+#footerLinks li.first {
+	border-left : 0 none transparent;
+}
+
+#footerLinks a {}
+
+#footer p {
+	margin-top : 1.5em;
+}
+
+/* The CSS that's required to position the footer */
+
+html, body {
+	height : 100%;
+}
+
+/*
+body {
+	height : 100%;
+}
+*/
+
+#wrapperInner {
+	position : relative;
+	min-height : 100%;
+}
+
+* html #wrapperInner {
+	height : 100%;
+}
+
+#footer {
+	position : relative;
+	margin : -7.5em auto 0 auto;
+}
+
+/* A CSS hack that only applies to IE -- specifies a different offset for the footer */
+* html #footer {
+	margin-top : -7.5em;
+}
+
+/*
+ Colors 
+*/
+
+body {
+	color : rgb(51, 51, 51);
+}
+
+a {
+	color : rgb(29, 42, 91);
+}
+
+#header{
+	background-color : rgb(59, 89, 152);
+}
+
+#navigation a {
+	background-color : rgb(29, 42, 91);
+	color : rgb(255, 255, 255);
+	border-color : rgb(255, 255, 255);
+}
+
+#navigation .active a,
+#navigation a:hover {
+	background-color : rgb(160, 169, 192);
+}
+
+#location {
+	background-color : rgb(160, 169, 192);
+	border-color : rgb(29, 42, 91);
+}
+
+#location a {
+	color : rgb(29, 42, 91);
+}
+
+#register {
+	/*background : rgb(103, 165, 75) url("../images/formbg.png1") 0px 28% no-repeat;*/
+	background-color : rgb(103, 165, 75);
+	color : rgb(255, 255, 255);
+}
+
+#register a {
+	color : rgb(255, 255, 255);
+}
+
+h1, h1 a {
+	color : rgb(29, 42, 91);
+}
+
+h2 {
+	color : rgb(29, 42, 91);
+	border-color : rgb(203, 209, 224);
+}
+
+.subTitle{
+	background-color : rgb(160, 169, 192);
+	border-color : rgb(29, 42, 91);
+}
+
+img.postImageLeft,
+img.postImageRight {
+	border-color : rgb(203, 209, 224)
+}
+
+.note {
+	background : rgb(203, 209, 224) url(../images/icons/medium/notice.png) 10px 8px no-repeat;
+	border-color : rgb(29, 42, 91);
+}
+
+.note a {
+	font-weight : bold;
+}
+
+#commentsHeading {
+	background-color : rgb(227, 231, 240);
+	border-color : rgb(160, 169, 192);
+}
+
+.comment {
+	background-color : rgb(227, 231, 240);
+
+}
+
+p.moreLink {
+	border-color : rgb(160, 169, 192);
+}
+
+#paginationInner {
+	background-color : rgb(227, 231, 240);
+	border-color : rgb(160, 169, 192);
+}
+
+#profileBox,
+.box {
+	background-color : rgb(160, 169, 192);
+	border-color : rgb(29, 42, 91);
+}
+
+.boxHeader {
+	background-color:rgb(59, 89, 152);
+	border-color : rgb(29, 42, 91);
+}
+
+.boxHeader h1,
+.box h2 {
+	color : rgb(255, 255, 255);
+}
+
+#footer{
+	background-color : rgb(29, 42, 91);
+}
+
+#footer,
+#footerLinks a {
+	border-color : rgb(203, 209, 224);
+	color : rgb(203, 209, 224);
+}
+
+.box ul {
+	list-style : none;
+	/*border:1px solid red;*/
+	padding:5px;
+	margin:0;
+	margin-bottom:15px;
+}
+
+* html .box ul {
+	/*margin-top : 3px;*/
+	margin-bottom:10px;
+}
+
+.box li {
+	border-top : 1px dashed rgb(29, 42, 91);
+	padding : 5px 0;
+}
+
+.box ul .first {
+	border-top : none;
+}
+
+.box li a {
+	/*font-size:85%;*/
+	font-weight : normal;
+	text-decoration : none;
+}
+
+.box li a:hover {
+	color : rgb(255, 255, 255);
+}
+
+/* icons css */
+
+.blogSmallIcon{background-image:url("../images/icons/small/blog.png");}
+.dashboardSmallIcon{background-image:url("../images/icons/small/dashboard.png");}
+.deleteSmallIcon{background-image:url("../images/icons/small/delete.png");}
+.editSmallIcon{background-image:url("../images/icons/small/edit.png");}
+.logoutSmallIcon{background-image:url("../images/icons/small/logout.png");}
+.messageSmallIcon{background-image:url("../images/icons/small/message.png");}
+.newpostSmallIcon{background-image:url("../images/icons/small/newpost.png");}
+.searchSmallIcon{background-image:url("../images/icons/small/search.png");}
+.userSmallIcon{background-image:url("../images/icons/small/user.png");}
+
+.smallIcon {
+	background-color : transparent;
+	background-position: left center;
+	background-repeat : no-repeat;
+	background-attachment : scroll;
+	padding: 2px 0px 2px 20px;
+}
+
+#profileBox ul {
+	/*font-size:0.8em;*/
+	/*margin : 0;*/
+	/*padding:0;*/
+	padding : 5px;
+	/*padding-top:15px;*/
+	list-style-type : none;
+}
+
+#profileBox ul li {
+	/*margin : 0;*/
+	/*padding:0;*/
+	/*height : 16px;*/
+	margin-top : 5px;
+}
+
+a {
+	/*border:1px solid red;*/
+}
+
+#profileBox li a {
+	/*background-position : 0px 0px;*/
+	/*padding-left : 20px;*/
+	/*padding: 0px 0px 0px 20px;*/
+
+}
+
+#profileBox img {
+	margin-top : 10px;
+	margin-right : 10px;
+	border: none;
+}
+
+span.underline {
+	text-decoration:underline;
+}
+
+/* testing */
+
+#loginBox {
+	position:relative;
+	background-color : rgb(160, 169, 192);
+	border-bottom : 1px solid;
+	border-left : 1px solid;
+	-moz-border-radius-bottomleft : 10px;
+	border-bottom-left-radius : 10px;
+	border-color : rgb(29, 42, 91);
+	overflow:hidden;
+	margin-top:-1px;
+}
+
+* html #loginBox {
+	width:100%;
+}
+
+#loginBox input {
+	width: 11em;
+}
+
+.post {
+	/*border:1px solid red;*/
+}
+
+/***********************************************************************************************************************
+* Form css
+*/
+
+.zend_form{
+	/*overflow:auto;*/
+}  
+
+dl {
+	padding-top:10px;
+}
+
+dt, dd {
+	float:left;
+}
+
+dt {
+	width:30%;
+	clear:left;
+	margin:5px 5px 5px 5px;
+}
+
+dt label {
+	cursor:pointer;
+	line-height:22px;
+}
+
+
+dd {
+	width:64%;
+	margin:5px 2px 5px 0;
+}
+
+dd input,
+dd textarea{
+	border:1px solid rgb(29, 42, 91);
+	padding:3px;
+	outline:none;
+}
+
+dd input:hover, dd textarea:hover,
+dd input:focus, dd textarea:focus{
+	background-color : rgb(242, 242, 242);
+	border-color:green;
+}
+
+#title-element input {
+	width:100%;
+}
+
+dd textarea {
+	width:100%;
+}
+
+#teaser-element textarea {
+	height:50px;
+}
+
+

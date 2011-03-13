@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget>
+	<name>Login</name>
+	<title>Login Form</title>
+	<module></module>
+	<description>Display a form to login</description>
+	<author>Laurent Declercq / i-PMS Core Team</author>
+	<email>core@ipms.net</email>
+	<version>1.0.0</version>
+	<license>GPLv2</license>
+	<params>
+		<param name="title">
+			<description><![CDATA[Allow to set a title for login box]]></description>
+			<type>Text</type>
+			<value>Login Box Title</value>
+			<label>Title</label>
+		</param>
+		<param name="rememberMe">
+			<description><![CDATA[Tell whether or not a "Remember me" checkbox should be displayed along the login form]]></description>
+			<type>Checkbox</type>
+			<value>0</value>
+			<label><![CDATA[Allow remember me ?]]></label>
+		</param>
+	</params>
+	<resources></resources>
+</widget>

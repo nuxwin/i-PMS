@@ -1,0 +1,33 @@
+<h1><?php echo $this->translate('All posts');?></h1>
+<?php if(count($this->paginator)):?>
+<?php foreach($this->paginator as $post):?>
+<div class="post">
+	<h1>
+		<a href="<?php echo $this->baseUrl() . '/posts/view/id/' . $post['id'];?>" title="Read more...">
+			<span><?php echo $this->escape($post['title']);?></span>
+		</a>
+	</h1>
+	<div class="postBody">
+		<div class="teaser" style="margin-top:16px;"><?php echo $post['teaser'];?></div>
+		<p style="color:#666;font-weight:bold;">
+			<?php
+				echo $this->translate('Posted on') . ' ' . date('F d, Y', strtotime($post['created_at'])) .
+				', ' .$this->translate('in') . ' ';
+			?>
+			<a href="<?php echo $this->baseUrl() . '/categories/view/' . $post['categorie'];?>" title="<?php echo $this->translate('View categorie');?>">
+				<span><?php echo ucfirst($post['categorie']);?></span>
+			</a>
+		</p>
+	</div>
+	<p class="moreLink">
+		<a href="<?php echo $this->baseUrl() . '/posts/view/id/' . $post['id'];?>" title="<?php echo $this->translate('Read more...');?>"><span><?php echo $this->translate('Read more...');?></span></a>
+	</p>
+</div>
+<?php endforeach;?>
+<?php endif;?>
+
+<?php if(count($this->paginator) > 1):?>
+	<div id="paginationOuter">
+		<?php echo $this->paginationControl($this->paginator, 'Sliding', '/partials/paginationControl.phtml');?>
+	</div>
+<?php endif;?>

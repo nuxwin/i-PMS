@@ -1,0 +1,66 @@
+i-PMS Widgets component
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The i-PMS Widget component can be view like a plug-in API, but that is firstly designed to provide a simple way to
+arrange the various elements of your site content (known as "widgets") without having to change any code, and more
+specially the theme that you use.
+
+i-PMS comes with a lot of widgets that can be placed where you want* on your site. The widgets can be displayed in
+different zones that are defined in the theme that you use . For example, if you use the default i-PMS theme, you have
+the choose between several zones such as the header, the content, the sidebar, and the footer. Also, you must note that
+each zones can have they own sub-zones described in CSS notation - (e.g left top, left bottom, right top, right bottom).
+These sub-zones allow you to place the widgets exactly were you want on your site.
+
+Some theme defines a default list of widgets to displays when you doesn't setup the widgets to be displayed for a zone.
+For example, the i-PMS default theme defines the sidebar zone where a list of  widgets will be defaulted displayed if
+you do not setup your own widgets to be displayed in this zone.
+
+* Depending of the available widget zones that are defined in the theme that you use.
+
+Default i-PMS widgets
+~~~~~~~~~~~~~~~~~~~~~~
+
+Here's a description of the various types of widget along with their configuration options:
+
+Login
+~~~~~
+
+Widget that allow to display a form to login:
+
+Configuration options are:
+	- Remember me - Tell whether or not a "Remember me" check-box must be displayed along the login form.
+
+RssFeed
+~~~~~~~
+
+Widget that allow to display a RSS feed.
+
+Configuration options are:
+	- RSS feed URL - Allows to enter the feed URL
+	- [optional] Feed title - Allows to add a title (like a description) for the RSS feed.
+	- Maximum number of items to display - Allows to set the maximum number of feed items to display.
+
+RecentComments
+~~~~~~~~~~~~~~
+
+Widget that displays a list of the most recent approved comments:
+
+Configuration options are:
+	- Title - A description that appears over the list of recent comments.
+	- Number of comments to show (defaulted to 10) - allows to set the number of comments to be displayed.
+
+Recent Posts
+~~~~~~~~~~~~
+
+Displays a list of the most recent posts.
+
+Configuration options are:
+	- Title - A description that appears over the list of recent posts.
+	- Number of posts to show (defaulted to 10) - allows to set the number of comments to be displayed.
+
+Creating your own widgets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can easily create new widgets. See the available widgets to learn how to create your own widgets. When you add new
+widgets in the widgets directory, each of them are automatically detected by the widget engine and you can setup each of
+them through the dashboard. A specific documentation will be available later.
