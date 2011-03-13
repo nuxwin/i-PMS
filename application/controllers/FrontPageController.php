@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -33,58 +34,59 @@
  */
 class FrontPageController extends Zend_Controller_Action
 {
-	/**
-	 * Returns a pageable list of posts
-	 *
-	 * @return void
-	 */
-	public function indexAction()
-	{
-		$model = new Model_DbTable_Posts();
-		$pageablePosts = $model->getPageablePosts((int) $this->_request->getParam('page', 1), 5);
-		$this->view->assign('paginator', $pageablePosts);
-	}
 
-	/**
-	 * Get latest forum posts
-	 *
-	 * Todo must ne available as widget
-	 *
-	 * @return array
-	 */
-	protected function getForumRss()
-	{
-		$rssDoc = new DOMDocument();
-		$arrFeeds = array();
+    /**
+     * Returns a pageable list of posts
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+	$model = new Model_DbTable_Posts();
+	$pageablePosts = $model->getPageablePosts((int) $this->_request->getParam('page', 1), 5);
+	$this->view->assign('paginator', $pageablePosts);
+    }
 
-		// todo get link from database
-		if($rssDoc->load(
+    /**
+     * Get latest forum posts
+     *
+     * Todo must ne available as widget
+     *
+     * @return array
+     */
+    protected function getForumRss()
+    {
+	$rssDoc = new DOMDocument();
+	$arrFeeds = array();
+
+	// todo get link from database
+	if ($rssDoc->load(
 			'http://forum.i-mscp.net/syndication.php?fid=1,2,3,4,5,6,7,24,8,10,9,11,12,13,14,33,15,16,17,18&limit=5'
-		)) {
-			$maxTitleLength = 25;
-			$feeds = array();
+	)) {
+	    $maxTitleLength = 25;
+	    $feeds = array();
 
-			foreach ($rssDoc->getElementsByTagName('item') as $item) {
-				$title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
-				$normalizedTitle = $title;
-				if(strlen($normalizedTitle) >= $maxTitleLength)
-				{
-					$normalizedTitle = substr($normalizedTitle, 0, $maxTitleLength);
-					$spacer = strrpos($normalizedTitle, ' ');
-					if($spacer) {
-						$normalizedTitle = substr($normalizedTitle, 0, $spacer);
-					}
-					$normalizedTitle .= '...';
-				}
-				$itemRSS = array(
-					'title' => $title,
-					'normalizedTitle' => $normalizedTitle,
-					'link' => $item->getElementsByTagName('link')->item(0)->nodeValue,
-				);
-				array_push($feeds, $itemRSS);
-			}
+	    foreach ($rssDoc->getElementsByTagName('item') as $item) {
+		$title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
+		$normalizedTitle = $title;
+		if (strlen($normalizedTitle) >= $maxTitleLength) {
+		    $normalizedTitle = substr($normalizedTitle, 0, $maxTitleLength);
+		    $spacer = strrpos($normalizedTitle, ' ');
+		    if ($spacer) {
+			$normalizedTitle = substr($normalizedTitle, 0, $spacer);
+		    }
+		    $normalizedTitle .= '...';
 		}
-
-		return $feeds;
+		$itemRSS = array(
+		    'title' => $title,
+		    'normalizedTitle' => $normalizedTitle,
+		    'link' => $item->getElementsByTagName('link')->item(0)->nodeValue,
+		);
+		array_push($feeds, $itemRSS);
+	    }
 	}
+
+	return $feeds;
+    }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -35,7 +36,8 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RecentPosts_RecentPosts extends iPMS_Widget {
+class Widget_RecentPosts_RecentPosts extends iPMS_Widget
+{
 
     /**
      * Hook into action controller preDispatch() workflow
@@ -44,8 +46,8 @@ class Widget_RecentPosts_RecentPosts extends iPMS_Widget {
      */
     public function preDispatch()
     {
+	
     }
-
 
 }
 

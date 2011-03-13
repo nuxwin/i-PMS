@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -25,7 +26,6 @@
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
 /**
  * @see Zend_Navigation_Container
  */
@@ -41,19 +41,21 @@ require_once 'iPMS/Widget/Container/Abstract.php';
  */
 class iPMS_Widget_Container extends iPMS_Widget_Container_Abstract
 {
-	/**
-	 * Creates new widget container
-	 *
-	 * @param array $widget [optional] widgets to add
-	 * @throws iPMS_Widget_Exception if $widgets is invalid
-	 */
-	public function __construct($widgets = null)
-	{
-		if (is_array($widgets) || $widgets instanceof Zend_Config) {
-			$this->addWidgets($widgets);
-		} elseif (null !== $widgets) {
-			require_once 'iPMS/Widget/Exception.php';
-			throw new iPMS_Widget_Exception("Invalid argument: $widgets must be an array or null");
-		}
+
+    /**
+     * Creates new widget container
+     *
+     * @param array $widget [optional] widgets to add
+     * @throws iPMS_Widget_Exception if $widgets is invalid
+     */
+    public function __construct($widgets = null)
+    {
+	if (is_array($widgets) || $widgets instanceof Zend_Config) {
+	    $this->addWidgets($widgets);
+	} elseif (null !== $widgets) {
+	    require_once 'iPMS/Widget/Exception.php';
+	    throw new iPMS_Widget_Exception("Invalid argument: $widgets must be an array or null");
 	}
+    }
+
 }

@@ -39,64 +39,65 @@
 class CommentsController extends Zend_Controller_Action
 {
 
-	/**
-	 * List all comments linked to one object
-	 *
-	 * @return void
-	 */
-	public function indexAction()
-	{
-		$parent = $this->_request->getParam('parent');
-		$comments = new Model_DbTable_Comments();
-		$comments = $comments->getComments($parent);
-		$this->view->assign(array('comments' => $comments));
-	}
+    /**
+     * List all comments linked to one object
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+	$parent = $this->_request->getParam('parent');
+	$comments = new Model_DbTable_Comments();
+	$comments = $comments->getComments($parent);
+	$this->view->assign(array('comments' => $comments));
+    }
 
-	/**
-	 * Add comment
-	 *
-	 * @return void
-	 */
+    /**
+     * Add comment
+     *
+     * @return void
+     */
     public function addAction()
     {
 
-		$parentId = (int) $this->_request->getParam('id');
-		
-	    // Getting comment form
-		$form = new Form_Comments();
+	$parentId = (int) $this->_request->getParam('id');
 
-	    if($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
-	        if(null == $parentId) {
-				throw new Zend_Controller_Action_Exception("Comment parent ID not found!", 404);
-			}
+	// Getting comment form
+	$form = new Form_Comments();
 
-		    $model = new Model_DbTable_Comments();
-		    $model->insert($Form->getValues());
-		    $form->reset();
+	if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+	    if (null == $parentId) {
+		throw new Zend_Controller_Action_Exception("Comment parent ID not found!", 404);
 	    }
 
-		$form->setAction($parentController . '/' . $parentId .'/comments');
-	    $this->view->assign('form', $form);
+	    $model = new Model_DbTable_Comments();
+	    $model->insert($Form->getValues());
+	    $form->reset();
+	}
+
+	$form->setAction($parentController . '/' . $parentId . '/comments');
+	$this->view->assign('form', $form);
     }
 
-	/**
-	 * Delete comment
-	 *
-	 * @throws Zend_Controller_Action_Exception
-	 * @return void
-	 */
-	public function deleteAction()
-	{
-		$commentId = (int) $this->_request->getParam('id');
+    /**
+     * Delete comment
+     *
+     * @throws Zend_Controller_Action_Exception
+     * @return void
+     */
+    public function deleteAction()
+    {
+	$commentId = (int) $this->_request->getParam('id');
 
-		if(null == $commentId) {
-			throw new Zend_Controller_Action_Exception("Post ID not found!", 404);
-		} else {
-			$commentsModel = new Model_DbTable_Comments();
-			$commentsModel->delete($commentId);
-		}
-
-		// Todo redirect to origin
-		$this->_redirect('/');
+	if (null == $commentId) {
+	    throw new Zend_Controller_Action_Exception("Post ID not found!", 404);
+	} else {
+	    $commentsModel = new Model_DbTable_Comments();
+	    $commentsModel->delete($commentId);
 	}
+
+	// Todo redirect to origin
+	$this->_redirect('/');
+    }
+
 }

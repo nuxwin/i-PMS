@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -33,101 +34,105 @@
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	/**
-	 * Init autoloader
-	 * 
-	 * @return Zend_Application_Module_Autoloader
-	 */
-	protected function _initAutoload()
-	{
-		$moduleLoader = new Zend_Application_Module_Autoloader(array(
-			'namespace' => '',
-			'basePath' => APPLICATION_PATH
+
+    /**
+     * Init autoloader
+     * 
+     * @return Zend_Application_Module_Autoloader
+     */
+    protected function _initAutoload()
+    {
+	$moduleLoader = new Zend_Application_Module_Autoloader(array(
+		    'namespace' => '',
+		    'basePath' => APPLICATION_PATH
 		));
 
-		$moduleLoader->addResourceType('plugin', 'plugins/', 'Plugin');
-		//$moduleLoader->addResourceType('widget', 'widgets/login', 'Widget_Login');
+	$moduleLoader->addResourceType('plugin', 'plugins/', 'Plugin');
+	//$moduleLoader->addResourceType('widget', 'widgets/login', 'Widget_Login');
 
-		return $moduleLoader;
-	}
+	return $moduleLoader;
+    }
 
-	/**
-	 * Initialize plugins
-	 *
-	 * @return void
-	 * @todo can be done in configuration file
-	 */
-	public function _initPlugins()
-	{
-		$this->bootstrap('FrontController');
-
-		/**
-		 * @var $fc Zend_Controller_Front
-		 */
-		$fc = $this->getResource('FrontController');
-		//$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
-		$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
-	}
+    /**
+     * Initialize plugins
+     *
+     * @return void
+     * @todo can be done in configuration file
+     */
+    public function _initPlugins()
+    {
+	$this->bootstrap('FrontController');
 
 	/**
-	 * Initialize view
-	 *
-	 * @return Zend_View
+	 * @var $fc Zend_Controller_Front
 	 */
-	public function _initSetupView() {
+	$fc = $this->getResource('FrontController');
+	//$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
+	$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
+    }
 
-		$this->bootstrap('View');
-        $view = $this->getResource('View');
+    /**
+     * Initialize view
+     *
+     * @return Zend_View
+     */
+    public function _initSetupView()
+    {
 
-		//$view->doctype('XHTML5');
-		$view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site');
+	$this->bootstrap('View');
+	$view = $this->getResource('View');
 
-		// Define favicon
-		$view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
+	//$view->doctype('XHTML5');
+	$view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site');
 
-		// Define common js scripts
-		$view->headScript()
-			->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
-			->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
+	// Define favicon
+	$view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
 
-		// Add our view helper path
-		$view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
+	// Define common js scripts
+	$view->headScript()
+		->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
+		->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
 
-		// Add jQuery support
-		$view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
+	// Add our view helper path
+	$view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
 
-		/**
-		 * @var $jquery ZendX_JQuery_View_Helper
-		 */
-		$jquery = $view->jQuery();
-
-		// Set jquery core and ui versions to be used
-		// See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
-		$jquery->setVersion('1.4.4');
-		$jquery->setUiVersion('1.8.10');
-		$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/smoothness/jquery-ui.css');
-
-		// Will enable both jquery (core) and jquery (UI)
-		$jquery->uiEnable();
-
-		return $view;
-	}
+	// Add jQuery support
+	$view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
 
 	/**
-	 * @return void
+	 * @var $jquery ZendX_JQuery_View_Helper
 	 */
-	public function _initRouter() {
+	$jquery = $view->jQuery();
 
-		$this->bootstrap('frontController');
-        /**
-         * @var $fc Zend_Controller_Front
-         */
-		$fc = $this->getResource('FrontController');
-		$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
-		$router = $fc->getRouter();
-		$router->addConfig($configRoutes, 'routes');
-		$router->removeDefaultRoutes();
+	// Set jquery core and ui versions to be used
+	// See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
+	$jquery->setVersion('1.4.4');
+	$jquery->setUiVersion('1.8.10');
+	$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/smoothness/jquery-ui.css');
 
-		return $router;
-	}
+	// Will enable both jquery (core) and jquery (UI)
+	$jquery->uiEnable();
+
+	return $view;
+    }
+
+    /**
+     * @return void
+     */
+    public function _initRouter()
+    {
+
+	$this->bootstrap('frontController');
+	/**
+	 * @var $fc Zend_Controller_Front
+	 */
+	$fc = $this->getResource('FrontController');
+	$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
+	$router = $fc->getRouter();
+	$router->addConfig($configRoutes, 'routes');
+	$router->removeDefaultRoutes();
+
+	return $router;
+    }
+
 }

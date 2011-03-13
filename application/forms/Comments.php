@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -33,64 +34,65 @@
  */
 class Form_Comments extends Zend_Form
 {
-	/**
-	 * Initialize comment form
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$this->setName('commentsFrm');
-		$this->setAction('comments/add');
 
-		if(!Zend_Auth::getInstance()->hasIdentity()) {
-			// Name field
-			$name = new Zend_Form_Element_Text('name');
-			$name->setLabel('Name')
-				->setRequired(true)
-				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+    /**
+     * Initialize comment form
+     *
+     * @return void
+     */
+    public function init()
+    {
+	$this->setName('commentsFrm');
+	$this->setAction('comments/add');
 
-			// Email field
-			$email = new Zend_Form_Element_Text('email');
-			$email->setLabel('Email')
-				->setRequired(true)
-				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+	if (!Zend_Auth::getInstance()->hasIdentity()) {
+	    // Name field
+	    $name = new Zend_Form_Element_Text('name');
+	    $name->setLabel('Name')
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim')
+		    ->addValidator('NotEmpty');
 
-			// Website field
-			$website = new Zend_Form_Element_Text('website');
-			$website->setLabel('WebSite')
-				->setRequired(true)
-				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+	    // Email field
+	    $email = new Zend_Form_Element_Text('email');
+	    $email->setLabel('Email')
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim')
+		    ->addValidator('NotEmpty');
 
-			$this->addElements(array($name, $email, $website));
-		}
+	    // Website field
+	    $website = new Zend_Form_Element_Text('website');
+	    $website->setLabel('WebSite')
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim')
+		    ->addValidator('NotEmpty');
 
-		// Comment field
-		$comment = new Zend_Form_Element_Textarea('body');
-		$comment->setLabel('Comment')
-			->setRequired(true)
-			->setAttrib('rows',7)
-			->setAttrib('cols',30)
-			->addFilter('StripTags')
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
-
-		// Submit button
-		$submit = new Zend_Form_Element_Submit('submit');
-		$submit->setLabel('Comment')->setAttribs(array('id' => 'comment-submit'));
-
-		//echo '<pre>';
-		//print_r($submit->getDecorators());
-		//echo '</pre>';
-		//exit;
-
-		// Add elements to the form
-		$this->addElements(array($comment, $submit));
+	    $this->addElements(array($name, $email, $website));
 	}
+
+	// Comment field
+	$comment = new Zend_Form_Element_Textarea('body');
+	$comment->setLabel('Comment')
+		->setRequired(true)
+		->setAttrib('rows', 7)
+		->setAttrib('cols', 30)
+		->addFilter('StripTags')
+		->addFilter('StringTrim')
+		->addValidator('NotEmpty');
+
+	// Submit button
+	$submit = new Zend_Form_Element_Submit('submit');
+	$submit->setLabel('Comment')->setAttribs(array('id' => 'comment-submit'));
+
+	//echo '<pre>';
+	//print_r($submit->getDecorators());
+	//echo '</pre>';
+	//exit;
+	// Add elements to the form
+	$this->addElements(array($comment, $submit));
+    }
+
 }

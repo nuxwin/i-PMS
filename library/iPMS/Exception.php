@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -25,7 +26,6 @@
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
 /**
  * @see Zend_Exception
  */
@@ -38,4 +38,7 @@ require_once 'Zend/Exception.php';
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class iPMS_Exception extends Zend_Exception {}
+class iPMS_Exception extends Zend_Exception
+{
+
+}

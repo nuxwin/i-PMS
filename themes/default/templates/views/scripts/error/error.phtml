@@ -1,22 +1,22 @@
 <div class="error" style="text-align:center;">
-<h1>An error occurred</h1>
-<h2><?php echo $this->message;?></h2>
+    <h1>An error occurred</h1>
+    <h2><?php echo $this->message; ?></h2>
 
-<?php if (isset($this->exception)):?>
+    <?php if (isset($this->exception)): ?>
 
-<h3>Exception information:</h3>
-<p>
-	<b>Message:</b> <?php echo $this->exception->getMessage();?>
-</p>
+        <h3>Exception information:</h3>
+        <p>
+    	<b>Message:</b> <?php echo $this->exception->getMessage(); ?>
+        </p>
 
-<h3>Stack trace:</h3>
-<pre style="margin-top:30px;margin:16px;word-wrap: break-word;">
-	<?php echo $this->exception->getTraceAsString();?>
-</pre>
+        <h3>Stack trace:</h3>
+        <pre style="margin-top:30px;margin:16px;word-wrap: break-word;">
+	<?php echo $this->exception->getTraceAsString(); ?>
+    </pre>
 
-<h3>Request Parameters:</h3>
-<pre style="margin-top:30px;overflow-x:scroll;margin:16px;">
-	<?php echo var_export($this->request->getParams(), true);?>
-</pre>
-<?php endif;?>
+    <h3>Request Parameters:</h3>
+    <pre style="margin-top:30px;overflow-x:scroll;margin:16px;">
+	<?php echo var_export($this->request->getParams(), true); ?>
+    </pre>
+    <?php endif; ?>
 </div>

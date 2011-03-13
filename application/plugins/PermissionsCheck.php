@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -29,70 +30,70 @@
 /**
  * Plugin that check user permissions before dispatching
  */
-class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract {
+class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
+{
 
-	/**
-	 * @var Zend_Auth
-	 */
-	protected $_auth = null;
+    /**
+     * @var Zend_Auth
+     */
+    protected $_auth = null;
+    /**
+     * @var Model_Acl
+     */
+    protected $_acl = null;
+    /**
+     * Default role
+     *
+     * @var string
+     */
+    protected $_defaultRole = 'guest';
 
-	/**
-	 * @var Model_Acl
-	 */
-	protected $_acl = null;
+    /**
+     * Constructor
+     *
+     * @param Zend_Auth $auth
+     * @param Zend_Acl $acl
+     * @return void
+     */
+    public function __construct(Zend_Auth $auth, Zend_Acl $acl)
+    {
+	$this->_auth = $auth;
+	$this->_acl = $acl;
+    }
 
-	/**
-	 * Default role
-	 *
-	 * @var string
-	 */
-	protected $_defaultRole = 'guest';
+    /**
+     * Check permissions before dispatch process
+     *
+     * @throws Zend_Auth_Adapter_Exception if answering the authentication query is impossible
+     * @param Zend_Controller_Request_Abstract $request
+     * @return void
+     */
+    public function preDispatch(Zend_Controller_Request_Abstract $request)
+    {
+	$resource = $request->getControllerName();
+	$action = $request->getActionName();
 
-	/**
-	 * Constructor
-	 *
-	 * @param Zend_Auth $auth
-	 * @param Zend_Acl $acl
-	 * @return void
-	 */
-	public function __construct(Zend_Auth $auth, Zend_Acl $acl)
-	{
-		$this->_auth = $auth;
-		$this->_acl = $acl;
+	if ($this->_auth->hasIdentity()) {
+	    $identity = $this->_auth->getStorage()->read();
+	    $role = $identity->role;
+	} else {
+	    $role = $this->_defaultRole;
 	}
 
-	/**
-	 * Check permissions before dispatch process
-	 *
-	 * @throws Zend_Auth_Adapter_Exception if answering the authentication query is impossible
-	 * @param Zend_Controller_Request_Abstract $request
-	 * @return void
-	 */
-	public function preDispatch(Zend_Controller_Request_Abstract $request)
-	{
-		$resource = $request->getControllerName();
-		$action = $request->getActionName();
-
-		if($this->_auth->hasIdentity()) {
-			$identity = $this->_auth->getStorage()->read();
-			$role = $identity->role;
-		} else {
-			$role = $this->_defaultRole;
-		}
-
-		if( $this->_acl->has($resource) && !$this->_acl->isAllowed($role, $resource, $action)) {
-			$request->setControllerName('error')->setActionName('deny');
-		}
+	if ($this->_acl->has($resource) && !$this->_acl->isAllowed($role, $resource, $action)) {
+	    $request->setControllerName('error')->setActionName('deny');
 	}
+    }
 
-	/**
-	 * Set default role
-	 *
-	 * @param  string $role default role
-	 * @return void
-	 */
-	public function setDefaultRole($defaultRole)
-	{
-		$this->_defaultRole = (string) $role;
-	}
+    /**
+     * Set default role
+     *
+     * @param  string $role default role
+     * @return void
+     */
+    public function setDefaultRole($defaultRole)
+    {
+	$this->_defaultRole = (string) $role;
+    }
+
 }

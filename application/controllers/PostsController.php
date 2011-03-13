@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -34,103 +35,103 @@
 class PostsController extends Zend_Controller_Action
 {
 
-	/**
-	 * List post
-	 *
-	 * @return void
-	 */
-	public function indexAction()
-	{
-		$model = new Model_DbTable_Posts();
-		$pageablePosts = $model->getPageablePostsList((int) $this->_request->getParam('page', 1), 1);
-		$this->view->assign('paginator', $pageablePosts);
+    /**
+     * List post
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+	$model = new Model_DbTable_Posts();
+	$pageablePosts = $model->getPageablePostsList((int) $this->_request->getParam('page', 1), 1);
+	$this->view->assign('paginator', $pageablePosts);
+    }
+
+    /**
+     * Show a post
+     * 
+     * @return void
+     */
+    public function showAction()
+    {
+	$id = (int) $this->_getParam('id', 0);
+
+	$model = new Model_DbTable_Posts();
+	$row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+				->setIntegrityCheck(false)
+				->where('posts.id = ?', $id)
+				->join('users', '`users`.`id` = `posts`.`author_id`', array('username', 'firstname', 'lastname'))
+	);
+
+	if (!$row) {
+	    $this->getResponse()->setHttpResponseCode(404);
+	    throw new Zend_Controller_Action_Exception('Requested post not found!', 404);
+	    return;
 	}
 
+	$this->view->assign('post', $row);
+    }
 
-	/**
-	 * Show a post
-	 * 
-	 * @return void
-	 */
-	public function showAction()
-	{
-		$id = (int) $this->_getParam('id', 0);
+    /**
+     * Create a new post
+     *
+     * @return void
+     */
+    public function addAction()
+    {
+	$form = new Form_Post();
+	$identity = Zend_Auth::getInstance()->getIdentity()->id;
 
-		$model = new Model_DbTable_Posts();
-		$row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-			->setIntegrityCheck(false)
-			->where('posts.id = ?', $id)
-			->join('users', '`users`.`id` = `posts`.`author_id`', array('username', 'firstname', 'lastname'))
-		);
+	if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+	    $data = $form->getValues();
+	    $data['author_id'] = $identity['id'];
 
-		if(!$row) {
-			$this->getResponse()->setHttpResponseCode(404);
-			throw new Zend_Controller_Action_Exception('Requested post not found!', 404);
-			return;
-		}
+	    $model = new Model_DbTable_Posts();
+	    $id = $model->insert($data);
 
-		$this->view->assign('post', $row);
+	    $this->_redirect('/posts/id/' . $id);
 	}
 
-	/**
-	 * Create a new post
-	 *
-	 * @return void
-	 */
-	public function addAction()
-	{
-		$form = new Form_Post();
-		$identity = Zend_Auth::getInstance()->getIdentity()->id;
+	$this->view->assign('form', $form);
+    }
 
-		if($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-			$data = $form->getValues();
-			$data['author_id'] = $identity['id'];
+    /**
+     * Update a post
+     *
+     * @return void
+     */
+    public function editAction()
+    {
+	$postId = (int) $this->_request->getParam('id');
 
-			$model = new Model_DbTable_Posts();
-			$id = $model->insert($data);
+	$postsModel = new Model_DbTable_Posts();
 
-			$this->_redirect('/posts/id/' . $id);
-		}
+	if (null == ($postRow = $postsModel->find($postId)->current())) {
+	    throw new Zend_Controller_Action_Exception("Post ID $postId not found!", 404);
+	} else {
+	    $form = new Form_Post();
 
-		$this->view->assign('form', $form);
+	    if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+		$postRow->setFromArray($form->getValues())->save();
+		$this->_redirect('posts/view/id/' . $postId);
+	    } else {
+		$form->populate($postRow->toArray());
+	    }
+
+	    $form->setAction('/posts/edit');
+	    $this->view->assign('postForm', $form);
 	}
+    }
 
-	/**
-	 * Update a post
-	 *
-	 * @return void
-	 */
-	public function editAction()
-	{
-		$postId = (int) $this->_request->getParam('id');
+    /**
+     * Delete a post and his related comments
+     *
+     * @return void
+     */
+    public function olddeleteAction()
+    {
+	$postModel = new Model_DbTable_Posts();
+	$postModel->delete((int) $this->_request->getParam('id'));
+    }
 
-		$postsModel = new Model_DbTable_Posts();
-
-		if(null == ($postRow = $postsModel->find($postId)->current())) {
-			throw new Zend_Controller_Action_Exception("Post ID $postId not found!", 404);
-		} else {
-			$form = new Form_Post();
-
-			if($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-				$postRow->setFromArray($form->getValues())->save();
-				$this->_redirect('posts/view/id/' . $postId);
-			} else {
-				$form->populate($postRow->toArray());
-			}
-
-			$form->setAction('/posts/edit');
-			$this->view->assign('postForm', $form);
-		}
-	}
-
-	/**
-	 * Delete a post and his related comments
-	 * 
-	 * @return void
-	 */
-	public function olddeleteAction()
-	{
-		$postModel = new Model_DbTable_Posts();
-		$postModel->delete((int) $this->_request->getParam('id'));
-	}
 }

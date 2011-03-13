@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -33,82 +34,80 @@
  */
 class Model_DbTable_Posts extends Zend_Db_Table_Abstract
 {
-	/**
-	 * Database table to operate
-	 *
-	 * @var string
-	 */
-	protected $_name = 'posts';
 
-	/**
-	 * Primary key
-	 * 
-	 * @var string
-	 */
-	protected $_primary = 'id';
-	
-	protected $_dependentTables = array(
-		'Model_DbTable_Comments'
-	);
+    /**
+     * Database table to operate
+     *
+     * @var string
+     */
+    protected $_name = 'posts';
+    /**
+     * Primary key
+     *
+     * @var string
+     */
+    protected $_primary = 'id';
+    protected $_dependentTables = array(
+	'Model_DbTable_Comments'
+    );
+    /**
+     * Table relations
+     *
+     * @var array
+     */
+    protected $_referenceMap = array(
+	'User' => array(
+	    SELF::COLUMNS => 'author_id',
+	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
+	    SELF::REF_COLUMNS => 'id',
+	    SELF::ON_DELETE => SELF::SET_NULL
+	)
+    );
 
-	/**
-	 * Table relations
-	 *
-	 * @var array
-	 */
-	protected $_referenceMap = array(
-		'User' => array(
-			SELF::COLUMNS           => 'author_id',
-			SELF::REF_TABLE_CLASS   => 'Model_DbTable_Users',
-			SELF::REF_COLUMNS       => 'id',
-			SELF::ON_DELETE         => SELF::SET_NULL
-		)
-	);
-
-	/**
-	 * Returns a pageable list of posts without post body
-	 *
-	 * @param int $currentPage Current page
-	 * @param int $itemsCount Item count per page
-	 * @return Zend_Paginator
-	 */
-	public function getPageablePostsList($currentPage = 1, $itemsCount = 10)
-	{
-		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
-			$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
-				->setIntegrityCheck(false)
-				->from('posts', array('id', 'author_id', 'title', 'teaser', 'categorie', 'created_at'))
-				->join('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
-				->order('posts.id DESC')
+    /**
+     * Returns a pageable list of posts without post body
+     *
+     * @param int $currentPage Current page
+     * @param int $itemsCount Item count per page
+     * @return Zend_Paginator
+     */
+    public function getPageablePostsList($currentPage = 1, $itemsCount = 10)
+    {
+	$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
+					$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
+					->setIntegrityCheck(false)
+					->from('posts', array('id', 'author_id', 'title', 'teaser', 'categorie', 'created_at'))
+					->join('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
+					->order('posts.id DESC')
 		));
 
-		$pageablePosts->setItemCountPerPage($itemsCount);
-		$pageablePosts->setCurrentPageNumber((int) $currentPage);
+	$pageablePosts->setItemCountPerPage($itemsCount);
+	$pageablePosts->setCurrentPageNumber((int) $currentPage);
 
-		return $pageablePosts;
-	}
+	return $pageablePosts;
+    }
 
-
-	/**
-	 * Returns a pageable list of posts
-	 *
-	 * @param int $currentPage Current page
-	 * @param int $itemsCount Item count per page
-	 * @return Zend_Paginator
-	 */
-	public function getPageablePosts($currentPage = 1, $itemsCount = 10)
-	{
-		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
-			$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
-				->setIntegrityCheck(false)
-				->from('posts', array('id', 'title', 'teaser', 'body', 'categorie', 'created_at', 'author_id'))
-				->join('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
-				->order('posts.id DESC')
+    /**
+     * Returns a pageable list of posts
+     *
+     * @param int $currentPage Current page
+     * @param int $itemsCount Item count per page
+     * @return Zend_Paginator
+     */
+    public function getPageablePosts($currentPage = 1, $itemsCount = 10)
+    {
+	$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
+					$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
+					->setIntegrityCheck(false)
+					->from('posts', array('id', 'title', 'teaser', 'body', 'categorie', 'created_at', 'author_id'))
+					->join('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
+					->order('posts.id DESC')
 		));
 
-		$pageablePosts->setItemCountPerPage($itemsCount);
-		$pageablePosts->setCurrentPageNumber((int) $currentPage);
+	$pageablePosts->setItemCountPerPage($itemsCount);
+	$pageablePosts->setCurrentPageNumber((int) $currentPage);
 
-		return $pageablePosts;
-	}
+	return $pageablePosts;
+    }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -33,83 +34,77 @@
  */
 class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_Resource_Interface, Zend_Acl_Assert_Interface
 {
-	/**
-	 * Database table to operate
-	 *
-	 * @var string
-	 */
-	protected $_name = 'comments';
 
-	/**
-	 * Primary key
-	 *
-	 * @var string
-	 */
-	protected $_primary = 'id';
+    /**
+     * Database table to operate
+     *
+     * @var string
+     */
+    protected $_name = 'comments';
+    /**
+     * Primary key
+     *
+     * @var string
+     */
+    protected $_primary = 'id';
+    /**
+     * Table relations
+     * 
+     * @var array
+     */
+    protected $_referenceMap = array(
+	// If the parent post is deleted, all related comments are deleted too
+	'Post' => array(
+	    SELF::COLUMNS => 'post_id',
+	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Posts',
+	    SELF::REF_COLUMNS => 'id',
+	    SELF::ON_DELETE => SELF::CASCADE
+	),
+	// If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
+	'user' => array(
+	    SELF::COLUMNS => 'author_id',
+	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
+	    SELF::REF_COLUMNS => 'id',
+	    SELF::ON_DELETE => SELF::SET_NULL
+	),
+    );
+    /**
+     * Resource owner identifier
+     * @var int
+     */
+    protected $_resourceOwnerId = null;
+    /**
+     * Resource string identifier
+     * @var string
+     */
+    protected $_resourceId = 'comment';
 
-	/**
-	 * Table relations
-	 * 
-	 * @var array
-	 */
-	protected $_referenceMap = array(
-
-		// If the parent post is deleted, all related comments are deleted too
-		'Post' => array(
-			SELF::COLUMNS           => 'post_id',
-			SELF::REF_TABLE_CLASS   => 'Model_DbTable_Posts',
-			SELF::REF_COLUMNS       => 'id',
-			SELF::ON_DELETE         => SELF::CASCADE
-		),
-
-		// If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
-		'user' => array(
-			SELF::COLUMNS           => 'author_id',
-			SELF::REF_TABLE_CLASS   => 'Model_DbTable_Users',
-			SELF::REF_COLUMNS       => 'id',
-			SELF::ON_DELETE         => SELF::SET_NULL
-		),
-	);
-
-	/**
-	 * Resource owner identifier
-	 * @var int
-	 */
-	protected $_resourceOwnerId = null;
-
-	/**
-	 * Resource string identifier
-	 * @var string
-	 */
-	protected $_resourceId = 'comment';
-
-
-	/**
-	 * Retrieves all comments that belong to one object
-	 *
-	 * @param  $parent Zend_Db_Table_Row_Abstract
-	 * @return Zend_Db_Table_Rowset_Abstract Query result from $dependentTable
-	 */
-	public function getComments(Zend_Db_Table_Row_Abstract $parent)
-	{
-		$comments = $parent->findDependentRowset(
+    /**
+     * Retrieves all comments that belong to one object
+     *
+     * @param  $parent Zend_Db_Table_Row_Abstract
+     * @return Zend_Db_Table_Rowset_Abstract Query result from $dependentTable
+     */
+    public function getComments(Zend_Db_Table_Row_Abstract $parent)
+    {
+	$comments = $parent->findDependentRowset(
 			$this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
 				->setIntegrityCheck(false)
 				->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar')
-		);
+	);
 
-		return $comments;
-	}
+	return $comments;
+    }
 
-	/**
-	 * Implements Zend_Acl_Resource_Interface
-	 *
-	 * @return string Resource string identifier
-	 */
-	public function getResourceId()
-	{
-		return $this->_resourceId;
-	}
+    /**
+     * Implements Zend_Acl_Resource_Interface
+     *
+     * @return string Resource string identifier
+     */
+    public function getResourceId()
+    {
+	return $this->_resourceId;
+    }
 
     /**
      * Returns true if and only if the assertion conditions are met
@@ -124,13 +119,13 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
      * @param  string                      $privilege
      * @return boolean
      */
-    public function assert(Zend_Acl $acl, Zend_Acl_Role_Interface $user = null,
-                           Zend_Acl_Resource_Interface $comment = null, $privilege = null)
+    public function assert(Zend_Acl $acl, Zend_Acl_Role_Interface $user = null, Zend_Acl_Resource_Interface $comment = null, $privilege = null)
     {
-	    if($user->id = $comment->author_id) {
-		    return true;
-	    } else {
-		    return false;
-	    }
+	if ($user->id = $comment->author_id) {
+	    return true;
+	} else {
+	    return false;
+	}
     }
+
 }

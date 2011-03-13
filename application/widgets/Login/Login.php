@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -35,7 +36,8 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_Login_Login extends iPMS_Widget {
+class Widget_Login_Login extends iPMS_Widget
+{
 
     /**
      * Tell whether or not partial must be used for widget rendering
@@ -50,7 +52,7 @@ class Widget_Login_Login extends iPMS_Widget {
      */
     public function init()
     {
-        
+
     }
 
     /**
@@ -60,29 +62,29 @@ class Widget_Login_Login extends iPMS_Widget {
      */
     public function widget()
     {
-        $auh = Zend_Auth::getInstance();
+	$auh = Zend_Auth::getInstance();
 
-        if (!$auh->hasIdentity()) {
-            $request = $this->getRequest();
-            if ($request->isPost() && is_array($request->getPost('login'))) {
-                $form = $this->_getForm();
-                if ($form->isValid($request->getPost())) {
-                    // Perform authentication against database
-                    $userModel = new Model_DbTable_Users();
-                    $userModel->setIdentity($form->getValue('username'))
-                            ->setCredential($form->getValue('password'));
-                    $authResult = $auh->authenticate($userModel);
-                    if ($authResult->isValid()) {
-                        Zend_Session::regenerateId(); // Protection against session's fixation attacks
-                        return '';
-                    }
-                }
-            }
+	if (!$auh->hasIdentity()) {
+	    $request = $this->getRequest();
+	    if ($request->isPost() && is_array($request->getPost('login'))) {
+		$form = $this->_getForm();
+		if ($form->isValid($request->getPost())) {
+		    // Perform authentication against database
+		    $userModel = new Model_DbTable_Users();
+		    $userModel->setIdentity($form->getValue('username'))
+			    ->setCredential($form->getValue('password'));
+		    $authResult = $auh->authenticate($userModel);
+		    if ($authResult->isValid()) {
+			Zend_Session::regenerateId(); // Protection against session's fixation attacks
+			return '';
+		    }
+		}
+	    }
 
-            return $this->_getForm()->render();
-        }
+	    return $this->_getForm()->render();
+	}
 
-        return '';
+	return '';
     }
 
     /**
@@ -96,7 +98,7 @@ class Widget_Login_Login extends iPMS_Widget {
      */
     public function dashBoardSettingsForm($instance)
     {
-        return $this->buildDashboardSettingsForm($this->getParams())->render();
+	return $this->buildDashboardSettingsForm($this->getParams())->render();
     }
 
     /**
@@ -105,9 +107,9 @@ class Widget_Login_Login extends iPMS_Widget {
      */
     public function getParams()
     {
-        $config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
-        $config = $config->toArray();
-        return $config['params']['param'];
+	$config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
+	$config = $config->toArray();
+	return $config['params']['param'];
     }
 
     /**
@@ -116,8 +118,9 @@ class Widget_Login_Login extends iPMS_Widget {
      */
     protected function _getForm()
     {
-        $form = new Form_Login();
-        $form->setElementsBelongTo('login');
-        return $form;
+	$form = new Form_Login();
+	$form->setElementsBelongTo('login');
+	return $form;
     }
+
 }

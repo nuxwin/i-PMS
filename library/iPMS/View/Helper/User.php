@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -34,81 +35,85 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class iPMS_View_Helper_User extends Zend_View_Helper_Abstract {
+class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
+{
 
-	/**
-	 * Identity
-	 *
-	 * @var object|null
-	 */
-	protected $_auth = null;
+    /**
+     * Identity
+     *
+     * @var object|null
+     */
+    protected $_auth = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->_auth = Zend_Auth::getInstance()->getIdentity();
-		if(null == $this->_auth) {
-			$this->_auth = 'guest';
-		}
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+	$this->_auth = Zend_Auth::getInstance()->getIdentity();
+	if (null == $this->_auth) {
+	    $this->_auth = 'guest';
+	}
+    }
+
+    /**
+     * Return user helper
+     *
+     * @return iPMS_View_Helper_UserIdentity
+     */
+    public function User()
+    {
+	return $this;
+    }
+
+    /**
+     * Whether the user is guest
+     *
+     * @return bool
+     */
+    public function isGuest()
+    {
+	return ($this->_auth == 'guest');
+    }
+
+    /**
+     * Whether the user is logged
+     *
+     * @return bool
+     */
+    public function isLogged()
+    {
+	return (!$this->isGuest());
+    }
+
+    /**
+     * Returns identity property
+     *
+     * @param  $name Identity property name
+     * @return string|null identity property or null
+     */
+    public function __get($name)
+    {
+	if (is_object($this->_auth) && isset($this->_auth->{$name})) {
+	    return $this->_auth->$name;
+	}
+	return null;
+    }
+
+    /**
+     * String representation
+     *
+     * @return string User Username
+     */
+    public function __toString()
+    {
+	if (is_object($this->_auth)) {
+	    return$this->_auth->username;
 	}
 
-	/**
-	 * Return user helper
-	 *
-	 * @return iPMS_View_Helper_UserIdentity
-	 */
-	public function User()
-	{
-		return $this;
-	}
+	return 'guest';
+    }
 
-	/**
-	 * Whether the user is guest
-	 *
-	 * @return bool
-	 */
-	public function isGuest()
-	{
-		return ($this->_auth == 'guest');
-	}
-
-	/**
-	 * Whether the user is logged
-	 *
-	 * @return bool
-	 */
-	public function isLogged()
-	{
-		return (!$this->isGuest());
-	}
-
-	/**
-	 * Returns identity property
-	 *
-	 * @param  $name Identity property name
-	 * @return string|null identity property or null
-	 */
-	public function __get($name) {
-		if(is_object($this->_auth) && isset($this->_auth->{$name})) {
-			return $this->_auth->$name;
-		}
-		return null;
-	}
-
-	/**
-	 * String representation
-	 *
-	 * @return string User Username
-	 */
-	public function __toString() {
-		if(is_object($this->_auth)) {
-			return$this->_auth->username;
-		}
-
-		return 'guest';
-	}
 }

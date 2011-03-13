@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -36,62 +37,65 @@
  */
 class Model_Acl extends Zend_Acl
 {
-	/**
-	 * Singleton instance
-	 *
-	 * @var Model_Acl
-	 */
-	protected static $_instance = null;
 
-	/**
-	 * Singleton pattern implementation makes "new" unavailable
-	 *
-	 * @return void
-	 */
+    /**
+     * Singleton instance
+     *
+     * @var Model_Acl
+     */
+    protected static $_instance = null;
+
+    /**
+     * Singleton pattern implementation makes "new" unavailable
+     *
+     * @return void
+     */
     protected function __construct()
     {
-	    // defines three base roles - "guest", "member", and "admin" - from which other roles may inherit.
-		$this->addRole(new Zend_Acl_Role('guest'))
-			->addRole(new Zend_Acl_Role('subscriber'), 'guest')
-			->addRole(new Zend_Acl_Role('admin'), 'subscriber');
+	// defines three base roles - "guest", "member", and "admin" - from which other roles may inherit.
+	$this->addRole(new Zend_Acl_Role('guest'))
+		->addRole(new Zend_Acl_Role('subscriber'), 'guest')
+		->addRole(new Zend_Acl_Role('admin'), 'subscriber');
 
-	    $this->add(new Zend_Acl_Resource('posts'));
-		$this->add(new Zend_Acl_Resource('comments'), 'posts');
+	$this->add(new Zend_Acl_Resource('posts'));
+	$this->add(new Zend_Acl_Resource('comments'), 'posts');
 
-		// view permissions for guest and member
+	// view permissions for guest and member
 
-		$this->allow('guest', 'posts', 'view');
-		$this->allow('guest', 'comments', 'index');
-		$this->allow('guest', 'comments', 'add');
-		$this->allow('subscriber', 'comments', 'add');
-		//$this->allow('subscriber', 'comments', 'edit', new Model_Comments_Acl_Assert(););
-
-		// All permissions for admin
-	    $this->allow('admin');
+	$this->allow('guest', 'posts', 'view');
+	$this->allow('guest', 'comments', 'index');
+	$this->allow('guest', 'comments', 'add');
+	$this->allow('subscriber', 'comments', 'add');
+	//$this->allow('subscriber', 'comments', 'edit', new Model_Comments_Acl_Assert(););
+	// All permissions for admin
+	$this->allow('admin');
     }
 
-	/**
-	 * Singleton pattern implementation makes "clone" unavailable
-	 *
-	 * @return void
-	 */
-	private function __clone()
-	{}
+    /**
+     * Singleton pattern implementation makes "clone" unavailable
+     *
+     * @return void
+     */
+    private function __clone()
+    {
 
-	/**
-	 * Returns an instance of Model_Acl
-	 *
-	 * Singleton pattern implementation
-	 * 
-	 * @static
-	 * @return Model_Acl
-	 */
-	public static function getInstance()
-	{
-		if(null === self::$_instance) {
-			self::$_instance = new self();
-		}
+    }
 
-		return self::$_instance;
+    /**
+     * Returns an instance of Model_Acl
+     *
+     * Singleton pattern implementation
+     *
+     * @static
+     * @return Model_Acl
+     */
+    public static function getInstance()
+    {
+	if (null === self::$_instance) {
+	    self::$_instance = new self();
 	}
+
+	return self::$_instance;
+    }
+
 }

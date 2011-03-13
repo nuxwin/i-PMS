@@ -15,4 +15,5 @@ require_once 'iPMS/Exception.php';
  */
 class iPMS_Widget_Exception extends iPMS_Exception
 {
+
 }

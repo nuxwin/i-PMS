@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -25,7 +26,6 @@
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
 /**
  * @see iPMS_Exception
  */
@@ -39,30 +39,32 @@ require_once 'iPMS/Exception.php';
  */
 class iPMS_View_Exception extends iPMS_Exception
 {
-	/**
-	 * @var Zend_View_Abstract
-	 */
-	protected $view = null;
 
-	/**
-	 * Set the view
-	 *
-	 * @param Zend_View_Interface $view
-	 * @return iPMS_View_Exception
-	 */
-	public function setView(Zend_View_Interface $view = null)
-	{
-		$this->view = $view;
-		return $this;
-	}
+    /**
+     * @var Zend_View_Abstract
+     */
+    protected $view = null;
 
-	/**
-	 * Get view
-	 *
-	 * @return Zend_View_Abstract
-	 */
-	public function getView()
-	{
-		return $this->view;
-	}
+    /**
+     * Set the view
+     *
+     * @param Zend_View_Interface $view
+     * @return iPMS_View_Exception
+     */
+    public function setView(Zend_View_Interface $view = null)
+    {
+	$this->view = $view;
+	return $this;
+    }
+
+    /**
+     * Get view
+     *
+     * @return Zend_View_Abstract
+     */
+    public function getView()
+    {
+	return $this->view;
+    }
+
 }

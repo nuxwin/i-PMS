@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -35,65 +36,69 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RecentComments_RecentComments extends iPMS_Widget {
+class Widget_RecentComments_RecentComments extends iPMS_Widget
+{
 
-	/**
-	 * Widget initialization
-	 *
-	 * @return void
-	 */
-	public function init() {}
+    /**
+     * Widget initialization
+     *
+     * @return void
+     */
+    public function init()
+    {
+
+    }
+
+    /**
+     * Generate code for rendering process
+     *
+     * @return void
+     */
+    public function widget()
+    {
+	$commentsModel = new Model_DbTable_Comments();
+	$comments = $commentsModel->fetchAll(null, 'id', 5)->toArray();
 
 
-	/**
-	 * Generate code for rendering process
-	 * 
-	 * @return void
-	 */
-	public function widget() {
-		$commentsModel = new Model_DbTable_Comments();
-		$comments = $commentsModel->fetchAll(null, 'id', 5)->toArray();
-
-
-		if(count($comments)) {
-			$this->_comments = $comments;
-			$this->_prepareView();
-		}
+	if (count($comments)) {
+	    $this->_comments = $comments;
+	    $this->_prepareView();
 	}
+    }
+
+    protected $_comments = array();
+    /**
+     * Tell whether or not partial must be used for widget rendering
+     * @var bool
+     */
+    protected $_partial = true;
 
 
-	protected $_comments = array();
+    public function getComments()
+    {
+	return $this->_comments;
+    }
 
-	/**
-	 * Tell whether or not partial must be used for widget rendering
-	 * @var bool
-	 */
-	protected $_partial = true;
+    /**
+     * Widget dashboard settings form
+     *
+     * This methods must contains the widget settings form that will be shown on the Widgets dashboard screen
+     *
+     * @abstract
+     * @param  $instance
+     * @return void
+     */
+    public function dashBoardSettingsForm($instance)
+    {
+	$form = new Zend_Form();
 
-
-	public function getComments() {
-		return $this->_comments;
-	}
-
-	/**
-	 * Widget dashboard settings form
-	 *
-	 * This methods must contains the widget settings form that will be shown on the Widgets dashboard screen
-	 *
-	 * @abstract
-	 * @param  $instance
-	 * @return void
-	 */
-	public function dashBoardSettingsForm($instance)
-	{
-		$form = new Zend_Form();
-
-		$form->addElement(new Zend_Form_Element_Text(array(
-			'name'		=> $this->getName(),
-			'value'		=> 10,
-			'label'		=> $this->getTitle()
+	$form->addElement(new Zend_Form_Element_Text(array(
+		    'name' => $this->getName(),
+		    'value' => 10,
+		    'label' => $this->getTitle()
 		)));
 
-		return $form;
-	}
+	return $form;
+    }
+
 }

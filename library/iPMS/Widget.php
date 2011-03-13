@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -25,7 +26,6 @@
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
 require_once 'iPMS/Widget/Abstract.php';
 
 /**
@@ -36,117 +36,119 @@ require_once 'iPMS/Widget/Abstract.php';
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
  * @version     1.0.0
  */
-abstract class iPMS_Widget extends iPMS_Widget_Abstract {
+abstract class iPMS_Widget extends iPMS_Widget_Abstract
+{
+
+    /**
+     * Make widget content available for the view
+     *
+     * This method contains the code that will be rendered to the sidebar when the widget is added.
+     *
+     * @abstract
+     * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
+     * @param array $instance The settings for the particular instance of the widget
+     * @return void
+     */
+    //abstract function widget($args, $instance);
+    abstract function widget();
+
+    /**
+     * Widget initialization Initialization
+     *
+     * The following method contain the code that is run every time the widget is loaded - either when activated, used
+     * on a page, updated and so on.
+     *
+     * @abstract
+     * @return void
+     */
+    abstract public function init();
 
 
-	/**
-	 * Make widget content available for the view
-	 *
-	 * This method contains the code that will be rendered to the sidebar when the widget is added.
-	 *
-	 * @abstract
-	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
-	 * @param array $instance The settings for the particular instance of the widget
-	 * @return void
-	 */
-	//abstract function widget($args, $instance);
-	abstract function widget();
 
-	/**
-	 * Widget initialization Initialization
-	 *
-	 * The following method contain the code that is run every time the widget is loaded - either when activated, used
-	 * on a page, updated and so on.
-	 *
-	 * @abstract
-	 * @return void
-	 */
-	abstract public function init();
+    //abstract public function run();
 
+    /**
+     * Widget dashboard settings form
+     *
+     * This methods must contains the widget settings form that will be shown on the Widgets dashboard screen
+     *
+     * @abstract
+     * @param  $instance
+     * @return void
+     */
+    abstract function dashBoardSettingsForm($instance);
 
+    /**
+     * Update widget settings
+     *
+     * This methods is called when the user click on the "save" button from the setting page on the widget dashboard
+     * screen. This automatically handle saving to the database options. This method also allow to read in and validate
+     * user input data.
+     *
+     * @abstract
+     * @param  $oldInstance
+     * @param  $newInstance
+     * @return void
+     */
+    //abstract function update($oldInstance, $newInstance);
 
-	//abstract public function run();
+    /**
+     * Set widget options
+     *
+     * @param  $options
+     * @return void
+     */
+    protected function setWidgetOptions($options)
+    {
+	$this->setOptions(array('widgetOpts' => $options));
+    }
 
-	/**
-	 * Widget dashboard settings form
-	 *
-	 * This methods must contains the widget settings form that will be shown on the Widgets dashboard screen
-	 *
-	 * @abstract
-	 * @param  $instance
-	 * @return void
-	 */
-	abstract function dashBoardSettingsForm($instance);
+    /**
+     * Set control options
+     *
+     * @param  $options
+     * @return void
+     */
+    protected function setControlOptions($options)
+    {
+	$this->setOptions(array('controlsOpts' => $options));
+    }
 
-	/**
-	 * Update widget settings
-	 *
-	 * This methods is called when the user click on the "save" button from the setting page on the widget dashboard
-	 * screen. This automatically handle saving to the database options. This method also allow to read in and validate
-	 * user input data.
-	 *
-	 * @abstract
-	 * @param  $oldInstance
-	 * @param  $newInstance
-	 * @return void
-	 */
-	//abstract function update($oldInstance, $newInstance);
+    /**
+     * Convenience method to build Dashboard settings form
+     * 
+     * @param  $params
+     * @return string|Zend_Form
+     * @Todo Making this as a view helper
+     */
+    public function buildDashboardSettingsForm($params)
+    {
 
-	/**
-	 * Set widget options
-	 *
-	 * @param  $options
-	 * @return void
-	 */
-	protected function setWidgetOptions($options)
-	{
-		$this->setOptions(array('widgetOpts' => $options));
+	$form = '';
+
+	if (count($params)) {
+	    $form = new Zend_Form(array(
+			'name' => $this->getName(),
+			'id' => 'widget-' . $this->getId(),
+			'action' => '/dashboard/widget/' . $this
+		    ));
+
+	    foreach ($params as $param) {
+		$element = 'Zend_Form_Element_' . $param['type'];
+		$form->addElement(new $element(array('label' => $param['label'],
+			    'name' => $param['name'],
+			    'value' => $param['value'])
+		));
+	    }
+
+	    $form->addElement(new Zend_Form_Element_Submit(
+			    array('name' => 'submit',
+				'label' => 'save'
+			    )
+	    ));
 	}
 
-	/**
-	 * Set control options
-	 *
-	 * @param  $options
-	 * @return void
-	 */
-	protected function setControlOptions($options)
-	{
-		$this->setOptions(array('controlsOpts' => $options));
-	}
+	return $form;
+    }
 
-	/**
-	 * Convenience method to build Dashboard settings form
-	 * 
-	 * @param  $params
-	 * @return string|Zend_Form
-	 * @Todo Making this as a view helper
-	 */
-	public function buildDashboardSettingsForm($params) {
-
-		$form = '';
-
-		if(count($params)) {
-			$form = new Zend_Form(array(
-				'name' => $this->getName(),
-				'id' => 'widget-' . $this->getId(),
-				'action' => '/dashboard/widget/' . $this
-			));
-
-			foreach($params as $param) {
-				$element = 'Zend_Form_Element_' . $param['type'];
-				$form->addElement(new $element(array('label' => $param['label'],
-					'name' => $param['name'],
-					'value' => $param['value'])
-				));
-			}
-
-			$form->addElement(new Zend_Form_Element_Submit(
-				array('name' => 'submit',
-					'label' => 'save'
-				)
-			));
-		}
-
-		return $form;
-	}
 }
