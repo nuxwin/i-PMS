@@ -48,26 +48,7 @@ class Widget_Login_Login extends iPMS_Widget {
 	 *
 	 * @return void
 	 */
-	public function init() {
-
-		// Define widget options
-		$widgetOptions = array(
-			'classname' => get_class($this),
-			'description' => 'Display a form to login'
-		);
-
-		$this->setWidgetOptions($widgetOptions);
-
-		// define control options
-		$controlOptions = array(
-			'form' => array(
-				'checkbox' => 'Remember me ?',
-				'description' => 'Tell whether or not a "Remember me" checkbox should be displayed along the login form'
-			)
-		);
-
-		$this->setControlOptions($controlOptions);
-	}
+	public function init() {}
 
 	/**
 	 * Make widget content available for the view (Here the login form)  - Implements {@link iPMS_Widget::widget()}
@@ -76,37 +57,29 @@ class Widget_Login_Login extends iPMS_Widget {
 	 */
 	public function widget()
 	{
-		$html = '';
 		$auh = Zend_Auth::getInstance();
 
-		// Si on est pas authentifié
-		if (!$auh->hasIdentity()) {
-			$form = new Form_Login(); // We reuse the login form already available
-			$form->setElementsBelongTo('login');
+        if(!$auh->hasIdentity()) {
+            $request = $this->getRequest();
+            if($request->isPost() && is_array($request->getPost('login'))) {
+                $form = $this->_getForm();
+                if($form->isValid($request->getPost())) {
+                    // Perform authentication against database
+				    $userModel = new Model_DbTable_Users();
+				    $userModel->setIdentity($form->getValue('username'))
+					    ->setCredential($form->getValue('password'));
+				    $authResult = $auh->authenticate($userModel);
+                    if($authResult->isValid()) {
+                        Zend_Session::regenerateId(); // Protection against session's fixation attacks
+                        return '';
+                    }
+                }
+            }
 
-			$request = $this->getRequest();
+            return $this->_getForm()->render();
+        }
 
-			if ($request->isPost()  && $form->isValid($request->getPost())) {
-				// Perform authentication against database
-				$userModel = new Model_DbTable_Users();
-				$userModel->setIdentity($form->getValue('username'))
-					->setCredential($form->getValue('password'));
-
-				$authResult = $auh->authenticate($userModel);
-				if($authResult->isValid()) {
-					Zend_Session::regenerateId(); // Protection against session's fixation attacks
-					//$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
-					//$redirector->gotoUrl($request->getRequestUri());
-				} else {
-					$html = $form->render();
-				}
-
-			} else {
-				$html = $form->render();
-			}
-		}
-
-		return $html;
+        return '';
 	}
 
 	/**
@@ -119,7 +92,6 @@ class Widget_Login_Login extends iPMS_Widget {
 	 * @return void
 	 */
 	public function dashBoardSettingsForm($instance) {
-
 		return $this->buildDashboardSettingsForm($this->getParams())->render();
 	}
 
@@ -129,10 +101,18 @@ class Widget_Login_Login extends iPMS_Widget {
 	 */
 	public function getParams()
 	{
-
 		$config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
 		$config = $config->toArray();
 
 		return $config['params']['param'];
 	}
+
+    /**
+     * Returns HTML login form
+     * @return Zend_Form
+     */
+    protected function _getForm() {
+        $form = new Form_Login();
+        return $form->setElementsBelongTo('login');
+    }
 }
