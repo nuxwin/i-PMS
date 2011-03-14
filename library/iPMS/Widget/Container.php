@@ -50,12 +50,12 @@ class iPMS_Widget_Container extends iPMS_Widget_Container_Abstract
      */
     public function __construct($widgets = null)
     {
-	if (is_array($widgets) || $widgets instanceof Zend_Config) {
-	    $this->addWidgets($widgets);
-	} elseif (null !== $widgets) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception("Invalid argument: $widgets must be an array or null");
-	}
+        if (is_array($widgets) || $widgets instanceof Zend_Config) {
+            $this->addWidgets($widgets);
+        } elseif (null !== $widgets) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception("Invalid argument: $widgets must be an array or null");
+        }
     }
 
 }

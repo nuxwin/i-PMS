@@ -118,11 +118,11 @@ abstract class iPMS_Widget_Abstract
      */
     public function __construct($options = null)
     {
-	if (is_array($options)) {
-	    $this->setOptions($options);
-	} elseif ($options instanceof Zend_Config) {
-	    $this->setConfig($options);
-	}
+        if (is_array($options)) {
+            $this->setOptions($options);
+        } elseif ($options instanceof Zend_Config) {
+            $this->setConfig($options);
+        }
     }
 
     /**
@@ -134,7 +134,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function setConfig(Zend_Config $config)
     {
-	return $this->setOptions($config->toArray());
+        return $this->setOptions($config->toArray());
     }
 
     /**
@@ -150,11 +150,11 @@ abstract class iPMS_Widget_Abstract
      */
     public function setOptions(array $options)
     {
-	foreach ($options as $key => $value) {
-	    $this->set($key, $value);
-	}
+        foreach ($options as $key => $value) {
+            $this->set($key, $value);
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -166,13 +166,13 @@ abstract class iPMS_Widget_Abstract
      */
     public function setName($name)
     {
-	if (null !== $name && !is_string($name)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $name must be a string or null');
-	}
+        if (null !== $name && !is_string($name)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $name must be a string or null');
+        }
 
-	$this->_name = $name;
-	return $this;
+        $this->_name = $name;
+        return $this;
     }
 
     /**
@@ -182,7 +182,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getName()
     {
-	return $this->_name;
+        return $this->_name;
     }
 
     /**
@@ -194,14 +194,14 @@ abstract class iPMS_Widget_Abstract
      */
     public function setId($id = null)
     {
-	if (null !== $id && !is_string($id) && !is_numeric($id)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $id must be a string, number or null');
-	}
+        if (null !== $id && !is_string($id) && !is_numeric($id)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $id must be a string, number or null');
+        }
 
-	$this->_id = null === $id ? $id : (string) $id;
+        $this->_id = null === $id ? $id : (string)$id;
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getId()
     {
-	return $this->_id;
+        return $this->_id;
     }
 
     /**
@@ -223,13 +223,13 @@ abstract class iPMS_Widget_Abstract
      */
     public function setClass($class = null)
     {
-	if (null !== $class && !is_string($class)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $class must be a string or null');
-	}
+        if (null !== $class && !is_string($class)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $class must be a string or null');
+        }
 
-	$this->_class = $class;
-	return $this;
+        $this->_class = $class;
+        return $this;
     }
 
     /**
@@ -239,7 +239,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getClass()
     {
-	return $this->_class;
+        return $this->_class;
     }
 
     /**
@@ -251,13 +251,13 @@ abstract class iPMS_Widget_Abstract
      */
     public function setTitle($title = null)
     {
-	if (null !== $title && !is_string($title)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $title must be a non-empty string');
-	}
+        if (null !== $title && !is_string($title)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $title must be a non-empty string');
+        }
 
-	$this->_title = $title;
-	return $this;
+        $this->_title = $title;
+        return $this;
     }
 
     /**
@@ -267,7 +267,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getTitle()
     {
-	return $this->_title;
+        return $this->_title;
     }
 
     /**
@@ -279,13 +279,13 @@ abstract class iPMS_Widget_Abstract
      */
     public function setContent($content)
     {
-	if (null !== $content && !is_string($content)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $content must be a string or null');
-	}
+        if (null !== $content && !is_string($content)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $content must be a string or null');
+        }
 
-	$this->_content = $content;
-	return $this;
+        $this->_content = $content;
+        return $this;
     }
 
     /**
@@ -295,7 +295,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getContent()
     {
-	return $this->_content;
+        return $this->_content;
     }
 
     /**
@@ -308,13 +308,13 @@ abstract class iPMS_Widget_Abstract
      */
     public function setTargetArea($targetArea)
     {
-	if (!is_string($targetArea)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $target must be a string');
-	}
+        if (!is_string($targetArea)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $target must be a string');
+        }
 
-	$this->_targetArea = $targetArea;
-	return $this;
+        $this->_targetArea = $targetArea;
+        return $this;
     }
 
     /**
@@ -324,7 +324,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getTargetArea()
     {
-	return $this->_targetArea;
+        return $this->_targetArea;
     }
 
     /**
@@ -336,28 +336,28 @@ abstract class iPMS_Widget_Abstract
      */
     public function setOrder($order = null)
     {
-	if (is_string($order)) {
-	    $temp = (int) $order;
-	    if ($temp < 0 || $temp > 0 || $order == '0') {
-		$order = $temp;
-	    }
-	}
+        if (is_string($order)) {
+            $temp = (int)$order;
+            if ($temp < 0 || $temp > 0 || $order == '0') {
+                $order = $temp;
+            }
+        }
 
-	if (null !== $order && !is_int($order)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception(
-		    'Invalid argument: $order must be an integer or null, or a string that casts to an integer'
-	    );
-	}
+        if (null !== $order && !is_int($order)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception(
+                'Invalid argument: $order must be an integer or null, or a string that casts to an integer'
+            );
+        }
 
-	$this->_order = $order;
+        $this->_order = $order;
 
-	// notify parent container that order was updated
-	if (isset($this->_parent)) {
-	    $this->_parent->notifyOrderUpdated();
-	}
+        // notify parent container that order was updated
+        if (isset($this->_parent)) {
+            $this->_parent->notifyOrderUpdated();
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -367,7 +367,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getOrder()
     {
-	return $this->_order;
+        return $this->_order;
     }
 
     /**
@@ -380,17 +380,17 @@ abstract class iPMS_Widget_Abstract
      */
     public function setResource($resource = null)
     {
-	if (null === $resource || is_string($resource) ||
-		$resource instanceof Zend_Acl_Resource_Interface) {
-	    $this->_resource = $resource;
-	} else {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception(
-		    'Invalid argument: $resource must be null, a string, or an instance of Zend_Acl_Resource_Interface'
-	    );
-	}
+        if (null === $resource || is_string($resource) ||
+            $resource instanceof Zend_Acl_Resource_Interface) {
+            $this->_resource = $resource;
+        } else {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception(
+                'Invalid argument: $resource must be null, a string, or an instance of Zend_Acl_Resource_Interface'
+            );
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -400,7 +400,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getResource()
     {
-	return $this->_resource;
+        return $this->_resource;
     }
 
     /**
@@ -412,8 +412,8 @@ abstract class iPMS_Widget_Abstract
      */
     public function setPrivilege($privilege = null)
     {
-	$this->_privilege = is_string($privilege) ? $privilege : null;
-	return $this;
+        $this->_privilege = is_string($privilege) ? $privilege : null;
+        return $this;
     }
 
     /**
@@ -423,7 +423,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getPrivilege()
     {
-	return $this->_privilege;
+        return $this->_privilege;
     }
 
     /**
@@ -434,8 +434,8 @@ abstract class iPMS_Widget_Abstract
      */
     public function setIsActive($isActive = true)
     {
-	$this->_isActive = (bool) $isActive;
-	return $this;
+        $this->_isActive = (bool)$isActive;
+        return $this;
     }
 
     /**
@@ -445,7 +445,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function isActive()
     {
-	return $this->_isActive;
+        return $this->_isActive;
     }
 
     /**
@@ -455,7 +455,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getActive()
     {
-	return $this->isActive();
+        return $this->isActive();
     }
 
     /**
@@ -468,35 +468,35 @@ abstract class iPMS_Widget_Abstract
     public function setParent(iPMS_Widget_Container_Abstract $parent = null)
     {
 
-	/*
-	  if ($parent === $this) {
-	  require_once 'iPMS/Widget/Exception.php';
-	  throw new iPMS_Widget_Exception('A widget cannot have itself as a parent');
-	  }
-	 */
+        /*
+        if ($parent === $this) {
+        require_once 'iPMS/Widget/Exception.php';
+        throw new iPMS_Widget_Exception('A widget cannot have itself as a parent');
+        }
+       */
 
-	// return if the given parent already is parent
-	if ($parent === $this->_parent) {
-	    return $this;
-	}
+        // return if the given parent already is parent
+        if ($parent === $this->_parent) {
+            return $this;
+        }
 
-	// remove from old parent
-	if (null !== $this->_parent) {
-	    $this->_parent->removeWidget($this);
-	}
+        // remove from old parent
+        if (null !== $this->_parent) {
+            $this->_parent->removeWidget($this);
+        }
 
-	// set new parent
-	$this->_parent = $parent;
+        // set new parent
+        $this->_parent = $parent;
 
-	// add to parent if widget and not already a child
-	// Todo make sure for that
-	/*
-	  if (null !== $this->_parent && !$this->_parent->hasWidget($this, false)) {
-	  $this->_parent->addWidget($this);
-	  }
-	 */
+        // add to parent if widget and not already a child
+        // Todo make sure for that
+        /*
+        if (null !== $this->_parent && !$this->_parent->hasWidget($this, false)) {
+        $this->_parent->addWidget($this);
+        }
+       */
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -506,7 +506,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getParent()
     {
-	return $this->_parent;
+        return $this->_parent;
     }
 
     /**
@@ -522,20 +522,20 @@ abstract class iPMS_Widget_Abstract
      */
     public function set($property, $value)
     {
-	if (!is_string($property) || empty($property)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $property must be a non-empty string');
-	}
+        if (!is_string($property) || empty($property)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $property must be a non-empty string');
+        }
 
-	$method = 'set' . self::_normalizePropertyName($property);
+        $method = 'set' . self::_normalizePropertyName($property);
 
-	if ($method != 'setOptions' && $method != 'setConfig' && method_exists($this, $method)) {
-	    $this->$method($value);
-	} else {
-	    $this->_properties[$property] = $value;
-	}
+        if ($method != 'setOptions' && $method != 'setConfig' && method_exists($this, $method)) {
+            $this->$method($value);
+        } else {
+            $this->_properties[$property] = $value;
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -550,20 +550,20 @@ abstract class iPMS_Widget_Abstract
      */
     public function get($property)
     {
-	if (!is_string($property) || empty($property)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $property must be a non-empty string');
-	}
+        if (!is_string($property) || empty($property)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $property must be a non-empty string');
+        }
 
-	$method = 'get' . self::_normalizePropertyName($property);
+        $method = 'get' . self::_normalizePropertyName($property);
 
-	if (method_exists($this, $method)) {
-	    return $this->$method();
-	} elseif (isset($this->_properties[$property])) {
-	    return $this->_properties[$property];
-	}
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        } elseif (isset($this->_properties[$property])) {
+            return $this->_properties[$property];
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -578,7 +578,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function __set($name, $value)
     {
-	$this->set($name, $value);
+        $this->set($name, $value);
     }
 
     /**
@@ -592,7 +592,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function __get($name)
     {
-	return $this->get($name);
+        return $this->get($name);
     }
 
     /**
@@ -608,12 +608,12 @@ abstract class iPMS_Widget_Abstract
      */
     public function __isset($name)
     {
-	$method = 'get' . self::_normalizePropertyName($name);
-	if (method_exists($this, $method)) {
-	    return true;
-	}
+        $method = 'get' . self::_normalizePropertyName($name);
+        if (method_exists($this, $method)) {
+            return true;
+        }
 
-	return isset($this->_properties[$name]);
+        return isset($this->_properties[$name]);
     }
 
     /**
@@ -627,15 +627,15 @@ abstract class iPMS_Widget_Abstract
      */
     public function __unset($name)
     {
-	$method = 'set' . self::_normalizePropertyName($name);
-	if (method_exists($this, $method)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception(sprintf('Unsetting native property "%s" is not allowed', $name));
-	}
+        $method = 'set' . self::_normalizePropertyName($name);
+        if (method_exists($this, $method)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception(sprintf('Unsetting native property "%s" is not allowed', $name));
+        }
 
-	if (isset($this->_properties[$name])) {
-	    unset($this->_properties[$name]);
-	}
+        if (isset($this->_properties[$name])) {
+            unset($this->_properties[$name]);
+        }
     }
 
     /**
@@ -647,8 +647,8 @@ abstract class iPMS_Widget_Abstract
      */
     public function __toString()
     {
-	//return $this->_label;
-	return $this->_name;
+        //return $this->_label;
+        return $this->_name;
     }
 
     /**
@@ -658,7 +658,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getCustomProperties()
     {
-	return $this->_properties;
+        return $this->_properties;
     }
 
     /**
@@ -668,7 +668,7 @@ abstract class iPMS_Widget_Abstract
      */
     public final function hashCode()
     {
-	return spl_object_hash($this);
+        return spl_object_hash($this);
     }
 
     /**
@@ -678,19 +678,19 @@ abstract class iPMS_Widget_Abstract
      */
     public function toArray()
     {
-	return array_merge(
-		$this->getCustomProperties(),
-		array(
-		    'name' => $this->getName(),
-		    'id' => $this->getId(),
-		    'class' => $this->getClass(),
-		    'title' => $this->getTitle(),
-		    'targetArea' => $this->getTargetArea(),
-		    'order' => $this->getOrder(),
-		    'resource' => $this->getResource(),
-		    'privilege' => $this->getPrivilege(),
-		    'isActive' => $this->isActive(),
-	));
+        return array_merge(
+            $this->getCustomProperties(),
+            array(
+                 'name' => $this->getName(),
+                 'id' => $this->getId(),
+                 'class' => $this->getClass(),
+                 'title' => $this->getTitle(),
+                 'targetArea' => $this->getTargetArea(),
+                 'order' => $this->getOrder(),
+                 'resource' => $this->getResource(),
+                 'privilege' => $this->getPrivilege(),
+                 'isActive' => $this->isActive(),
+            ));
     }
 
     /**
@@ -701,7 +701,7 @@ abstract class iPMS_Widget_Abstract
      */
     protected static function _normalizePropertyName($property)
     {
-	return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
     }
 
     /**
@@ -719,13 +719,13 @@ abstract class iPMS_Widget_Abstract
     protected function _prepareView()
     {
 
-	//$view = $this->getActionController()->view;
-	//$view->Widget()->setContainer()
-	//$this->view->Widget()->getContainer()->addWidget($this);
-	// Add widget partial path if needed
-	//if($this->hasPartial()) {
-	//$this->view->addScriptPath(APPLICATION_PATH . '/widgets/' . $this . '/partial');
-	//}
+        //$view = $this->getActionController()->view;
+        //$view->Widget()->setContainer()
+        //$this->view->Widget()->getContainer()->addWidget($this);
+        // Add widget partial path if needed
+        //if($this->hasPartial()) {
+        //$this->view->addScriptPath(APPLICATION_PATH . '/widgets/' . $this . '/partial');
+        //}
     }
 
     /**
@@ -733,7 +733,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function hasPartial()
     {
-	return (bool) $this->_partial;
+        return (bool)$this->_partial;
     }
 
     // Proxy
@@ -745,7 +745,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getActionController()
     {
-	return $this->getParent()->getActionController();
+        return $this->getParent()->getActionController();
     }
 
     /**
@@ -755,7 +755,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getFrontController()
     {
-	return Zend_Controller_Front::getInstance();
+        return Zend_Controller_Front::getInstance();
     }
 
     /**
@@ -765,7 +765,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getRequest()
     {
-	return $this->getParent()->getRequest();
+        return $this->getParent()->getRequest();
     }
 
     /**
@@ -775,7 +775,7 @@ abstract class iPMS_Widget_Abstract
      */
     public function getResponse()
     {
-	return $this->getParent()->getResponse();
+        return $this->getParent()->getResponse();
     }
 
 }

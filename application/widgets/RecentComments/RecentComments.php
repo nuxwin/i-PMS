@@ -56,14 +56,14 @@ class Widget_RecentComments_RecentComments extends iPMS_Widget
      */
     public function widget()
     {
-	$commentsModel = new Model_DbTable_Comments();
-	$comments = $commentsModel->fetchAll(null, 'id', 5)->toArray();
+        $commentsModel = new Model_DbTable_Comments();
+        $comments = $commentsModel->fetchAll(null, 'id', 5)->toArray();
 
 
-	if (count($comments)) {
-	    $this->_comments = $comments;
-	    $this->_prepareView();
-	}
+        if (count($comments)) {
+            $this->_comments = $comments;
+            $this->_prepareView();
+        }
     }
 
     protected $_comments = array();
@@ -76,7 +76,7 @@ class Widget_RecentComments_RecentComments extends iPMS_Widget
 
     public function getComments()
     {
-	return $this->_comments;
+        return $this->_comments;
     }
 
     /**
@@ -90,15 +90,15 @@ class Widget_RecentComments_RecentComments extends iPMS_Widget
      */
     public function dashBoardSettingsForm($instance)
     {
-	$form = new Zend_Form();
+        $form = new Zend_Form();
 
-	$form->addElement(new Zend_Form_Element_Text(array(
-		    'name' => $this->getName(),
-		    'value' => 10,
-		    'label' => $this->getTitle()
-		)));
+        $form->addElement(new Zend_Form_Element_Text(array(
+                                                          'name' => $this->getName(),
+                                                          'value' => 10,
+                                                          'label' => $this->getTitle()
+                                                     )));
 
-	return $form;
+        return $form;
     }
 
 }

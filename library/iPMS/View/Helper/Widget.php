@@ -89,11 +89,11 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function widget(iPMS_Widget_Container_Abstract $container = null)
     {
-	if (null !== $container) {
-	    $this->setContainer($container);
-	}
+        if (null !== $container) {
+            $this->setContainer($container);
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -120,13 +120,13 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function __call($method, array $arguments = array())
     {
-	// check if call should proxy to another helper
-	if ($helper = $this->findHelper($method, false)) {
-	    return call_user_func_array(array($helper, $method), $arguments);
-	}
+        // check if call should proxy to another helper
+        if ($helper = $this->findHelper($method, false)) {
+            return call_user_func_array(array($helper, $method), $arguments);
+        }
 
-	// default behaviour: proxy call to container
-	return parent::__call($method, $arguments);
+        // default behaviour: proxy call to container
+        return parent::__call($method, $arguments);
     }
 
     /**
@@ -142,41 +142,41 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function findHelper($proxy, $strict = true)
     {
-	if (isset($this->_helpers[$proxy])) {
-	    return $this->_helpers[$proxy];
-	}
+        if (isset($this->_helpers[$proxy])) {
+            return $this->_helpers[$proxy];
+        }
 
-	if (!$this->view->getPluginLoader('helper')->getPaths(self::NS)) {
-	    $this->view->addHelperPath(str_replace('_', '/', self::NS), self::NS);
-	}
+        if (!$this->view->getPluginLoader('helper')->getPaths(self::NS)) {
+            $this->view->addHelperPath(str_replace('_', '/', self::NS), self::NS);
+        }
 
-	if ($strict) {
-	    $helper = $this->view->getHelper($proxy);
-	} else {
-	    try {
-		$helper = $this->view->getHelper($proxy);
-	    } catch (Zend_Loader_PluginLoader_Exception $e) {
-		return null;
-	    }
-	}
+        if ($strict) {
+            $helper = $this->view->getHelper($proxy);
+        } else {
+            try {
+                $helper = $this->view->getHelper($proxy);
+            } catch (Zend_Loader_PluginLoader_Exception $e) {
+                return null;
+            }
+        }
 
-	if (!$helper instanceof iPMS_View_Helper_Widget_Helper) {
-	    if ($strict) {
-		require_once 'iPMS/View/Exception.php';
-		$e = new Zend_View_Exception(sprintf(
-					'Proxy helper "%s" is not an instance of iPMS_View_Helper_Widget_Helper', get_class($helper)
-			));
-		$e->setView($this->view);
-		throw $e;
-	    }
+        if (!$helper instanceof iPMS_View_Helper_Widget_Helper) {
+            if ($strict) {
+                require_once 'iPMS/View/Exception.php';
+                $e = new Zend_View_Exception(sprintf(
+                    'Proxy helper "%s" is not an instance of iPMS_View_Helper_Widget_Helper', get_class($helper)
+                ));
+                $e->setView($this->view);
+                throw $e;
+            }
 
-	    return null;
-	}
+            return null;
+        }
 
-	$this->_inject($helper);
-	$this->_helpers[$proxy] = $helper;
+        $this->_inject($helper);
+        $this->_helpers[$proxy] = $helper;
 
-	return $helper;
+        return $helper;
     }
 
     /**
@@ -187,22 +187,22 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     protected function _inject(iPMS_View_Helper_Widget_Helper $helper)
     {
-	if ($this->getInjectContainer() && !$helper->hasContainer()) {
-	    $helper->setContainer($this->getContainer());
-	}
+        if ($this->getInjectContainer() && !$helper->hasContainer()) {
+            $helper->setContainer($this->getContainer());
+        }
 
-	if ($this->getInjectAcl()) {
-	    if (!$helper->hasAcl()) {
-		$helper->setAcl($this->getAcl());
-	    }
-	    if (!$helper->hasRole()) {
-		$helper->setRole($this->getRole());
-	    }
-	}
+        if ($this->getInjectAcl()) {
+            if (!$helper->hasAcl()) {
+                $helper->setAcl($this->getAcl());
+            }
+            if (!$helper->hasRole()) {
+                $helper->setRole($this->getRole());
+            }
+        }
 
-	if ($this->getInjectTranslator() && !$helper->hasTranslator()) {
-	    $helper->setTranslator($this->getTranslator());
-	}
+        if ($this->getInjectTranslator() && !$helper->hasTranslator()) {
+            $helper->setTranslator($this->getTranslator());
+        }
     }
 
     /**
@@ -213,8 +213,8 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setDefaultProxy($proxy)
     {
-	$this->_defaultProxy = (string) $proxy;
-	return $this;
+        $this->_defaultProxy = (string)$proxy;
+        return $this;
     }
 
     /**
@@ -224,7 +224,7 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getDefaultProxy()
     {
-	return $this->_defaultProxy;
+        return $this->_defaultProxy;
     }
 
     /**
@@ -235,8 +235,8 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setInjectContainer($injectContainer = true)
     {
-	$this->_injectContainer = (bool) $injectContainer;
-	return $this;
+        $this->_injectContainer = (bool)$injectContainer;
+        return $this;
     }
 
     /**
@@ -246,7 +246,7 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getInjectContainer()
     {
-	return $this->_injectContainer;
+        return $this->_injectContainer;
     }
 
     /**
@@ -257,8 +257,8 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setInjectAcl($injectAcl = true)
     {
-	$this->_injectAcl = (bool) $injectAcl;
-	return $this;
+        $this->_injectAcl = (bool)$injectAcl;
+        return $this;
     }
 
     /**
@@ -268,7 +268,7 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getInjectAcl()
     {
-	return $this->_injectAcl;
+        return $this->_injectAcl;
     }
 
     /**
@@ -279,8 +279,8 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setInjectTranslator($injectTranslator = true)
     {
-	$this->_injectTranslator = (bool) $injectTranslator;
-	return $this;
+        $this->_injectTranslator = (bool)$injectTranslator;
+        return $this;
     }
 
     /**
@@ -290,7 +290,7 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getInjectTranslator()
     {
-	return $this->_injectTranslator;
+        return $this->_injectTranslator;
     }
 
     /**
@@ -304,8 +304,8 @@ class iPMS_View_Helper_Widget extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function render(iPMS_Widget_Container_Abstract $container = null)
     {
-	$helper = $this->findHelper($this->getDefaultProxy());
-	return $helper->render($container);
+        $helper = $this->findHelper($this->getDefaultProxy());
+        return $helper->render($container);
     }
 
 }

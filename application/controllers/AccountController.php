@@ -49,23 +49,23 @@ class AccountController extends Zend_Controller_Action
 
     /**
      * Log-in request and validation
-     * 
+     *
      * @return void
      */
     public function loginAction()
     {
-	$form = new Form_Login();
+        $form = new Form_Login();
 
-	if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-	    $this->_identity = $form->getValue('username');
-	    $this->_credential = $form->getValue('password');
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+            $this->_identity = $form->getValue('username');
+            $this->_credential = $form->getValue('password');
 
-	    if ($this->_authenticateUser()) {
-		$this->_redirect($form->getValue('redirect'));
-	    }
-	}
+            if ($this->_authenticateUser()) {
+                $this->_redirect($form->getValue('redirect'));
+            }
+        }
 
-	$this->view->assign('loginFrm', $form);
+        $this->view->assign('loginFrm', $form);
     }
 
     /**
@@ -75,9 +75,9 @@ class AccountController extends Zend_Controller_Action
      */
     public function logoutAction()
     {
-	//$this->_flushIdentity();
-	Zend_Session::destroy();
-	$this->_redirect('/');
+        //$this->_flushIdentity();
+        Zend_Session::destroy();
+        $this->_redirect('/');
     }
 
     /**
@@ -87,7 +87,7 @@ class AccountController extends Zend_Controller_Action
      */
     public function lostPasswordAction()
     {
-	// Todo not yet implementted
+        // Todo not yet implementted
     }
 
     /**
@@ -97,7 +97,7 @@ class AccountController extends Zend_Controller_Action
      */
     public function registerAction()
     {
-	// Todo not yet implementted
+        // Todo not yet implementted
     }
 
     /**
@@ -105,7 +105,7 @@ class AccountController extends Zend_Controller_Action
      */
     public function activate()
     {
-	// Todo not yet implementted
+        // Todo not yet implementted
     }
 
     /**
@@ -115,7 +115,7 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _flushIdentity()
     {
-	$auth = Zend_Auth::getInstance()->clearIdentity();
+        $auth = Zend_Auth::getInstance()->clearIdentity();
     }
 
     /**
@@ -125,11 +125,11 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _authenticateUser()
     {
-	if ($this->isOpenIdAuthentication()) {
-	    return $this->_openIdAuthentication();
-	} else {
-	    return $this->_passwordAuthentication();
-	}
+        if ($this->isOpenIdAuthentication()) {
+            return $this->_openIdAuthentication();
+        } else {
+            return $this->_passwordAuthentication();
+        }
     }
 
     /**
@@ -139,7 +139,7 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _openIdAuthentication()
     {
-	// Todo not yet implemented
+        // Todo not yet implemented
     }
 
     /**
@@ -149,11 +149,11 @@ class AccountController extends Zend_Controller_Action
      */
     protected function isOpenIdAuthentication()
     {
-	if (($this->_request->getParam('openid_action', '*') == 'login')) {
-	    return true;
-	}
+        if (($this->_request->getParam('openid_action', '*') == 'login')) {
+            return true;
+        }
 
-	return false;
+        return false;
     }
 
     /**
@@ -163,19 +163,19 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _passwordAuthentication()
     {
-	$userModel = new Model_DbTable_Users();
-	$userModel->setIdentity($this->_identity)
-		->setCredential($this->_credential);
+        $userModel = new Model_DbTable_Users();
+        $userModel->setIdentity($this->_identity)
+                ->setCredential($this->_credential);
 
-	$authResult = Zend_Auth::getInstance()->authenticate($userModel);
+        $authResult = Zend_Auth::getInstance()->authenticate($userModel);
 
-	if (!$authResult->isValid()) {
-	    $this->_invalidCredentials($authResult);
-	    return false;
-	} else {
-	    $this->_successfulAuthentication($authResult);
-	    return true;
-	}
+        if (!$authResult->isValid()) {
+            $this->_invalidCredentials($authResult);
+            return false;
+        } else {
+            $this->_successfulAuthentication($authResult);
+            return true;
+        }
     }
 
     /**
@@ -186,20 +186,20 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _successfulAuthentication(Zend_Auth_Result $authResult)
     {
-	// Protection against session's fixation attacks
-	Zend_Session::regenerateId();
+        // Protection against session's fixation attacks
+        Zend_Session::regenerateId();
 
-	// Todo send autologin
-	//if($this->_request->getParam('autologin', false)) {
-	//	$token = Model_Token::create($user);
-	//}
-	//echo strtotime("now +1 year");
-	//if params[:autologin] && Setting.autologin?
-	//	token = Token.create(:user => user, :action => 'autologin')
-	//	cookies[:autologin] = { :value => token.value, :expires => 1.year.from_now }
-	//end
+        // Todo send autologin
+        //if($this->_request->getParam('autologin', false)) {
+        //	$token = Model_Token::create($user);
+        //}
+        //echo strtotime("now +1 year");
+        //if params[:autologin] && Setting.autologin?
+        //	token = Token.create(:user => user, :action => 'autologin')
+        //	cookies[:autologin] = { :value => token.value, :expires => 1.year.from_now }
+        //end
 
-	return true;
+        return true;
     }
 
     /**
@@ -210,10 +210,10 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _invalidCredentials(Zend_Auth_Result $authResult)
     {
-	$messages = $authResult->getMessages();
-	$this->view->errorMessage = $messages[0];
-	// Log -> "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}";
-	// Flash error -> invalid credential
+        $messages = $authResult->getMessages();
+        $this->view->errorMessage = $messages[0];
+        // Log -> "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}";
+        // Flash error -> invalid credential
     }
 
 }

@@ -53,9 +53,9 @@ class Model_DbTable_Users extends Zend_Db_Table_Abstract implements Zend_Auth_Ad
      * @var array
      */
     protected $_dependentTables = array(
-	'Model_DbTable_Posts',
-	'Model_DbTable_Comments',
-	'Model_DbTable_Tokens'
+        'Model_DbTable_Posts',
+        'Model_DbTable_Comments',
+        'Model_DbTable_Tokens'
     );
     /**
      * Identity value
@@ -78,8 +78,8 @@ class Model_DbTable_Users extends Zend_Db_Table_Abstract implements Zend_Auth_Ad
      */
     public function setIdentity($value)
     {
-	$this->_authIdentity = $value;
-	return $this;
+        $this->_authIdentity = $value;
+        return $this;
     }
 
     /**
@@ -91,8 +91,8 @@ class Model_DbTable_Users extends Zend_Db_Table_Abstract implements Zend_Auth_Ad
      */
     public function setCredential($credential)
     {
-	$this->_authCredential = $credential;
-	return $this;
+        $this->_authCredential = $credential;
+        return $this;
     }
 
     /**
@@ -104,26 +104,26 @@ class Model_DbTable_Users extends Zend_Db_Table_Abstract implements Zend_Auth_Ad
      */
     public function authenticate()
     {
-	$authDbAdapter = new Zend_Auth_Adapter_DbTable($this->getAdapter(),
-			$this->_name, 'username', 'password', 'MD5(?)'
-	);
+        $authDbAdapter = new Zend_Auth_Adapter_DbTable($this->getAdapter(),
+            $this->_name, 'username', 'password', 'MD5(?)'
+        );
 
-	$authDbAdapter->setIdentity($this->_authIdentity)->setCredential($this->_authCredential);
-	$result = $authDbAdapter->authenticate($authDbAdapter);
+        $authDbAdapter->setIdentity($this->_authIdentity)->setCredential($this->_authCredential);
+        $result = $authDbAdapter->authenticate($authDbAdapter);
 
-	if ($result->isValid()) {
-	    $identity = $authDbAdapter->getResultRowObject(null, 'password');
-	    if ($identity->active) {
-		$this->update(array('last_login_on' => time()), array('id = ?' => $identity->id));
-		$result = new Zend_Auth_Result($result->getCode(), $identity, $result->getMessages());
-	    } else {
-		$result = new Zend_Auth_Result(
-				Zend_Auth_Result::FAILURE, null, array('User is not active!')
-		);
-	    }
-	}
+        if ($result->isValid()) {
+            $identity = $authDbAdapter->getResultRowObject(null, 'password');
+            if ($identity->active) {
+                $this->update(array('last_login_on' => time()), array('id = ?' => $identity->id));
+                $result = new Zend_Auth_Result($result->getCode(), $identity, $result->getMessages());
+            } else {
+                $result = new Zend_Auth_Result(
+                    Zend_Auth_Result::FAILURE, null, array('User is not active!')
+                );
+            }
+        }
 
-	return $result;
+        return $result;
     }
 
 }

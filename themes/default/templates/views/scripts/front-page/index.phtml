@@ -1,47 +1,54 @@
 <?php foreach ($this->paginator as $post): ?>
-    <div class="post">
-        <h1>
-    	<a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>" title="Read more...">
-    	    <span><?php echo $this->escape($post['title']); ?></span>
-    	</a>
-        </h1>
-        <div class="subTitle">
+<div class="post">
+    <h1>
+        <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>" title="Read more...">
+            <span><?php echo $this->escape($post['title']); ?></span>
+        </a>
+    </h1>
+
+    <div class="subTitle">
     	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_edit'); ?>" class="editSmallIcon smallIcon" title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
+    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_edit'); ?>"
+               class="editSmallIcon smallIcon"
+               title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
     	    <span> - </span>
-    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_delete'); ?>" class="deleteSmallIcon smallIcon" title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
+    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_delete'); ?>"
+               class="deleteSmallIcon smallIcon"
+               title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
     	</span>
     	<span>
 	    <?php
-	    echo $this->translate('Posted on') . ' ' . date('F d, Y', strtotime($post['created_at'])) . ' ' . $this->translate('by');
-	    ?>
-	    <a href="<?php echo $this->baseUrl() . '/users/view/id/' . $post['author_id']; ?>" title="<?php echo $this->translate('View user profile'); ?>">
+        echo $this->translate('Posted on') . ' ' . date('F d, Y', strtotime($post['created_at'])) . ' ' . $this->translate('by');
+            ?>
+            <a href="<?php echo $this->baseUrl() . '/users/view/id/' . $post['author_id']; ?>"
+               title="<?php echo $this->translate('View user profile'); ?>">
 		<span>
 		    <?php
-		    if ($post['lastname'] !== null && $post['firstname'] !== null):
-			echo $this->escape($post['lastname'] . ' ' . $post['firstname']);
-		    else:
-			echo $this->escape($post['username']);
-		    endif;
-		    ?>
+            if ($post['lastname'] !== null && $post['firstname'] !== null):
+                echo $this->escape($post['lastname'] . ' ' . $post['firstname']);
+            else:
+                echo $this->escape($post['username']);
+            endif;
+                ?>
 		</span>
-	    </a>
+            </a>
 	</span>
     </div>
     <div class="postBody">
-	<div class="teaser" style="margin-top:16px;"><?php echo $post['teaser']; ?></div>
-	<?php echo $post['body']; ?>
-	        </div>
-	        <p class="moreLink">
-	    	<a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>" title="<?php echo $this->translate('Read more...'); ?>">
-	    	    <span><?php echo $this->translate('Read more...'); ?></span>
-	    	</a>
-	        </p>
-	    </div>
+        <div class="teaser" style="margin-top:16px;"><?php echo $post['teaser']; ?></div>
+        <?php echo $post['body']; ?>
+    </div>
+    <p class="moreLink">
+        <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>"
+           title="<?php echo $this->translate('Read more...'); ?>">
+            <span><?php echo $this->translate('Read more...'); ?></span>
+        </a>
+    </p>
+</div>
 <?php endforeach; ?>
 
 <?php if (count($this->paginator) > 1): ?>
-			<div id="paginationOuter">
+<div id="paginationOuter">
     <?php echo $this->paginationControl($this->paginator, 'Sliding', '/partials/paginationControl.phtml'); ?>
-		    </div>
+</div>
 <?php endif; ?>

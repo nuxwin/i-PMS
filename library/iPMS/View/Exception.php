@@ -53,8 +53,8 @@ class iPMS_View_Exception extends iPMS_Exception
      */
     public function setView(Zend_View_Interface $view = null)
     {
-	$this->view = $view;
-	return $this;
+        $this->view = $view;
+        return $this;
     }
 
     /**
@@ -64,7 +64,7 @@ class iPMS_View_Exception extends iPMS_Exception
      */
     public function getView()
     {
-	return $this->view;
+        return $this->view;
     }
 
 }

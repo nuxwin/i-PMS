@@ -100,8 +100,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setContainer(iPMS_Widget_Container_Abstract $container = null)
     {
-	$this->_container = $container;
-	return $this;
+        $this->_container = $container;
+        return $this;
     }
 
     /**
@@ -120,22 +120,22 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getContainer()
     {
-	if (null === $this->_container) {
-	    // try to fetch from registry first
-	    require_once 'Zend/Registry.php';
-	    if (Zend_Registry::isRegistered('iPMS_Widget_Container_Abstract')) {
-		$widgetContainer = Zend_Registry::get('iPMS_Widget_Container_Abstract');
-		if ($widgetContainer instanceof iPMS_Widget_Container_Abstract) {
-		    return $this->_container = $widgetContainer;
-		}
-	    }
+        if (null === $this->_container) {
+            // try to fetch from registry first
+            require_once 'Zend/Registry.php';
+            if (Zend_Registry::isRegistered('iPMS_Widget_Container_Abstract')) {
+                $widgetContainer = Zend_Registry::get('iPMS_Widget_Container_Abstract');
+                if ($widgetContainer instanceof iPMS_Widget_Container_Abstract) {
+                    return $this->_container = $widgetContainer;
+                }
+            }
 
-	    // nothing found in registry, create new container
-	    require_once 'iPMS/Widget.php';
-	    $this->_container = new iPMS_Widget_Container();
-	}
+            // nothing found in registry, create new container
+            require_once 'iPMS/Widget.php';
+            $this->_container = new iPMS_Widget_Container();
+        }
 
-	return $this->_container;
+        return $this->_container;
     }
 
     /**
@@ -146,8 +146,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setZone($zone)
     {
-	$this->_zone = (string) $zone;
-	return $this;
+        $this->_zone = (string)$zone;
+        return $this;
     }
 
     /**
@@ -157,7 +157,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getZone()
     {
-	return $this->_zone;
+        return $this->_zone;
     }
 
     /**
@@ -168,8 +168,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setIndent($indent)
     {
-	$this->_indent = $this->_getWhitespace($indent);
-	return $this;
+        $this->_indent = $this->_getWhitespace($indent);
+        return $this;
     }
 
     /**
@@ -179,7 +179,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getIndent()
     {
-	return $this->_indent;
+        return $this->_indent;
     }
 
     /**
@@ -193,14 +193,14 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setTranslator($translator = null)
     {
-	if (null == $translator ||
-		$translator instanceof Zend_Translate_Adapter) {
-	    $this->_translator = $translator;
-	} elseif ($translator instanceof Zend_Translate) {
-	    $this->_translator = $translator->getAdapter();
-	}
+        if (null == $translator ||
+            $translator instanceof Zend_Translate_Adapter) {
+            $this->_translator = $translator;
+        } elseif ($translator instanceof Zend_Translate) {
+            $this->_translator = $translator->getAdapter();
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -212,14 +212,14 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getTranslator()
     {
-	if (null === $this->_translator) {
-	    require_once 'Zend/Registry.php';
-	    if (Zend_Registry::isRegistered('Zend_Translate')) {
-		$this->setTranslator(Zend_Registry::get('Zend_Translate'));
-	    }
-	}
+        if (null === $this->_translator) {
+            require_once 'Zend/Registry.php';
+            if (Zend_Registry::isRegistered('Zend_Translate')) {
+                $this->setTranslator(Zend_Registry::get('Zend_Translate'));
+            }
+        }
 
-	return $this->_translator;
+        return $this->_translator;
     }
 
     /**
@@ -232,8 +232,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setAcl(Zend_Acl $acl = null)
     {
-	$this->_acl = $acl;
-	return $this;
+        $this->_acl = $acl;
+        return $this;
     }
 
     /**
@@ -245,11 +245,11 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getAcl()
     {
-	if ($this->_acl === null && self::$_defaultAcl !== null) {
-	    return self::$_defaultAcl;
-	}
+        if ($this->_acl === null && self::$_defaultAcl !== null) {
+            return self::$_defaultAcl;
+        }
 
-	return $this->_acl;
+        return $this->_acl;
     }
 
     /**
@@ -263,19 +263,19 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setRole($role = null)
     {
-	if (null === $role || is_string($role) ||
-		$role instanceof Zend_Acl_Role_Interface) {
-	    $this->_role = $role;
-	} else {
-	    require_once 'iPMS/View/Exception.php';
-	    $e = new iPMS_View_Exception(sprintf(
-				    '$role must be a string, null, or an instance of Zend_Acl_Role_Interface; %s given', gettype($role)
-		    ));
-	    $e->setView($this->view);
-	    throw $e;
-	}
+        if (null === $role || is_string($role) ||
+            $role instanceof Zend_Acl_Role_Interface) {
+            $this->_role = $role;
+        } else {
+            require_once 'iPMS/View/Exception.php';
+            $e = new iPMS_View_Exception(sprintf(
+                '$role must be a string, null, or an instance of Zend_Acl_Role_Interface; %s given', gettype($role)
+            ));
+            $e->setView($this->view);
+            throw $e;
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -288,11 +288,11 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getRole()
     {
-	if ($this->_role === null && self::$_defaultRole !== null) {
-	    return self::$_defaultRole;
-	}
+        if ($this->_role === null && self::$_defaultRole !== null) {
+            return self::$_defaultRole;
+        }
 
-	return $this->_role;
+        return $this->_role;
     }
 
     /**
@@ -305,8 +305,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setUseAcl($useAcl = true)
     {
-	$this->_useAcl = (bool) $useAcl;
-	return $this;
+        $this->_useAcl = (bool)$useAcl;
+        return $this;
     }
 
     /**
@@ -318,7 +318,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getUseAcl()
     {
-	return $this->_useAcl;
+        return $this->_useAcl;
     }
 
     /**
@@ -331,8 +331,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function setUseTranslator($useTranslator = true)
     {
-	$this->_useTranslator = (bool) $useTranslator;
-	return $this;
+        $this->_useTranslator = (bool)$useTranslator;
+        return $this;
     }
 
     /**
@@ -344,7 +344,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function getUseTranslator()
     {
-	return $this->_useTranslator;
+        return $this->_useTranslator;
     }
 
     // Magic overloads:
@@ -359,8 +359,8 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function __call($method, array $arguments = array())
     {
-	return call_user_func_array(
-		array($this->getContainer(), $method), $arguments);
+        return call_user_func_array(
+            array($this->getContainer(), $method), $arguments);
     }
 
     /**
@@ -374,13 +374,13 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function __toString()
     {
-	try {
-	    return $this->render();
-	} catch (Exception $e) {
-	    $msg = get_class($e) . ': ' . $e->getMessage();
-	    trigger_error($msg, E_USER_ERROR);
-	    return '';
-	}
+        try {
+            return $this->render();
+        } catch (Exception $e) {
+            $msg = get_class($e) . ': ' . $e->getMessage();
+            trigger_error($msg, E_USER_ERROR);
+            return '';
+        }
     }
 
     /**
@@ -392,7 +392,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function hasContainer()
     {
-	return null !== $this->_container;
+        return null !== $this->_container;
     }
 
     /**
@@ -404,7 +404,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function hasAcl()
     {
-	return null !== $this->_acl;
+        return null !== $this->_acl;
     }
 
     /**
@@ -416,7 +416,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function hasRole()
     {
-	return null !== $this->_role;
+        return null !== $this->_role;
     }
 
     /**
@@ -428,7 +428,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function hasTranslator()
     {
-	return null !== $this->_translator;
+        return null !== $this->_translator;
     }
 
     /**
@@ -439,29 +439,29 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public function htmlify(iPMS_Widget_Abstract $widget)
     {
-	return 'Not yet implemented';
-	/*
-	  // get label and title for translating
-	  $label = $widget->getLabel();
-	  $title = $widget->getTitle();
+        return 'Not yet implemented';
+        /*
+        // get label and title for translating
+        $label = $widget->getLabel();
+        $title = $widget->getTitle();
 
-	  if ($this->getUseTranslator() && $t = $this->getTranslator()) {
-	  if (is_string($title) && !empty($title)) {
-	  $title = $t->translate($title);
-	  }
-	  }
+        if ($this->getUseTranslator() && $t = $this->getTranslator()) {
+        if (is_string($title) && !empty($title)) {
+        $title = $t->translate($title);
+        }
+        }
 
-	  // get attribs for anchor element
-	  $attribs = array(
-	  'id'     => $widget->getId(),
-	  'title'  => $title,
-	  'class'  => $widget->getClass(),
-	  'href'   => $widget->getHref(),
-	  'target' => $widget->getTarget()
-	  );
+        // get attribs for anchor element
+        $attribs = array(
+        'id'     => $widget->getId(),
+        'title'  => $title,
+        'class'  => $widget->getClass(),
+        'href'   => $widget->getHref(),
+        'target' => $widget->getTarget()
+        );
 
-	  return '<a' . $this->_htmlAttribs($attribs) . '>' . $this->view->escape($label) . '</a>';
-	 */
+        return '<a' . $this->_htmlAttribs($attribs) . '>' . $this->view->escape($label) . '</a>';
+       */
     }
 
     // Iterator filter methods:
@@ -482,15 +482,15 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
     //public function accept(iPMS_Widget_Widget $widget, $recursive = true)
     public function accept(iPMS_Widget_Abstract $widget)
     {
-	// accept by default
-	$accept = true;
+        // accept by default
+        $accept = true;
 
-	if ($this->getUseAcl() && !$this->_acceptAcl($widget)) {
-	    // acl is not amused
-	    $accept = false;
-	}
+        if ($this->getUseAcl() && !$this->_acceptAcl($widget)) {
+            // acl is not amused
+            $accept = false;
+        }
 
-	return $accept;
+        return $accept;
     }
 
     /**
@@ -507,21 +507,21 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     protected function _acceptAcl(iPMS_Widget_Abstract $widget)
     {
-	if (!$acl = $this->getAcl()) {
-	    // no acl registered means don't use acl
-	    return true;
-	}
+        if (!$acl = $this->getAcl()) {
+            // no acl registered means don't use acl
+            return true;
+        }
 
-	$role = $this->getRole();
-	$resource = $widget->getResource();
-	$privilege = $widget->getPrivilege();
+        $role = $this->getRole();
+        $resource = $widget->getResource();
+        $privilege = $widget->getPrivilege();
 
-	if ($resource || $privilege) {
-	    // determine using helper role and page resource/privilege
-	    return $acl->isAllowed($role, $resource, $privilege);
-	}
+        if ($resource || $privilege) {
+            // determine using helper role and page resource/privilege
+            return $acl->isAllowed($role, $resource, $privilege);
+        }
 
-	return true;
+        return true;
     }
 
     /**
@@ -532,11 +532,11 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     protected function _getWhitespace($indent)
     {
-	if (is_int($indent)) {
-	    $indent = str_repeat(' ', $indent);
-	}
+        if (is_int($indent)) {
+            $indent = str_repeat(' ', $indent);
+        }
 
-	return (string) $indent;
+        return (string)$indent;
     }
 
     /**
@@ -549,14 +549,14 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     protected function _htmlAttribs($attribs)
     {
-	// filter out null values and empty string values
-	foreach ($attribs as $key => $value) {
-	    if ($value === null || (is_string($value) && !strlen($value))) {
-		unset($attribs[$key]);
-	    }
-	}
+        // filter out null values and empty string values
+        foreach ($attribs as $key => $value) {
+            if ($value === null || (is_string($value) && !strlen($value))) {
+                unset($attribs[$key]);
+            }
+        }
 
-	return parent::_htmlAttribs($attribs);
+        return parent::_htmlAttribs($attribs);
     }
 
     /**
@@ -569,10 +569,10 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     protected function _normalizeId($value)
     {
-	$prefix = get_class($this);
-	$prefix = strtolower(trim(substr($prefix, strrpos($prefix, '_')), '_'));
+        $prefix = get_class($this);
+        $prefix = strtolower(trim(substr($prefix, strrpos($prefix, '_')), '_'));
 
-	return $prefix . '-' . $value;
+        return $prefix . '-' . $value;
     }
 
     /**
@@ -583,7 +583,7 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public static function setDefaultAcl(Zend_Acl $acl = null)
     {
-	self::$_defaultAcl = $acl;
+        self::$_defaultAcl = $acl;
     }
 
     /**
@@ -597,12 +597,12 @@ abstract class iPMS_View_Helper_Widget_HelperAbstract extends Zend_View_Helper_H
      */
     public static function setDefaultRole($role = null)
     {
-	if (null === $role || is_string($role) || $role instanceof Zend_Acl_Role_Interface) {
-	    self::$_defaultRole = $role;
-	} else {
-	    require_once 'iPMS/View/Exception.php';
-	    throw new iPMS_View_Exception('$role must be null|string|Zend_Acl_Role_Interface');
-	}
+        if (null === $role || is_string($role) || $role instanceof Zend_Acl_Role_Interface) {
+            self::$_defaultRole = $role;
+        } else {
+            require_once 'iPMS/View/Exception.php';
+            throw new iPMS_View_Exception('$role must be null|string|Zend_Acl_Role_Interface');
+        }
     }
 
 }

@@ -64,7 +64,6 @@ abstract class iPMS_Widget extends iPMS_Widget_Abstract
     abstract public function init();
 
 
-
     //abstract public function run();
 
     /**
@@ -100,7 +99,7 @@ abstract class iPMS_Widget extends iPMS_Widget_Abstract
      */
     protected function setWidgetOptions($options)
     {
-	$this->setOptions(array('widgetOpts' => $options));
+        $this->setOptions(array('widgetOpts' => $options));
     }
 
     /**
@@ -111,12 +110,12 @@ abstract class iPMS_Widget extends iPMS_Widget_Abstract
      */
     protected function setControlOptions($options)
     {
-	$this->setOptions(array('controlsOpts' => $options));
+        $this->setOptions(array('controlsOpts' => $options));
     }
 
     /**
      * Convenience method to build Dashboard settings form
-     * 
+     *
      * @param  $params
      * @return string|Zend_Form
      * @Todo Making this as a view helper
@@ -124,31 +123,31 @@ abstract class iPMS_Widget extends iPMS_Widget_Abstract
     public function buildDashboardSettingsForm($params)
     {
 
-	$form = '';
+        $form = '';
 
-	if (count($params)) {
-	    $form = new Zend_Form(array(
-			'name' => $this->getName(),
-			'id' => 'widget-' . $this->getId(),
-			'action' => '/dashboard/widget/' . $this
-		    ));
+        if (count($params)) {
+            $form = new Zend_Form(array(
+                                       'name' => $this->getName(),
+                                       'id' => 'widget-' . $this->getId(),
+                                       'action' => '/dashboard/widget/' . $this
+                                  ));
 
-	    foreach ($params as $param) {
-		$element = 'Zend_Form_Element_' . $param['type'];
-		$form->addElement(new $element(array('label' => $param['label'],
-			    'name' => $param['name'],
-			    'value' => $param['value'])
-		));
-	    }
+            foreach ($params as $param) {
+                $element = 'Zend_Form_Element_' . $param['type'];
+                $form->addElement(new $element(array('label' => $param['label'],
+                                                    'name' => $param['name'],
+                                                    'value' => $param['value'])
+                                  ));
+            }
 
-	    $form->addElement(new Zend_Form_Element_Submit(
-			    array('name' => 'submit',
-				'label' => 'save'
-			    )
-	    ));
-	}
+            $form->addElement(new Zend_Form_Element_Submit(
+                                  array('name' => 'submit',
+                                       'label' => 'save'
+                                  )
+                              ));
+        }
 
-	return $form;
+        return $form;
     }
 
 }

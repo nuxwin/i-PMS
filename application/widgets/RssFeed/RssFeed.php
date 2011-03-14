@@ -35,7 +35,8 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RssFeed_RssFeed extends iPMS_Widget {
+class Widget_RssFeed_RssFeed extends iPMS_Widget
+{
 
     /**
      * Hook into action controller preDispatch() workflow

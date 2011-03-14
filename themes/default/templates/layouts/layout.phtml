@@ -1,83 +1,90 @@
 <?php echo $this->doctype(), PHP_EOL; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-	<base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl(); ?>/" />
-	<?php
-	echo $this->headMeta()
-		->setName('author', 'Laurent Declercq - i-MSCP Team')
-		->setName('generator', 'i-PMS 1.0.0')
-		->setName('language', 'en'), PHP_EOL;
-	$this->headLink(
-		array(
-		    'rel' => 'favicon',
-		    'type' => 'image/x-icon',
-		    'href' => '/themes/default/images/favicon.ico'
-		)
-	);
-	echo $this->headLink()->appendStylesheet('themes/default/css/main.css'), PHP_EOL;
-	echo $this->headTitle($this->pageTitle), PHP_EOL;
-	echo $this->headScript(), PHP_EOL;
-	echo $this->jQuery(), PHP_EOL;
-	?>
-    </head>
-    <body>
-	<div id="wrapperOuter">
-	    <div id="wrapperInner">
-		<div id="header">
-		    <p id="logo">
-			<span class="replacement"></span><a href="/"><span class="replacement"></span><span class="linkText">i-MSCP</span></a>
-		    </p>
-		    <nav>
-			<ul id="navigation">
-			    <li class="active"><a href="/"><span>Home</span></a></li>
-			    <li><a href="#"><span>Bug Tracker</span></a></li>
-			    <li><a href="#"><span>Timeline</span></a></li>
-			    <li><a href="#"><span>Forum</span></a></li>
-			    <li><a href="#"><span>Download</span></a></li>
-			    <li><a href="#"><span>3rd Packages</span></a></li>
-			    <li><a href="#"><span>Documentation</span></a></li>
-			    <li><a href="#"><span>Contact</span></a></li>
-			</ul>
-		    </nav>
-		</div>
-		<div id="location">
+<head>
+    <base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl(); ?>/"/>
+    <?php
+        echo $this->headMeta()
+        ->setName('author', 'Laurent Declercq - i-MSCP Team')
+        ->setName('generator', 'i-PMS 1.0.0')
+        ->setName('language', 'en'), PHP_EOL;
+    $this->headLink(
+        array(
+             'rel' => 'favicon',
+             'type' => 'image/x-icon',
+             'href' => '/themes/default/images/favicon.ico'
+        )
+    );
+    echo $this->headLink()->appendStylesheet('themes/default/css/main.css'), PHP_EOL;
+    echo $this->headTitle($this->pageTitle), PHP_EOL;
+    echo $this->headScript(), PHP_EOL;
+    echo $this->jQuery(), PHP_EOL;
+    ?>
+</head>
+<body>
+<div id="wrapperOuter">
+    <div id="wrapperInner">
+        <div id="header">
+            <p id="logo">
+                <span class="replacement"></span><a href="/"><span class="replacement"></span><span class="linkText">i-MSCP</span></a>
+            </p>
+            <nav>
+                <ul id="navigation">
+                    <li class="active"><a href="/"><span>Home</span></a></li>
+                    <li><a href="#"><span>Bug Tracker</span></a></li>
+                    <li><a href="#"><span>Timeline</span></a></li>
+                    <li><a href="#"><span>Forum</span></a></li>
+                    <li><a href="#"><span>Download</span></a></li>
+                    <li><a href="#"><span>3rd Packages</span></a></li>
+                    <li><a href="#"><span>Documentation</span></a></li>
+                    <li><a href="#"><span>Contact</span></a></li>
+                </ul>
+            </nav>
+        </div>
+        <div id="location">
 		    <span id="locationRightBox">
 			<?php if ($this->user()->isLogged()): ?>
-    			<a class="userSmallIcon smallIcon" href="<?php echo $this->baseUrl() . '/users/show/id/' . $this->user()->id; ?>" title="<?php echo $this->translate('Show profile'); ?>">
-    			    <span><?php echo $this->escape($this->user()); ?></span>
-    			</a>
-    			<span>-</span>
-    			<a class="logoutSmallIcon smallIcon" href="<?php echo $this->url(array(), 'account_logout'); ?>" type="<?php echo $this->translate('Logout'); ?>"><span><?php echo $this->translate('Logout'); ?></span></a>
-			<?php else: ?>
-				<a href="#" title="<?php echo $this->translate('Create new account'); ?>"><span><?php echo $this->translate('Register'); ?></span></a> |
-				<a  href="#" title="<?php echo $this->translate('Lost Password'); ?>"><span><?php echo $this->translate('Lost Password'); ?></span></a>
-			<?php endif; ?>
+                <a class="userSmallIcon smallIcon"
+                   href="<?php echo $this->baseUrl() . '/users/show/id/' . $this->user()->id; ?>"
+                   title="<?php echo $this->translate('Show profile'); ?>">
+                    <span><?php echo $this->escape($this->user()); ?></span>
+                </a>
+                <span>-</span>
+                <a class="logoutSmallIcon smallIcon" href="<?php echo $this->url(array(), 'account_logout'); ?>"
+                   type="<?php echo $this->translate('Logout'); ?>"><span><?php echo $this->translate('Logout'); ?></span></a>
+                <?php else: ?>
+                <a href="#"
+                   title="<?php echo $this->translate('Create new account'); ?>"><span><?php echo $this->translate('Register'); ?></span></a>
+                |
+                <a href="#"
+                   title="<?php echo $this->translate('Lost Password'); ?>"><span><?php echo $this->translate('Lost Password'); ?></span></a>
+                <?php endif; ?>
 			    </span>
 			    <span id="breadcrumbs">
-				<span><?php echo $this->translate('You are here'); ?>:</span> <a href="#"><span><?php echo $this->translate('Home'); ?></span></a>
+				<span><?php echo $this->translate('You are here'); ?>:</span> <a
+                        href="#"><span><?php echo $this->translate('Home'); ?></span></a>
 			    </span>
-			</div>
-			<div id="page">
-			    <div id="content">
-			<?php echo $this->layout()->content; ?>
-			    </div>
-			    <div id="sidebar">
-			<?php echo $this->Widget()->Box()->setZone('sidebar'); ?>
-		    </div>
-		    <div class="clearer"></div>
-		</div>
-	    </div>
-	</div>
-	<div id="footer">
-	    <img id="footerImageLeft" src="/themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework" />
-	    <ul id="footerLinks">
-		<li class="first"><a href="#"><span>About</span></a></li>
-		<li><a href="#"><span>Contact</span></a></li>
-		<li><a href="#"><span>Faq</span></a></li>
-		<li><a href="#"><span>Terms</span></a></li>
-		<li><a href="#"><span>Privacy</span></a></li>
-	    </ul>
-	    <p>&copy; 2010 - 2011 i-MSCP Team. All Rights Reserved. - Site by Laurent Declercq</p>
-	</div>
-    </body>
+        </div>
+        <div id="page">
+            <div id="content">
+                <?php echo $this->layout()->content; ?>
+            </div>
+            <div id="sidebar">
+                <?php echo $this->Widget()->Box()->setZone('sidebar'); ?>
+            </div>
+            <div class="clearer"></div>
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <img id="footerImageLeft" src="/themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework"/>
+    <ul id="footerLinks">
+        <li class="first"><a href="#"><span>About</span></a></li>
+        <li><a href="#"><span>Contact</span></a></li>
+        <li><a href="#"><span>Faq</span></a></li>
+        <li><a href="#"><span>Terms</span></a></li>
+        <li><a href="#"><span>Privacy</span></a></li>
+    </ul>
+    <p>&copy; 2010 - 2011 i-MSCP Team. All Rights Reserved. - Site by Laurent Declercq</p>
+</div>
+</body>
 </html>

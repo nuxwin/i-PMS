@@ -44,12 +44,12 @@ class Form_Post extends Zend_Form
      * @todo Must be replaced by HtmlPurifier ASAP
      */
     protected $_allowedXhtmlTags = array(
-	'acronym', 'blockquote', 'cite', 'q', 'sup', 'sub', 'strong', 'em',
-	'h6', 'h5', 'h4', 'h3', 'h2', 'h1', 'img', 'a', 'br', 'p', 'hr', 'address',
-	'del', 'ins', 'dfn', 'kbd', 'pre', 'abbr',
-	'menu', 'ul', 'ol', 'li', 'dl', 'dt', 'dd',
-	'table', 'caption', 'tr', 'th', 'td', 'thead', 'tbody', 'tfoot',
-	'span', 'div'
+        'acronym', 'blockquote', 'cite', 'q', 'sup', 'sub', 'strong', 'em',
+        'h6', 'h5', 'h4', 'h3', 'h2', 'h1', 'img', 'a', 'br', 'p', 'hr', 'address',
+        'del', 'ins', 'dfn', 'kbd', 'pre', 'abbr',
+        'menu', 'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+        'table', 'caption', 'tr', 'th', 'td', 'thead', 'tbody', 'tfoot',
+        'span', 'div'
     );
     /**
      * Restricted list of XHTML attributes that can be used by users
@@ -61,10 +61,10 @@ class Form_Post extends Zend_Form
      * @todo Must be replaced by HtmlPurifier ASAP
      */
     protected $_allowedXhtmlAttributes = array(
-	'class', 'id', 'style', 'title', // XHTML core attributes
-	'dir', 'lang', 'xml:lang', // Language attributes
-	'accesskey', 'tabindex', // keyboard attributes
-	'alt', 'target', 'href', 'src', 'rel', 'width', 'height' // Others attributes
+        'class', 'id', 'style', 'title', // XHTML core attributes
+        'dir', 'lang', 'xml:lang', // Language attributes
+        'accesskey', 'tabindex', // keyboard attributes
+        'alt', 'target', 'href', 'src', 'rel', 'width', 'height' // Others attributes
     );
 
     /**
@@ -74,63 +74,63 @@ class Form_Post extends Zend_Form
      */
     public function init()
     {
-	$this->setName('postFrm')
-		->setMethod('post')
-		->setEnctype('application/x-www-form-urlencoded');
+        $this->setName('postFrm')
+                ->setMethod('post')
+                ->setEnctype('application/x-www-form-urlencoded');
 
-	// Hidden field that contain post id
-	$id = new Zend_Form_Element_Hidden('id');
-	$id->setLabel('&#160;')
-		->clearDecorators()
-		->addDecorator('ViewHelper')
-		->addDecorator(array(
-		    'element' => 'HtmlTag'), array('tag' => 'dd', 'class' => 'hidden')
-		)
-		->addDecorator(
-			array('closeDt' => 'HtmlTag'), array('tag' => 'dt', 'closeOnly' => true, 'placement' => 'prepend')
-		)
-		->addDecorator('Label')
-		->addDecorator(array(
-		    'openDt' => 'HtmlTag',), array('tag' => 'dt', 'openOnly' => true, 'class' => 'hidden')
-	);
+        // Hidden field that contain post id
+        $id = new Zend_Form_Element_Hidden('id');
+        $id->setLabel('&#160;')
+                ->clearDecorators()
+                ->addDecorator('ViewHelper')
+                ->addDecorator(array(
+                                    'element' => 'HtmlTag'), array('tag' => 'dd', 'class' => 'hidden')
+        )
+                ->addDecorator(
+            array('closeDt' => 'HtmlTag'), array('tag' => 'dt', 'closeOnly' => true, 'placement' => 'prepend')
+        )
+                ->addDecorator('Label')
+                ->addDecorator(array(
+                                    'openDt' => 'HtmlTag',), array('tag' => 'dt', 'openOnly' => true, 'class' => 'hidden')
+        );
 
-	$category = clone $id;
-	$category->setName('categorie')
-		->setValue('home');
+        $category = clone $id;
+        $category->setName('categorie')
+                ->setValue('home');
 
-	$title = new Zend_Form_Element_Text('title');
-	$title->setLabel('Title')
-		->setRequired(true)
-		->addFilter('StripTags')
-		->addFilter('StringTrim')
-		->addValidator('NotEmpty');
+        $title = new Zend_Form_Element_Text('title');
+        $title->setLabel('Title')
+                ->setRequired(true)
+                ->addFilter('StripTags')
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty');
 
-	$teaser = new Zend_Form_Element_Textarea('teaser');
-	$teaser->setLabel('Teaser')
-		->setRequired(true)
-		//->setAttrib('rows', 4)
-		//->setAttrib('cols', 75)
-		->addFilter('StripTags', array(
-		    'allowTags' => $this->_allowedXhtmlTags, 'allowAttribs' => $this->_allowedXhtmlAttributes)
-		)
-		->addFilter('StringTrim')
-		->addValidator('NotEmpty');
+        $teaser = new Zend_Form_Element_Textarea('teaser');
+        $teaser->setLabel('Teaser')
+                ->setRequired(true)
+        //->setAttrib('rows', 4)
+        //->setAttrib('cols', 75)
+                ->addFilter('StripTags', array(
+                                              'allowTags' => $this->_allowedXhtmlTags, 'allowAttribs' => $this->_allowedXhtmlAttributes)
+        )
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty');
 
-	$body = clone $teaser;
-	$body->setName('body')
-		->setLabel('Content');
-	//->setAttrib('rows', 25);
-	// Comments checkbox (Tell whether or not the post is open for new comments
-	$allowComments = new Zend_Form_Element_Checkbox('allow_comments');
-	$allowComments->setLabel('Open for new comments ?')
-		->setValue('1');
-
-
-	$submit = new Zend_Form_Element_Submit('submit');
-	$submit->setLabel('Submit');
+        $body = clone $teaser;
+        $body->setName('body')
+                ->setLabel('Content');
+        //->setAttrib('rows', 25);
+        // Comments checkbox (Tell whether or not the post is open for new comments
+        $allowComments = new Zend_Form_Element_Checkbox('allow_comments');
+        $allowComments->setLabel('Open for new comments ?')
+                ->setValue('1');
 
 
-	$this->addElements(array($id, $category, $title, $teaser, $body, $allowComments, $submit));
+        $submit = new Zend_Form_Element_Submit('submit');
+        $submit->setLabel('Submit');
+
+
+        $this->addElements(array($id, $category, $title, $teaser, $body, $allowComments, $submit));
     }
 
 }

@@ -42,34 +42,34 @@ class PostsController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-	$model = new Model_DbTable_Posts();
-	$pageablePosts = $model->getPageablePostsList((int) $this->_request->getParam('page', 1), 1);
-	$this->view->assign('paginator', $pageablePosts);
+        $model = new Model_DbTable_Posts();
+        $pageablePosts = $model->getPageablePostsList((int)$this->_request->getParam('page', 1), 1);
+        $this->view->assign('paginator', $pageablePosts);
     }
 
     /**
      * Show a post
-     * 
+     *
      * @return void
      */
     public function showAction()
     {
-	$id = (int) $this->_getParam('id', 0);
+        $id = (int)$this->_getParam('id', 0);
 
-	$model = new Model_DbTable_Posts();
-	$row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-				->setIntegrityCheck(false)
-				->where('posts.id = ?', $id)
-				->join('users', '`users`.`id` = `posts`.`author_id`', array('username', 'firstname', 'lastname'))
-	);
+        $model = new Model_DbTable_Posts();
+        $row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+                                        ->setIntegrityCheck(false)
+                                        ->where('posts.id = ?', $id)
+                                        ->join('users', '`users`.`id` = `posts`.`author_id`', array('username', 'firstname', 'lastname'))
+        );
 
-	if (!$row) {
-	    $this->getResponse()->setHttpResponseCode(404);
-	    throw new Zend_Controller_Action_Exception('Post not found!', 404);
-	    return;
-	}
+        if (!$row) {
+            $this->getResponse()->setHttpResponseCode(404);
+            throw new Zend_Controller_Action_Exception('Post not found!', 404);
+            return;
+        }
 
-	$this->view->assign('post', $row);
+        $this->view->assign('post', $row);
     }
 
     /**
@@ -79,20 +79,20 @@ class PostsController extends Zend_Controller_Action
      */
     public function addAction()
     {
-	$form = new Form_Post();
-	$identity = Zend_Auth::getInstance()->getIdentity()->id;
+        $form = new Form_Post();
+        $identity = Zend_Auth::getInstance()->getIdentity()->id;
 
-	if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-	    $data = $form->getValues();
-	    $data['author_id'] = $identity['id'];
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+            $data = $form->getValues();
+            $data['author_id'] = $identity['id'];
 
-	    $model = new Model_DbTable_Posts();
-	    $id = $model->insert($data);
+            $model = new Model_DbTable_Posts();
+            $id = $model->insert($data);
 
-	    $this->_redirect('/posts/id/' . $id);
-	}
+            $this->_redirect('/posts/id/' . $id);
+        }
 
-	$this->view->assign('form', $form);
+        $this->view->assign('form', $form);
     }
 
     /**
@@ -102,25 +102,25 @@ class PostsController extends Zend_Controller_Action
      */
     public function editAction()
     {
-	$postId = (int) $this->_request->getParam('id');
+        $postId = (int)$this->_request->getParam('id');
 
-	$postsModel = new Model_DbTable_Posts();
+        $postsModel = new Model_DbTable_Posts();
 
-	if (null == ($postRow = $postsModel->find($postId)->current())) {
-	    throw new Zend_Controller_Action_Exception("Post not found!", 404);
-	} else {
-	    $form = new Form_Post();
+        if (null == ($postRow = $postsModel->find($postId)->current())) {
+            throw new Zend_Controller_Action_Exception("Post not found!", 404);
+        } else {
+            $form = new Form_Post();
 
-	    if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-		$postRow->setFromArray($form->getValues())->save();
-		$this->_redirect('posts/view/id/' . $postId);
-	    } else {
-		$form->populate($postRow->toArray());
-	    }
+            if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+                $postRow->setFromArray($form->getValues())->save();
+                $this->_redirect('posts/view/id/' . $postId);
+            } else {
+                $form->populate($postRow->toArray());
+            }
 
-	    $form->setAction('/posts/edit');
-	    $this->view->assign('postForm', $form);
-	}
+            $form->setAction('/posts/edit');
+            $this->view->assign('postForm', $form);
+        }
     }
 
     /**
@@ -130,8 +130,8 @@ class PostsController extends Zend_Controller_Action
      */
     public function deleteAction()
     {
-	$postModel = new Model_DbTable_Posts();
-	$postModel->delete((int) $this->_request->getParam('id'));
+        $postModel = new Model_DbTable_Posts();
+        $postModel->delete((int)$this->_request->getParam('id'));
     }
 
 }

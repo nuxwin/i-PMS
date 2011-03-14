@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  */
 class Model_Token extends Zend_Db_Table_Abstract
 {
@@ -24,12 +24,12 @@ class Model_Token extends Zend_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap = array(
-	'User' => array(
-	    SELF::COLUMNS => 'author_id',
-	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
-	    SELF::REF_COLUMNS => 'id',
-	    SELF::ON_DELETE => SELF::CASCADE
-	)
+        'User' => array(
+            SELF::COLUMNS => 'author_id',
+            SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
+            SELF::REF_COLUMNS => 'id',
+            SELF::ON_DELETE => SELF::CASCADE
+        )
     );
     protected static $validityTime = '1 day';
 
@@ -43,15 +43,15 @@ class Model_Token extends Zend_Db_Table_Abstract
      */
     public function create(array $attributes = array())
     {
-	self::deletePreviousTokens();
+        self::deletePreviousTokens();
 
-	$object = new self();
+        $object = new self();
 
-	$object->createRow($attributes)->save();
+        $object->createRow($attributes)->save();
 
-	return $object;
+        return $object;
 
-	$this->value = $this->generateTokenValue();
+        $this->value = $this->generateTokenValue();
     }
 
     /**
@@ -61,12 +61,12 @@ class Model_Token extends Zend_Db_Table_Abstract
      */
     public function isExpired()
     {
-	
+
     }
 
     /**
      * Delete all expired tokens
-     * 
+     *
      * @return void
      */
     public function destroyExpired()
@@ -81,12 +81,12 @@ class Model_Token extends Zend_Db_Table_Abstract
      */
     private function generateTokenValue()
     {
-	
+
     }
 
     /**
      * Removes obsolete tokens (same user and action)
-     * 
+     *
      * @static
      * @return void
      */
@@ -105,7 +105,7 @@ class Model_Token extends Zend_Db_Table_Abstract
      */
     protected function _generateHash()
     {
-	return md5(mt_rand(1, 1000000) . $this->getSalt() . $this->getName() . mt_rand(1, 1000000));
+        return md5(mt_rand(1, 1000000) . $this->getSalt() . $this->getName() . mt_rand(1, 1000000));
     }
 
 }

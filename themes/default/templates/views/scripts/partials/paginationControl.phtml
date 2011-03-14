@@ -2,45 +2,45 @@
 
     <?php if (isset($this->previous)): ?>
 
-        <p id="paginationPrevious">
-    	<a href="<?php echo $this->url(array('page' => $this->previous)); ?>" title="Previous Page">
-    	    <span><?php echo $this->translate('Previous Page'); ?></span>
-    	</a>
-        </p>
+    <p id="paginationPrevious">
+        <a href="<?php echo $this->url(array('page' => $this->previous)); ?>" title="Previous Page">
+            <span><?php echo $this->translate('Previous Page'); ?></span>
+        </a>
+    </p>
 
     <?php else: ?>
 
-	    <p id="paginationPrevious">
-	<?php echo $this->translate('Previous Page'); ?>
-        </p>
+    <p id="paginationPrevious">
+        <?php echo $this->translate('Previous Page'); ?>
+    </p>
 
     <?php endif; ?>
 
-	    <p id="paginationNumbered">
+    <p id="paginationNumbered">
 
-	<?php foreach ($this->pagesInRange as $page): ?>
-	<?php if ($page != $this->current): ?>
-	    	<a href="<?php echo $this->url(array('page' => $page)); ?>"><span><?php echo $page; ?></span></a>
-	<?php else: ?>
-	<?php echo $page; ?>
-	<?php endif; ?>
-	<?php endforeach; ?>
+        <?php foreach ($this->pagesInRange as $page): ?>
+        <?php if ($page != $this->current): ?>
+            <a href="<?php echo $this->url(array('page' => $page)); ?>"><span><?php echo $page; ?></span></a>
+            <?php else: ?>
+            <?php echo $page; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
 
-		    </p>
+    </p>
 
     <?php if (isset($this->next)): ?>
 
-			    <p id="paginationNext">
-				<a href="<?php echo $this->url(array('page' => $this->next)); ?>" title="Next Page">
-				    <span><?php echo $this->translate('Next Page'); ?></span>
-				</a>
-			    </p>
+    <p id="paginationNext">
+        <a href="<?php echo $this->url(array('page' => $this->next)); ?>" title="Next Page">
+            <span><?php echo $this->translate('Next Page'); ?></span>
+        </a>
+    </p>
 
     <?php else: ?>
 
-			        <p id="paginationNext">
-	<?php echo $this->translate('Next Page'); ?>
-			    </p>
+    <p id="paginationNext">
+        <?php echo $this->translate('Next Page'); ?>
+    </p>
 
     <?php endif; ?>
 

@@ -53,7 +53,7 @@ class Plugin_WidgetsLoader extends Zend_Controller_Plugin_Abstract implements Ze
      */
     public function __construct($environment)
     {
-	$this->_environment = $environment;
+        $this->_environment = $environment;
     }
 
     /**
@@ -64,39 +64,39 @@ class Plugin_WidgetsLoader extends Zend_Controller_Plugin_Abstract implements Ze
      */
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
-	// todo if module dashboard, do not process...
-	// Getting all active widgets
-	$widgetsModel = new Model_DbTable_Widgets();
-	$widgetsRows = $widgetsModel->fetchAll(array('is_active = ?' => 1))->toArray();
+        // todo if module dashboard, do not process...
+        // Getting all active widgets
+        $widgetsModel = new Model_DbTable_Widgets();
+        $widgetsRows = $widgetsModel->fetchAll(array('is_active = ?' => 1))->toArray();
 
-	if (count($widgetsRows)) {
-	    $loader = Zend_Loader_Autoloader::getInstance();
-	    $loader->unshiftAutoloader($this);
+        if (count($widgetsRows)) {
+            $loader = Zend_Loader_Autoloader::getInstance();
+            $loader->unshiftAutoloader($this);
 
-	    if ($this->_environment != 'development') {
-		$loader->suppressNotFoundWarnings(true);
-	    }
+            if ($this->_environment != 'development') {
+                $loader->suppressNotFoundWarnings(true);
+            }
 
-	    $widgets = array();
+            $widgets = array();
 
-	    foreach ($widgetsRows as $widgetRow) {
-		try {
-		    $widgetName = ucfirst($widgetRow['name']);
-		    $widgetClassName = 'Widget_' . $widgetName . '_' . $widgetName;
-		    $widgets[] = new $widgetClassName($widgetRow);
-		} catch (Exception $e) {
-		    if ($this->_environment == 'development') {
-			trigger_error($e->getMessage(), E_USER_WARNING);
-		    }
-		}
-	    }
+            foreach ($widgetsRows as $widgetRow) {
+                try {
+                    $widgetName = ucfirst($widgetRow['name']);
+                    $widgetClassName = 'Widget_' . $widgetName . '_' . $widgetName;
+                    $widgets[] = new $widgetClassName($widgetRow);
+                } catch (Exception $e) {
+                    if ($this->_environment == 'development') {
+                        trigger_error($e->getMessage(), E_USER_WARNING);
+                    }
+                }
+            }
 
-	    $widgetContainer = new iPMS_Widget_Container($widgets);
-	    Zend_Controller_Action_HelperBroker::addHelper($widgetContainer);
+            $widgetContainer = new iPMS_Widget_Container($widgets);
+            Zend_Controller_Action_HelperBroker::addHelper($widgetContainer);
 
-	    // Widget loader is not longer needed
-	    Zend_Loader_Autoloader::getInstance()->removeAutoloader($this);
-	}
+            // Widget loader is not longer needed
+            Zend_Loader_Autoloader::getInstance()->removeAutoloader($this);
+        }
     }
 
     /**
@@ -109,36 +109,36 @@ class Plugin_WidgetsLoader extends Zend_Controller_Plugin_Abstract implements Ze
     public function autoload($class)
     {
 
-	if (class_exists($class, false) || interface_exists($class, false)) {
-	    return;
-	}
+        if (class_exists($class, false) || interface_exists($class, false)) {
+            return;
+        }
 
-	// Autodiscover the path from the class name
-	// Implementation is PHP namespace-aware, and based on
-	// Framework Interop Group reference implementation:
-	// http://groups.google.com/group/php-standards/web/psr-0-final-proposal
-	$className = ltrim($class, '\\');
-	$file = '';
-	$namespace = '';
-	if ($lastNsPos = strripos($className, '\\')) {
-	    $namespace = substr($className, 0, $lastNsPos);
-	    $className = substr($className, $lastNsPos + 1);
-	    $file = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-	}
+        // Autodiscover the path from the class name
+        // Implementation is PHP namespace-aware, and based on
+        // Framework Interop Group reference implementation:
+        // http://groups.google.com/group/php-standards/web/psr-0-final-proposal
+        $className = ltrim($class, '\\');
+        $file = '';
+        $namespace = '';
+        if ($lastNsPos = strripos($className, '\\')) {
+            $namespace = substr($className, 0, $lastNsPos);
+            $className = substr($className, $lastNsPos + 1);
+            $file = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
 
-	$file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-	$file = substr_replace($file, 'widgets', 0, 6);
+        $file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        $file = substr_replace($file, 'widgets', 0, 6);
 
-	if (Zend_Loader_Autoloader::getInstance()->suppressNotFoundWarnings()) {
-	    @Zend_Loader::loadFile($file, APPLICATION_PATH, true);
-	} else {
-	    Zend_Loader::loadFile($file, APPLICATION_PATH, true);
-	}
+        if (Zend_Loader_Autoloader::getInstance()->suppressNotFoundWarnings()) {
+            @Zend_Loader::loadFile($file, APPLICATION_PATH, true);
+        } else {
+            Zend_Loader::loadFile($file, APPLICATION_PATH, true);
+        }
 
-	if (!class_exists($class, false) && !interface_exists($class, false)) {
-	    require_once 'iPMS/Exception.php';
-	    throw new iPMS_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
-	}
+        if (!class_exists($class, false) && !interface_exists($class, false)) {
+            require_once 'iPMS/Exception.php';
+            throw new iPMS_Exception("File \"$file\" does not exist or class \"$class\" was not found in the file");
+        }
     }
 
 }

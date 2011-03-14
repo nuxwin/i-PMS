@@ -49,24 +49,24 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
     protected $_primary = 'id';
     /**
      * Table relations
-     * 
+     *
      * @var array
      */
     protected $_referenceMap = array(
-	// If the parent post is deleted, all related comments are deleted too
-	'Post' => array(
-	    SELF::COLUMNS => 'post_id',
-	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Posts',
-	    SELF::REF_COLUMNS => 'id',
-	    SELF::ON_DELETE => SELF::CASCADE
-	),
-	// If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
-	'user' => array(
-	    SELF::COLUMNS => 'author_id',
-	    SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
-	    SELF::REF_COLUMNS => 'id',
-	    SELF::ON_DELETE => SELF::SET_NULL
-	),
+        // If the parent post is deleted, all related comments are deleted too
+        'Post' => array(
+            SELF::COLUMNS => 'post_id',
+            SELF::REF_TABLE_CLASS => 'Model_DbTable_Posts',
+            SELF::REF_COLUMNS => 'id',
+            SELF::ON_DELETE => SELF::CASCADE
+        ),
+        // If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
+        'user' => array(
+            SELF::COLUMNS => 'author_id',
+            SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
+            SELF::REF_COLUMNS => 'id',
+            SELF::ON_DELETE => SELF::SET_NULL
+        ),
     );
     /**
      * Resource owner identifier
@@ -87,13 +87,13 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
      */
     public function getComments(Zend_Db_Table_Row_Abstract $parent)
     {
-	$comments = $parent->findDependentRowset(
-			$this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-				->setIntegrityCheck(false)
-				->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar')
-	);
+        $comments = $parent->findDependentRowset(
+            $this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+                ->setIntegrityCheck(false)
+                ->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar')
+        );
 
-	return $comments;
+        return $comments;
     }
 
     /**
@@ -103,7 +103,7 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
      */
     public function getResourceId()
     {
-	return $this->_resourceId;
+        return $this->_resourceId;
     }
 
     /**
@@ -121,11 +121,11 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
      */
     public function assert(Zend_Acl $acl, Zend_Acl_Role_Interface $user = null, Zend_Acl_Resource_Interface $comment = null, $privilege = null)
     {
-	if ($user->id = $comment->author_id) {
-	    return true;
-	} else {
-	    return false;
-	}
+        if ($user->id = $comment->author_id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

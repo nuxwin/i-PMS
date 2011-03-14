@@ -52,10 +52,10 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function __construct()
     {
-	$this->_auth = Zend_Auth::getInstance()->getIdentity();
-	if (null == $this->_auth) {
-	    $this->_auth = 'guest';
-	}
+        $this->_auth = Zend_Auth::getInstance()->getIdentity();
+        if (null == $this->_auth) {
+            $this->_auth = 'guest';
+        }
     }
 
     /**
@@ -65,7 +65,7 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function User()
     {
-	return $this;
+        return $this;
     }
 
     /**
@@ -75,7 +75,7 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function isGuest()
     {
-	return ($this->_auth == 'guest');
+        return ($this->_auth == 'guest');
     }
 
     /**
@@ -85,7 +85,7 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function isLogged()
     {
-	return (!$this->isGuest());
+        return (!$this->isGuest());
     }
 
     /**
@@ -96,10 +96,10 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function __get($name)
     {
-	if (is_object($this->_auth) && isset($this->_auth->{$name})) {
-	    return $this->_auth->$name;
-	}
-	return null;
+        if (is_object($this->_auth) && isset($this->_auth->{$name})) {
+            return $this->_auth->$name;
+        }
+        return null;
     }
 
     /**
@@ -109,11 +109,11 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
      */
     public function __toString()
     {
-	if (is_object($this->_auth)) {
-	    return$this->_auth->username;
-	}
+        if (is_object($this->_auth)) {
+            return $this->_auth->username;
+        }
 
-	return 'guest';
+        return 'guest';
     }
 
 }

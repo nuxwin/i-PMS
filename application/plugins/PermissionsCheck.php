@@ -57,8 +57,8 @@ class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
      */
     public function __construct(Zend_Auth $auth, Zend_Acl $acl)
     {
-	$this->_auth = $auth;
-	$this->_acl = $acl;
+        $this->_auth = $auth;
+        $this->_acl = $acl;
     }
 
     /**
@@ -70,19 +70,19 @@ class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
      */
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
-	$resource = $request->getControllerName();
-	$action = $request->getActionName();
+        $resource = $request->getControllerName();
+        $action = $request->getActionName();
 
-	if ($this->_auth->hasIdentity()) {
-	    $identity = $this->_auth->getStorage()->read();
-	    $role = $identity->role;
-	} else {
-	    $role = $this->_defaultRole;
-	}
+        if ($this->_auth->hasIdentity()) {
+            $identity = $this->_auth->getStorage()->read();
+            $role = $identity->role;
+        } else {
+            $role = $this->_defaultRole;
+        }
 
-	if ($this->_acl->has($resource) && !$this->_acl->isAllowed($role, $resource, $action)) {
-	    $request->setControllerName('error')->setActionName('deny');
-	}
+        if ($this->_acl->has($resource) && !$this->_acl->isAllowed($role, $resource, $action)) {
+            $request->setControllerName('error')->setActionName('deny');
+        }
     }
 
     /**
@@ -93,7 +93,7 @@ class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
      */
     public function setDefaultRole($defaultRole)
     {
-	$this->_defaultRole = (string) $role;
+        $this->_defaultRole = (string)$role;
     }
 
 }

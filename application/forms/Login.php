@@ -42,36 +42,36 @@ class Form_Login extends Zend_Form
      */
     public function init()
     {
-	$this->setName('loginFrm');
+        $this->setName('loginFrm');
 
-	$redirect = new Zend_Form_Element_Hidden('redirect');
-	$fc = Zend_Controller_Front::getInstance();
-	$redirect->setValue($fc->getRequest()->getRequestUri())
-		->setRequired(true)
-		->addFilter('StripTags')
-		->addFilter('StringTrim')
-		->addValidator('NotEmpty');
+        $redirect = new Zend_Form_Element_Hidden('redirect');
+        $fc = Zend_Controller_Front::getInstance();
+        $redirect->setValue($fc->getRequest()->getRequestUri())
+                ->setRequired(true)
+                ->addFilter('StripTags')
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty');
 
-	$username = new Zend_Form_Element_Text('username');
-	$username->setLabel('Username')
-		->setRequired(true)
-		->addFilter('StripTags')
-		->addFilter('StringTrim')
-		->addValidator('NotEmpty');
+        $username = new Zend_Form_Element_Text('username');
+        $username->setLabel('Username')
+                ->setRequired(true)
+                ->addFilter('StripTags')
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty');
 
-	$password = new Zend_Form_Element_Password('password');
-	$password->setLabel('Password')
-		->setRequired(true)
-		->addFilter('StripTags')
-		->addFilter('StringTrim')
-		->addValidator('NotEmpty');
+        $password = new Zend_Form_Element_Password('password');
+        $password->setLabel('Password')
+                ->setRequired(true)
+                ->addFilter('StripTags')
+                ->addFilter('StringTrim')
+                ->addValidator('NotEmpty');
 
-	$submit = new Zend_Form_Element_Submit('submit');
+        $submit = new Zend_Form_Element_Submit('submit');
 
-	$submit->setAttrib('id', 'submit')
-		->setLabel('Connection');
+        $submit->setAttrib('id', 'submit')
+                ->setLabel('Connection');
 
-	$this->addElements(array($username, $password, $redirect, $submit));
+        $this->addElements(array($username, $password, $redirect, $submit));
     }
 
 }

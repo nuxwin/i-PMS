@@ -52,23 +52,23 @@ class Model_Acl extends Zend_Acl
      */
     protected function __construct()
     {
-	// defines three base roles - "guest", "member", and "admin" - from which other roles may inherit.
-	$this->addRole(new Zend_Acl_Role('guest'))
-		->addRole(new Zend_Acl_Role('subscriber'), 'guest')
-		->addRole(new Zend_Acl_Role('admin'), 'subscriber');
+        // defines three base roles - "guest", "member", and "admin" - from which other roles may inherit.
+        $this->addRole(new Zend_Acl_Role('guest'))
+                ->addRole(new Zend_Acl_Role('subscriber'), 'guest')
+                ->addRole(new Zend_Acl_Role('admin'), 'subscriber');
 
-	$this->add(new Zend_Acl_Resource('posts'));
-	$this->add(new Zend_Acl_Resource('comments'), 'posts');
+        $this->add(new Zend_Acl_Resource('posts'));
+        $this->add(new Zend_Acl_Resource('comments'), 'posts');
 
-	// view permissions for guest and member
+        // view permissions for guest and member
 
-	$this->allow('guest', 'posts', 'view');
-	$this->allow('guest', 'comments', 'index');
-	$this->allow('guest', 'comments', 'add');
-	$this->allow('subscriber', 'comments', 'add');
-	//$this->allow('subscriber', 'comments', 'edit', new Model_Comments_Acl_Assert(););
-	// All permissions for admin
-	$this->allow('admin');
+        $this->allow('guest', 'posts', 'view');
+        $this->allow('guest', 'comments', 'index');
+        $this->allow('guest', 'comments', 'add');
+        $this->allow('subscriber', 'comments', 'add');
+        //$this->allow('subscriber', 'comments', 'edit', new Model_Comments_Acl_Assert(););
+        // All permissions for admin
+        $this->allow('admin');
     }
 
     /**
@@ -91,11 +91,11 @@ class Model_Acl extends Zend_Acl
      */
     public static function getInstance()
     {
-	if (null === self::$_instance) {
-	    self::$_instance = new self();
-	}
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
 
-	return self::$_instance;
+        return self::$_instance;
     }
 
 }

@@ -64,24 +64,24 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     protected function _sort()
     {
-	if ($this->_dirtyIndex) {
-	    $newIndex = array();
-	    $index = 0;
+        if ($this->_dirtyIndex) {
+            $newIndex = array();
+            $index = 0;
 
-	    foreach ($this->_widgets as $hash => $widget) {
-		$order = $widget->getOrder();
-		if ($order === null) {
-		    $newIndex[$hash] = $index;
-		    $index++;
-		} else {
-		    $newIndex[$hash] = $order;
-		}
-	    }
+            foreach ($this->_widgets as $hash => $widget) {
+                $order = $widget->getOrder();
+                if ($order === null) {
+                    $newIndex[$hash] = $index;
+                    $index++;
+                } else {
+                    $newIndex[$hash] = $order;
+                }
+            }
 
-	    asort($newIndex);
-	    $this->_index = $newIndex;
-	    $this->_dirtyIndex = false;
-	}
+            asort($newIndex);
+            $this->_index = $newIndex;
+            $this->_dirtyIndex = false;
+        }
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function notifyOrderUpdated()
     {
-	$this->_dirtyIndex = true;
+        $this->_dirtyIndex = true;
     }
 
     /**
@@ -103,34 +103,34 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function addWidget(iPMS_Widget_Abstract $widget)
     {
-	/*
-	  if ($widget === $this) {
-	  require_once 'iPMS/Widget/Exception.php';
-	  throw new iPMS_Widget_Exception('A widget cannot have itself as a parent');
-	  }
-	 */
+        /*
+        if ($widget === $this) {
+        require_once 'iPMS/Widget/Exception.php';
+        throw new iPMS_Widget_Exception('A widget cannot have itself as a parent');
+        }
+       */
 
-	if (!$widget instanceof iPMS_Widget_Abstract) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $widget must be an instance of iPMS_Widget_Abstract');
-	}
+        if (!$widget instanceof iPMS_Widget_Abstract) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $widget must be an instance of iPMS_Widget_Abstract');
+        }
 
-	$hash = $widget->hashCode();
+        $hash = $widget->hashCode();
 
-	if (array_key_exists($hash, $this->_index)) {
-	    // widget is already in container
-	    return $this;
-	}
+        if (array_key_exists($hash, $this->_index)) {
+            // widget is already in container
+            return $this;
+        }
 
-	// adds widget to container and sets dirty flag
-	$this->_widgets[$hash] = $widget;
-	$this->_index[$hash] = $widget->getOrder();
-	$this->_dirtyIndex = true;
+        // adds widget to container and sets dirty flag
+        $this->_widgets[$hash] = $widget;
+        $this->_index[$hash] = $widget->getOrder();
+        $this->_dirtyIndex = true;
 
-	// inject self as widget parent
-	$widget->setParent($this);
+        // inject self as widget parent
+        $widget->setParent($this);
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -142,20 +142,20 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function addWidgets($widgets)
     {
-	//if ($widgets instanceof Zend_Config) {
-	//    $widgets = $widgets->toArray();
-	//}
+        //if ($widgets instanceof Zend_Config) {
+        //    $widgets = $widgets->toArray();
+        //}
 
-	if (!is_array($widgets)) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Invalid argument: $widgets must be an array');
-	}
+        if (!is_array($widgets)) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Invalid argument: $widgets must be an array');
+        }
 
-	foreach ($widgets as $widget) {
-	    $this->addWidget($widget);
-	}
+        foreach ($widgets as $widget) {
+            $this->addWidget($widget);
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -166,8 +166,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function setWidgets(array $widgets)
     {
-	$this->removeWidgets();
-	return $this->addWidgets($widgets);
+        $this->removeWidgets();
+        return $this->addWidgets($widgets);
     }
 
     /**
@@ -177,7 +177,7 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function getWidgets()
     {
-	return $this->_widgets;
+        return $this->_widgets;
     }
 
     /**
@@ -188,25 +188,25 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function removeWidget($widget)
     {
-	if ($widget instanceof iPMS_Widget_Abstract) {
-	    $hash = $widget->hashCode();
-	} elseif (is_int($widget)) {
-	    $this->_sort();
-	    if (!$hash = array_search($widget, $this->_index)) {
-		return false;
-	    }
-	} else {
-	    return false;
-	}
+        if ($widget instanceof iPMS_Widget_Abstract) {
+            $hash = $widget->hashCode();
+        } elseif (is_int($widget)) {
+            $this->_sort();
+            if (!$hash = array_search($widget, $this->_index)) {
+                return false;
+            }
+        } else {
+            return false;
+        }
 
-	if (isset($this->_widgets[$hash])) {
-	    unset($this->_widgets[$hash]);
-	    unset($this->_index[$hash]);
-	    $this->_dirtyIndex = true;
-	    return true;
-	}
+        if (isset($this->_widgets[$hash])) {
+            unset($this->_widgets[$hash]);
+            unset($this->_index[$hash]);
+            $this->_dirtyIndex = true;
+            return true;
+        }
 
-	return false;
+        return false;
     }
 
     /**
@@ -216,9 +216,9 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function removeWidgets()
     {
-	$this->_widgets = array();
-	$this->_index = array();
-	return $this;
+        $this->_widgets = array();
+        $this->_index = array();
+        return $this;
     }
 
     /**
@@ -229,11 +229,11 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function hasWidget(iPMS_Widget_Abstract $widget)
     {
-	if (array_key_exists($widget->hashCode(), $this->_index)) {
-	    return true;
-	}
+        if (array_key_exists($widget->hashCode(), $this->_index)) {
+            return true;
+        }
 
-	return false;
+        return false;
     }
 
     /**
@@ -243,7 +243,7 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function hasWidgets()
     {
-	return count($this->_index) > 0;
+        return count($this->_index) > 0;
     }
 
     /**
@@ -255,15 +255,15 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function findOneBy($property, $value)
     {
-	$iterator = new IteratorIterator($this);
+        $iterator = new IteratorIterator($this);
 
-	foreach ($iterator as $widget) {
-	    if ($widget->get($property) == $value) {
-		return $widget;
-	    }
-	}
+        foreach ($iterator as $widget) {
+            if ($widget->get($property) == $value) {
+                return $widget;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -276,16 +276,16 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function findAllBy($property, $value)
     {
-	$found = array();
+        $found = array();
 
-	$iterator = new IteratorIterator($this);
-	foreach ($iterator as $widget) {
-	    if ($widget->get($property) == $value) {
-		$found[] = $widget;
-	    }
-	}
+        $iterator = new IteratorIterator($this);
+        foreach ($iterator as $widget) {
+            if ($widget->get($property) == $value) {
+                $found[] = $widget;
+            }
+        }
 
-	return $found;
+        return $found;
     }
 
     /**
@@ -300,11 +300,11 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function findBy($property, $value, $all = false)
     {
-	if ($all) {
-	    return $this->findAllBy($property, $value);
-	} else {
-	    return $this->findOneBy($property, $value);
-	}
+        if ($all) {
+            return $this->findAllBy($property, $value);
+        } else {
+            return $this->findOneBy($property, $value);
+        }
     }
 
     /**
@@ -324,12 +324,14 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function __call($method, $arguments)
     {
-	if (@preg_match('/(find(?:One|All)?By)(.+)/', $method, $match)) {
-	    return $this->{$match[1]}($match[2], $arguments[0]);
-	}
+        if (@preg_match('/(find(?:One|All)?By)(.+)/', $method, $match)) {
+            return $this->{
+            $match[1]
+            }($match[2], $arguments[0]);
+        }
 
-	require_once 'iPMS/Widget/Exception.php';
-	throw new iPMS_Widget_Exception(sprintf('Bad method call: Unknown method %s::%s', get_class($this), $method));
+        require_once 'iPMS/Widget/Exception.php';
+        throw new iPMS_Widget_Exception(sprintf('Bad method call: Unknown method %s::%s', get_class($this), $method));
     }
 
     /**
@@ -339,17 +341,17 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function toArray()
     {
-	$widgets = array();
+        $widgets = array();
 
-	$this->_dirtyIndex = true;
-	$this->_sort();
-	$indexes = array_keys($this->_index);
+        $this->_dirtyIndex = true;
+        $this->_sort();
+        $indexes = array_keys($this->_index);
 
-	foreach ($indexes as $hash) {
+        foreach ($indexes as $hash) {
 
-	    $widgets[] = $this->_widgets[$hash]->toArray();
-	}
-	return $widgets;
+            $widgets[] = $this->_widgets[$hash]->toArray();
+        }
+        return $widgets;
     }
 
     /**
@@ -362,16 +364,16 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function current()
     {
-	$this->_sort();
-	current($this->_index);
-	$hash = key($this->_index);
+        $this->_sort();
+        current($this->_index);
+        $hash = key($this->_index);
 
-	if (isset($this->_widgets[$hash])) {
-	    return $this->_widgets[$hash];
-	} else {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Corruption detected in container; invalid key found in internal iterator');
-	}
+        if (isset($this->_widgets[$hash])) {
+            return $this->_widgets[$hash];
+        } else {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Corruption detected in container; invalid key found in internal iterator');
+        }
     }
 
     /**
@@ -383,8 +385,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function key()
     {
-	$this->_sort();
-	return key($this->_index);
+        $this->_sort();
+        return key($this->_index);
     }
 
     /**
@@ -396,8 +398,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function next()
     {
-	$this->_sort();
-	next($this->_index);
+        $this->_sort();
+        next($this->_index);
     }
 
     /**
@@ -409,8 +411,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function rewind()
     {
-	$this->_sort();
-	reset($this->_index);
+        $this->_sort();
+        reset($this->_index);
     }
 
     /**
@@ -422,8 +424,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function valid()
     {
-	$this->_sort();
-	return current($this->_index) !== false;
+        $this->_sort();
+        return current($this->_index) !== false;
     }
 
     /**
@@ -469,7 +471,7 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function count()
     {
-	return count($this->_index);
+        return count($this->_index);
     }
 
     /**
@@ -479,13 +481,13 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function init()
     {
-	if ($this->getRequest()->getControllerName() == strtolower('widgets')) {
-	    $iterator = new IteratorIterator($this);
+        if ($this->getRequest()->getControllerName() == strtolower('widgets')) {
+            $iterator = new IteratorIterator($this);
 
-	    foreach ($iterator as $widget) {
-		$widget->init();
-	    }
-	}
+            foreach ($iterator as $widget) {
+                $widget->init();
+            }
+        }
     }
 
     /**
@@ -495,34 +497,34 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function preDispatch()
     {
-	$iterator = new IteratorIterator($this);
-	$view = $this->getView();
+        $iterator = new IteratorIterator($this);
+        $view = $this->getView();
 
-	/**
-	 * @var $widget iPMS_Widget
-	 */
-	foreach ($iterator as $widget) {
-	    if ($this->getRequest()->getControllerName() == strtolower('widgets')) {
-		$widget->setContent($widget->dashBoardSettingsForm($widget));
-	    } else {
-		$content = $widget->widget();
-		if (!empty($content)) {
-		    $widget->setContent($content);
-		    if ($widget->hasPartial()) { // process this ine the view ?
-			$view->addScriptPath(APPLICATION_PATH . '/widgets/' . $widget . '/partial');
-		    }
-		} else {
-		    $this->removeWidget($widget);
-		}
+        /**
+         * @var $widget iPMS_Widget
+         */
+        foreach ($iterator as $widget) {
+            if ($this->getRequest()->getControllerName() == strtolower('widgets')) {
+                $widget->setContent($widget->dashBoardSettingsForm($widget));
+            } else {
+                $content = $widget->widget();
+                if (!empty($content)) {
+                    $widget->setContent($content);
+                    if ($widget->hasPartial()) { // process this ine the view ?
+                        $view->addScriptPath(APPLICATION_PATH . '/widgets/' . $widget . '/partial');
+                    }
+                } else {
+                    $this->removeWidget($widget);
+                }
 
-		$content = '';
-	    }
-	}
+                $content = '';
+            }
+        }
 
-	// Make the container available for the view by registering itself as container if needed
-	if (count($this)) {
-	    $view->Widget()->setContainer($this);
-	}
+        // Make the container available for the view by registering itself as container if needed
+        if (count($this)) {
+            $view->Widget()->setContainer($this);
+        }
     }
 
     /**
@@ -532,8 +534,8 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function postDispatch()
     {
-	// Avoid multiple call of widget logic (eg. when view action helper is used)
-	Zend_Controller_Action_HelperBroker::removeHelper($this->getName());
+        // Avoid multiple call of widget logic (eg. when view action helper is used)
+        Zend_Controller_Action_HelperBroker::removeHelper($this->getName());
     }
 
     /**
@@ -543,15 +545,15 @@ abstract class iPMS_Widget_Container_Abstract extends Zend_Controller_Action_Hel
      */
     public function getView()
     {
-	$actionController = $this->getActionController();
-	$view = $actionController->view;
+        $actionController = $this->getActionController();
+        $view = $actionController->view;
 
-	if (!$view instanceof Zend_View_Abstract) {
-	    require_once 'iPMS/Widget/Exception.php';
-	    throw new iPMS_Widget_Exception('Unable to get view instance for widget rendering');
-	}
+        if (!$view instanceof Zend_View_Abstract) {
+            require_once 'iPMS/Widget/Exception.php';
+            throw new iPMS_Widget_Exception('Unable to get view instance for widget rendering');
+        }
 
-	return $view;
+        return $view;
     }
 
 }

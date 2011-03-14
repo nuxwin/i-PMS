@@ -65,11 +65,11 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function box(iPMS_Widget_Container_Abstract $container = null)
     {
-	if (null !== $container) {
-	    $this->setContainer($container);
-	}
+        if (null !== $container) {
+            $this->setContainer($container);
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -80,11 +80,11 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setUlClass($ulClass)
     {
-	if (is_string($ulClass)) {
-	    $this->_ulClass = $ulClass;
-	}
+        if (is_string($ulClass)) {
+            $this->_ulClass = $ulClass;
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -94,7 +94,7 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getUlClass()
     {
-	return $this->_ulClass;
+        return $this->_ulClass;
     }
 
     /**
@@ -106,11 +106,11 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function setPartial($partial)
     {
-	if (null === $partial || is_string($partial) || is_array($partial)) {
-	    $this->_partial = $partial;
-	}
+        if (null === $partial || is_string($partial) || is_array($partial)) {
+            $this->_partial = $partial;
+        }
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -120,7 +120,7 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function getPartial()
     {
-	return $this->_partial;
+        return $this->_partial;
     }
 
     /**
@@ -134,43 +134,43 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function htmlify(iPMS_Widget_Abstract $widget)
     {
-	return parent::htmlify($widget);
+        return parent::htmlify($widget);
 
-	/*
-	  // get label and title for translating
-	  $label = $widget->getLabel();
-	  $title = $widget->getTitle();
+        /*
+        // get label and title for translating
+        $label = $widget->getLabel();
+        $title = $widget->getTitle();
 
-	  // translate label and title?
-	  if ($this->getUseTranslator() && $t = $this->getTranslator()) {
-	  if (is_string($label) && !empty($label)) {
-	  $label = $t->translate($label);
-	  }
-	  if (is_string($title) && !empty($title)) {
-	  $title = $t->translate($title);
-	  }
-	  }
+        // translate label and title?
+        if ($this->getUseTranslator() && $t = $this->getTranslator()) {
+        if (is_string($label) && !empty($label)) {
+        $label = $t->translate($label);
+        }
+        if (is_string($title) && !empty($title)) {
+        $title = $t->translate($title);
+        }
+        }
 
-	  // get attribs for element
-	  $attribs = array(
-	  'id'     => $widget->getId(),
-	  'title'  => $title,
-	  'class'  => $widget->getClass()
-	  );
+        // get attribs for element
+        $attribs = array(
+        'id'     => $widget->getId(),
+        'title'  => $title,
+        'class'  => $widget->getClass()
+        );
 
-	  // does page have a href?
-	  if ($href = $widget->getHref()) {
-	  $element = 'a';
-	  $attribs['href'] = $href;
-	  $attribs['target'] = $widget->getTarget();
-	  } else {
-	  $element = 'span';
-	  }
+        // does page have a href?
+        if ($href = $widget->getHref()) {
+        $element = 'a';
+        $attribs['href'] = $href;
+        $attribs['target'] = $widget->getTarget();
+        } else {
+        $element = 'span';
+        }
 
-	  return '<' . $element . $this->_htmlAttribs($attribs) . '>'
-	  . $this->view->escape($label)
-	  . '</' . $element . '>';
-	 */
+        return '<' . $element . $this->_htmlAttribs($attribs) . '>'
+        . $this->view->escape($label)
+        . '</' . $element . '>';
+       */
     }
 
     /**
@@ -181,19 +181,19 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     protected function _normalizeOptions(array $options = array())
     {
-	if (isset($options['indent'])) {
-	    $options['indent'] = $this->_getWhitespace($options['indent']);
-	} else {
-	    $options['indent'] = $this->getIndent();
-	}
+        if (isset($options['indent'])) {
+            $options['indent'] = $this->_getWhitespace($options['indent']);
+        } else {
+            $options['indent'] = $this->getIndent();
+        }
 
-	if (isset($options['ulClass']) && $options['ulClass'] !== null) {
-	    $options['ulClass'] = (string) $options['ulClass'];
-	} else {
-	    $options['ulClass'] = $this->getUlClass();
-	}
+        if (isset($options['ulClass']) && $options['ulClass'] !== null) {
+            $options['ulClass'] = (string)$options['ulClass'];
+        } else {
+            $options['ulClass'] = $this->getUlClass();
+        }
 
-	return $options;
+        return $options;
     }
 
     // Render methods:
@@ -208,124 +208,124 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     protected function _renderBox(iPMS_Widget_Container_Abstract $container, $ulClass, $indent)
     {
-	//$html = 'iPMS_View_Helper_Widget_Box::_renderBox() isNot Yet Implemented (line 347)';
+        //$html = 'iPMS_View_Helper_Widget_Box::_renderBox() isNot Yet Implemented (line 347)';
 
-	$html = '';
+        $html = '';
 
-	// Create iterator
-	$iterator = new IteratorIterator($container);
+        // Create iterator
+        $iterator = new IteratorIterator($container);
 
-	foreach ($iterator as $widget) {
-	    if ($widget->isActive() && $this->accept($widget)) {
-		if ($widget->hasPartial()) {
-		    $html .= $this->_renderWidgetPartial($widget);
-		}
-	    } else {
-		continue;
-	    }
-	}
+        foreach ($iterator as $widget) {
+            if ($widget->isActive() && $this->accept($widget)) {
+                if ($widget->hasPartial()) {
+                    $html .= $this->_renderWidgetPartial($widget);
+                }
+            } else {
+                continue;
+            }
+        }
 
-	/*
+        /*
 
 
-	  // find deepest active
-	  if ($found = $this->findActive($container, $minDepth, $maxDepth)) {
-	  $foundWidget = $found['widget'];
-	  $foundDepth = $found['depth'];
-	  } else {
-	  $foundWidget = null;
-	  }
+        // find deepest active
+        if ($found = $this->findActive($container, $minDepth, $maxDepth)) {
+        $foundWidget = $found['widget'];
+        $foundDepth = $found['depth'];
+        } else {
+        $foundWidget = null;
+        }
 
-	  // create iterator
-	  $iterator = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
-	  if (is_int($maxDepth)) {
-	  $iterator->setMaxDepth($maxDepth);
-	  }
+        // create iterator
+        $iterator = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+        if (is_int($maxDepth)) {
+        $iterator->setMaxDepth($maxDepth);
+        }
 
-	  // iterate container
-	  $prevDepth = -1;
-	  foreach ($iterator as $widget) {
-	  $zone = $this->_zone;
-	  if(null !== $zone && $zone != $widget->_target) continue;
+        // iterate container
+        $prevDepth = -1;
+        foreach ($iterator as $widget) {
+        $zone = $this->_zone;
+        if(null !== $zone && $zone != $widget->_target) continue;
 
-	  // NXW addon
-	  if($widget->hasPartial()) {
-	  return $this->_renderWidgetPartial($widget);
-	  }
+        // NXW addon
+        if($widget->hasPartial()) {
+        return $this->_renderWidgetPartial($widget);
+        }
 
-	  $depth = $iterator->getDepth();
-	  $isActive = $widget->isActive(true);
-	  if ($depth < $minDepth || !$this->accept($widget)) {
-	  // widget is below minDepth or not accepted by acl/visibility
-	  continue;
-	  } else if ($onlyActive && !$isActive) {
-	  // widget is not active itself, but might be in the active branch
-	  $accept = false;
-	  if ($foundWidget) {
-	  if ($foundWidget->hasWidget($widget)) {
-	  // accept if widget is a direct child of the active widget
-	  $accept = true;
-	  } else if ($foundWidget->getParent()->hasWidget($widget)) {
-	  // widget is a sibling of the active widget...
-	  if (!$foundWidget->hasWidgets() ||
-	  is_int($maxDepth) && $foundDepth + 1 > $maxDepth) {
-	  // accept if active widget has no children, or the children are too deep to be rendered
-	  $accept = true;
-	  }
-	  }
-	  }
+        $depth = $iterator->getDepth();
+        $isActive = $widget->isActive(true);
+        if ($depth < $minDepth || !$this->accept($widget)) {
+        // widget is below minDepth or not accepted by acl/visibility
+        continue;
+        } else if ($onlyActive && !$isActive) {
+        // widget is not active itself, but might be in the active branch
+        $accept = false;
+        if ($foundWidget) {
+        if ($foundWidget->hasWidget($widget)) {
+        // accept if widget is a direct child of the active widget
+        $accept = true;
+        } else if ($foundWidget->getParent()->hasWidget($widget)) {
+        // widget is a sibling of the active widget...
+        if (!$foundWidget->hasWidgets() ||
+        is_int($maxDepth) && $foundDepth + 1 > $maxDepth) {
+        // accept if active widget has no children, or the children are too deep to be rendered
+        $accept = true;
+        }
+        }
+        }
 
-	  if (!$accept) {
-	  continue;
-	  }
-	  }
+        if (!$accept) {
+        continue;
+        }
+        }
 
-	  // make sure indentation is correct
-	  $depth -= $minDepth;
-	  $myIndent = $indent . str_repeat('        ', $depth);
+        // make sure indentation is correct
+        $depth -= $minDepth;
+        $myIndent = $indent . str_repeat('        ', $depth);
 
-	  if ($depth > $prevDepth) {
-	  // start new ul tag
-	  if ($ulClass && $depth ==  0) {
-	  $ulClass = ' class="' . $ulClass . '"';
-	  } else {
-	  $ulClass = '';
-	  }
-	  $html .= $myIndent . '<ul' . $ulClass . '>' . self::EOL;
-	  } else if ($prevDepth > $depth) {
-	  // close li/ul tags until we're at current depth
-	  for ($i = $prevDepth; $i > $depth; $i--) {
-	  $ind = $indent . str_repeat('        ', $i);
-	  $html .= $ind . '    </li>' . self::EOL;
-	  $html .= $ind . '</ul>' . self::EOL;
-	  }
-	  // close previous li tag
-	  $html .= $myIndent . '    </li>' . self::EOL;
-	  } else {
-	  // close previous li tag
-	  $html .= $myIndent . '    </li>' . self::EOL;
-	  }
+        if ($depth > $prevDepth) {
+        // start new ul tag
+        if ($ulClass && $depth ==  0) {
+        $ulClass = ' class="' . $ulClass . '"';
+        } else {
+        $ulClass = '';
+        }
+        $html .= $myIndent . '<ul' . $ulClass . '>' . self::EOL;
+        } else if ($prevDepth > $depth) {
+        // close li/ul tags until we're at current depth
+        for ($i = $prevDepth; $i > $depth; $i--) {
+        $ind = $indent . str_repeat('        ', $i);
+        $html .= $ind . '    </li>' . self::EOL;
+        $html .= $ind . '</ul>' . self::EOL;
+        }
+        // close previous li tag
+        $html .= $myIndent . '    </li>' . self::EOL;
+        } else {
+        // close previous li tag
+        $html .= $myIndent . '    </li>' . self::EOL;
+        }
 
-	  // render li tag and widget
-	  $liClass = $isActive ? ' class="active"' : '';
-	  $html .= $myIndent . '    <li' . $liClass . '>' . self::EOL
-	  . $myIndent . '        ' . $this->htmlify($widget) . self::EOL;
+        // render li tag and widget
+        $liClass = $isActive ? ' class="active"' : '';
+        $html .= $myIndent . '    <li' . $liClass . '>' . self::EOL
+        . $myIndent . '        ' . $this->htmlify($widget) . self::EOL;
 
-	  // store as previous depth for next iteration
-	  $prevDepth = $depth;
-	  }
+        // store as previous depth for next iteration
+        $prevDepth = $depth;
+        }
 
-	  if ($html) {
-	  // done iterating container; close open ul/li tags
-	  for ($i = $prevDepth+1; $i > 0; $i--) {
-	  $myIndent = $indent . str_repeat('        ', $i-1);
-	  $html .= $myIndent . '    </li>' . self::EOL
-	  . $myIndent . '</ul>' . self::EOL;
-	  }
-	  $html = rtrim($html, self::EOL);
-	  }
-	 */
-	return $html;
+        if ($html) {
+        // done iterating container; close open ul/li tags
+        for ($i = $prevDepth+1; $i > 0; $i--) {
+        $myIndent = $indent . str_repeat('        ', $i-1);
+        $html .= $myIndent . '    </li>' . self::EOL
+        . $myIndent . '</ul>' . self::EOL;
+        }
+        $html = rtrim($html, self::EOL);
+        }
+       */
+        return $html;
     }
 
     /**
@@ -341,14 +341,14 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function renderBox(iPMS_Widget_Container_Abstract $container = null, array $options = array())
     {
-	if (null === $container) {
-	    $container = $this->getContainer();
-	}
+        if (null === $container) {
+            $container = $this->getContainer();
+        }
 
-	$options = $this->_normalizeOptions($options);
-	$html = $this->_renderBox($container, $options['ulClass'], $options['indent']);
+        $options = $this->_normalizeOptions($options);
+        $html = $this->_renderBox($container, $options['ulClass'], $options['indent']);
 
-	return $html;
+        return $html;
     }
 
     /**
@@ -366,41 +366,41 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function renderPartial(iPMS_Widget_Container_Abstract $container = null, $partial = null)
     {
-	if (null === $container) {
-	    $container = $this->getContainer();
-	}
+        if (null === $container) {
+            $container = $this->getContainer();
+        }
 
-	if (null === $partial) {
-	    $partial = $this->getPartial();
-	}
+        if (null === $partial) {
+            $partial = $this->getPartial();
+        }
 
-	if (empty($partial)) {
-	    require_once 'iPMS/View/Exception.php';
-	    throw new Zend_View_Exception();
-	    $e = new iPMS_View_Exception('Unable to render widgets: No partial view script provided');
-	    $e->setView($this->view);
-	    throw $e;
-	}
+        if (empty($partial)) {
+            require_once 'iPMS/View/Exception.php';
+            throw new Zend_View_Exception();
+            $e = new iPMS_View_Exception('Unable to render widgets: No partial view script provided');
+            $e->setView($this->view);
+            throw $e;
+        }
 
-	$model = array(
-	    'widgetContainer' => $container
-	);
+        $model = array(
+            'widgetContainer' => $container
+        );
 
-	if (is_array($partial)) {
-	    if (count($partial) != 2) {
-		require_once 'iPMS/View/Exception.php';
-		$e = new iPMS_View_Exception(
-				'Unable to render widget box: A view partial supplied as an array must contain two values: '
-				. 'partial view script and module where script can be found'
-		);
-		$e->setView($this->view);
-		throw $e;
-	    }
+        if (is_array($partial)) {
+            if (count($partial) != 2) {
+                require_once 'iPMS/View/Exception.php';
+                $e = new iPMS_View_Exception(
+                    'Unable to render widget box: A view partial supplied as an array must contain two values: '
+                    . 'partial view script and module where script can be found'
+                );
+                $e->setView($this->view);
+                throw $e;
+            }
 
-	    return $this->view->partial($partial[0], $partial[1], $model);
-	}
+            return $this->view->partial($partial[0], $partial[1], $model);
+        }
 
-	return $this->view->partial($partial, null, $model);
+        return $this->view->partial($partial, null, $model);
     }
 
     /**
@@ -417,8 +417,8 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     protected function _renderWidgetPartial(iPMS_Widget_Abstract $widget)
     {
-	$widgetName = lcfirst($widget->getName());
-	return $this->view->partial($widgetName . '.phtml', array($widgetName . 'Widget' => $widget));
+        $widgetName = lcfirst($widget->getName());
+        return $this->view->partial($widgetName . '.phtml', array($widgetName . 'Widget' => $widget));
     }
 
     /**
@@ -438,11 +438,11 @@ class iPMS_View_Helper_Widget_Box extends iPMS_View_Helper_Widget_HelperAbstract
      */
     public function render(iPMS_Widget_Container_Abstract $container = null)
     {
-	if ($partial = $this->getPartial()) {
-	    return $this->renderPartial($container, $partial);
-	} else {
-	    return $this->renderBox($container);
-	}
+        if ($partial = $this->getPartial()) {
+            return $this->renderPartial($container, $partial);
+        } else {
+            return $this->renderBox($container);
+        }
     }
 
 }

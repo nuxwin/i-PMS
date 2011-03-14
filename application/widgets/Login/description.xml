@@ -18,7 +18,8 @@
             <label>Title</label>
         </param>
         <param name="rememberMe">
-            <description><![CDATA[Tell whether or not a "Remember me" checkbox should be displayed along the login form]]>
+            <description>
+                <![CDATA[Tell whether or not a "Remember me" checkbox should be displayed along the login form]]>
             </description>
             <type>Checkbox</type>
             <value>0</value>

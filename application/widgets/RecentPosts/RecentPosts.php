@@ -46,7 +46,7 @@ class Widget_RecentPosts_RecentPosts extends iPMS_Widget
      */
     public function preDispatch()
     {
-	
+
     }
 
 }

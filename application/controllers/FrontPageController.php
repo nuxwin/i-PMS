@@ -42,9 +42,9 @@ class FrontPageController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-	$model = new Model_DbTable_Posts();
-	$pageablePosts = $model->getPageablePosts((int) $this->_request->getParam('page', 1), 5);
-	$this->view->assign('paginator', $pageablePosts);
+        $model = new Model_DbTable_Posts();
+        $pageablePosts = $model->getPageablePosts((int)$this->_request->getParam('page', 1), 5);
+        $this->view->assign('paginator', $pageablePosts);
     }
 
     /**
@@ -56,39 +56,39 @@ class FrontPageController extends Zend_Controller_Action
      */
     protected function getForumRss()
     {
-	$rssDoc = new DOMDocument();
-	$arrFeeds = array();
+        $rssDoc = new DOMDocument();
+        $arrFeeds = array();
 
-	// TODO get link from database
-	if ($rssDoc->load(
-			'http://forum.i-mscp.net/syndication.php?fid=1,2,3,4,5,6,7,24,8,10,9,11,12,13,14,33,15,16,17,18&limit=5'
-	)) {
-	    $maxTitleLength = 25;
-	    $feeds = array();
+        // TODO get link from database
+        if ($rssDoc->load(
+            'http://forum.i-mscp.net/syndication.php?fid=1,2,3,4,5,6,7,24,8,10,9,11,12,13,14,33,15,16,17,18&limit=5'
+        )) {
+            $maxTitleLength = 25;
+            $feeds = array();
 
-	    foreach ($rssDoc->getElementsByTagName('item') as $item) {
-		$title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
+            foreach ($rssDoc->getElementsByTagName('item') as $item) {
+                $title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
 
-		// TODO create view helper for it
-		$normalizedTitle = $title;
-		if (strlen($normalizedTitle) >= $maxTitleLength) {
-		    $normalizedTitle = substr($normalizedTitle, 0, $maxTitleLength);
-		    $spacer = strrpos($normalizedTitle, ' ');
-		    if ($spacer) {
-			$normalizedTitle = substr($normalizedTitle, 0, $spacer);
-		    }
-		    $normalizedTitle .= '...';
-		}
-		$itemRSS = array(
-		    'title' => $title,
-		    'normalizedTitle' => $normalizedTitle,
-		    'link' => $item->getElementsByTagName('link')->item(0)->nodeValue,
-		);
-		array_push($feeds, $itemRSS);
-	    }
-	}
+                // TODO create view helper for it
+                $normalizedTitle = $title;
+                if (strlen($normalizedTitle) >= $maxTitleLength) {
+                    $normalizedTitle = substr($normalizedTitle, 0, $maxTitleLength);
+                    $spacer = strrpos($normalizedTitle, ' ');
+                    if ($spacer) {
+                        $normalizedTitle = substr($normalizedTitle, 0, $spacer);
+                    }
+                    $normalizedTitle .= '...';
+                }
+                $itemRSS = array(
+                    'title' => $title,
+                    'normalizedTitle' => $normalizedTitle,
+                    'link' => $item->getElementsByTagName('link')->item(0)->nodeValue,
+                );
+                array_push($feeds, $itemRSS);
+            }
+        }
 
-	return $feeds;
+        return $feeds;
     }
 
 }
