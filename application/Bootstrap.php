@@ -43,12 +43,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initAutoload()
     {
         $moduleLoader = new Zend_Application_Module_Autoloader(array(
-                                                                    'namespace' => '',
-                                                                    'basePath' => APPLICATION_PATH
-                                                               ));
+            'namespace' => '',
+            'basePath' => APPLICATION_PATH
+        ));
 
-        $moduleLoader->addResourceType('plugin', 'plugins/', 'Plugin');
-        //$moduleLoader->addResourceType('widget', 'widgets/login', 'Widget_Login');
+        //$moduleLoader->addResourceType('plugin', 'plugins/', 'Plugin');
 
         return $moduleLoader;
     }
@@ -75,6 +74,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      * Initialize view
      *
      * @return Zend_View
+     * @todo move it to plugin resource
      */
     public function _initSetupView()
     {
@@ -82,31 +82,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('View');
         $view = $this->getResource('View');
 
-        //$view->doctype('XHTML5');
         $view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site');
-
-        // Define favicon
         $view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
-
-        // Define common js scripts
         $view->headScript()
-                ->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
-                ->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
-
-        // Add our view helper path
+            ->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
+            ->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
         $view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
 
         // Add jQuery support
-        $view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
+        ZendX_JQuery::enableView($view);
 
-        /**
-         * @var $jquery ZendX_JQuery_View_Helper
-         */
         $jquery = $view->jQuery();
 
         // Set jquery core and ui versions to be used
         // See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
-        $jquery->setVersion('1.4.4');
+        $jquery->setVersion('1.5.1');
         $jquery->setUiVersion('1.8.10');
         $jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/smoothness/jquery-ui.css');
 
@@ -117,15 +107,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
     /**
-     * @return void
+     * Initialize the router
+     *
+     * @return Zend_Controller_Router_Interface
+     * @todo move it to plugin resource
      */
     public function _initRouter()
     {
-
         $this->bootstrap('frontController');
-        /**
-         * @var $fc Zend_Controller_Front
-         */
         $fc = $this->getResource('FrontController');
         $configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
         $router = $fc->getRouter();
