@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -22,13 +21,12 @@
  * @package     iPMS_Widget
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * @see iPMS/Widget/Interface.php
+ * @see iPMS_Widget_Interface.php
  */
 require_once 'iPMS/Widget/Interface.php';
 

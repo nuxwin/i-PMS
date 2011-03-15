@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -19,29 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_View
- * @subpackage  Helper
+ * @package     iPMS_Widget
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-/**
- * @see iZend_View_Helper_Abstract
- */
-require_once 'Zend/View/Helper/Abstract.php';
 
 /**
- * Proxy helper for retrieving widget helpers and forwarding calls
- *
- * @category    iPMS
- * @package     iPMS_View
- * @subpackage  Helper
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * Widget interface
  */
-class iPMS_View_Helper_Widget extends Zend_View_Helper_Abstract
+interface iPMS_Widget_Interface
 {
 
 }
