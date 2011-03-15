@@ -67,7 +67,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
          */
         $fc = $this->getResource('FrontController');
         //$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
-        $fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
+        //$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
     }
 
     /**

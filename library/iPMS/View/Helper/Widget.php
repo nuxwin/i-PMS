@@ -44,4 +44,16 @@ require_once 'Zend/View/Helper/Abstract.php';
 class iPMS_View_Helper_Widget extends Zend_View_Helper_Abstract
 {
 
+    /**
+     * Render a widget sidebar
+     * 
+     * @param null $sidebar Widget area where the widget will be rendered
+     * @param array $default [OPTIONAL] List of widgets to render if none was set manually for the current sidebar
+     * @return void
+     */
+    public function widget($sidebar, $default = array())
+    {
+
+    }
+
 }
