@@ -3,7 +3,6 @@
 <widget>
     <name>Login</name>
     <title>Login Form</title>
-    <module></module>
     <description>Display a form to login</description>
     <author>Laurent Declercq / i-PMS Core Team</author>
     <email>core@ipms.net</email>
@@ -27,5 +26,4 @@
             </label>
         </param>
     </params>
-    <resources></resources>
 </widget>
