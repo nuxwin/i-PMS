@@ -27,8 +27,64 @@
 
 /**
  * Widget interface
+ *
+ * @category    iPMS
+ * @package     iPMS_Widget
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     1.0.0
  */
 interface iPMS_Widget_Interface
 {
+    /**
+     * Sets widget properties from an associative array
+     *
+     * @abstract
+     * @throws iPMS_Widget_Exception if invalid options are given
+     * @param array $options array that contain widget options
+     * @return iPMS_Widget fluent interface, returns self
+     */
+    public function setOptions(array $options);
 
+    /**
+     * Sets widget parameters from an associative array
+     *
+     * @abstract
+     * @throws iPMS_Widget_Exception if a parameter has no name
+     * @param array $params array that contains widget parameters
+     * @return iPMS_Widget fluent interface, returns self
+     */
+    public function setParams(array $params);
+
+    /**
+     * Returns a widget parameter
+     *
+     * @abstract
+     * @param  $param widget parameter name
+     * @return mixed parameter value or null
+     */
+    public function getParam($param);
+
+    /**
+     * Make the widget content available for the view
+     *
+     * @abstract
+     * @return void
+     */
+    public function widget();
+
+    /**
+     * Make the widget settings available for the dashboard
+     *
+     * @abstract
+     * @return void
+     */
+    public function dashboard();
+
+    /**
+     * Update the widgets options (either a property or parameter)
+     *
+     * @abstract
+     * @return void
+     */
+    public function update();
 }
