@@ -520,19 +520,13 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     /**
      * Sets widget content
      *
-     * @throws iPMS_Widget_Exception if $content is not a string or null
+     * Content is passed to the view as this without any treatment.
+     *
      * @param  string $content widget content
      * @return iPMS_Widget fluent interface, returns self
      */
     public function setContent($content)
     {
-        if (null !== $content && !is_string($content)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
-                'Invalid argument: $content must be a string or null'
-            );
-        }
-
         $this->_content = $content;
 
         return $this;
@@ -718,11 +712,11 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      */
     final public function _dashboard()
     {
-        $this->setContent($this->_dashboard());
+        $content = $this->_dashboard();
+        $this->setContent($content);
 
-        if (file_exists(APPLICATION_PATH . '/widgets/' . $this->_name . '/partial/dashboard.phtml')) {
-            $content = $this->_renderPartial('dashboard.phptml');
-            $this->setContent($content);
+        if ($content !=  '' && file_exists(APPLICATION_PATH . '/widgets/' . $this->_name . '/partial/dashboard.phtml')) {
+            $this->_renderPartial('dashboard.phptml');
         }
 
         return $this;
