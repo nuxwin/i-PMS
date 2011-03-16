@@ -40,11 +40,37 @@ class Widget_RecentPosts_RecentPosts extends iPMS_Widget
 {
 
     /**
-     * Hook into action controller preDispatch() workflow
+     * Make the widget content for the view
+     *
+     * Implements {@link iPMS_Widget_Interface::widget()}
      *
      * @return void
      */
-    public function preDispatch()
+    public function widget()
+    {
+
+    }
+
+    /**
+     * Widget dashboard settings form
+     *
+     * Implements {@link iPMS_Widget_Interface::dashboard()}
+     *
+     * @return void
+     */
+    public function dashboard()
+    {
+
+    }
+
+    /**
+     * Update widget options (either widget property or parameter)
+     *
+     * Implements {@link iPMS_Widget_Interface::update()}
+     *
+     * @return void
+     */
+    public function update()
     {
 
     }

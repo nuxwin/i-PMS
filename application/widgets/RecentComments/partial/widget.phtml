@@ -1,0 +1,16 @@
+<div id="widget-<?php echo $this->widget->getId();?>" class="box">
+    <div class="boxHeader">
+        <h1><?php echo $this->widget->getTitle();?></h1>
+    </div>
+    <div class="boxBody">
+        <ul>
+        <?php foreach($this->widget->getContent() as $comment):?>
+        <li>
+            <a href="/posts/view/id/<?php echo $comment['post_id']; ?>"
+               title="<?php echo $this->escape($comment['body']); ?>">
+                <span><?php echo $this->escape($comment['body']); ?></span>
+            </a>
+        <?php endforeach;?>
+        </ul>
+    </div>
+</div>

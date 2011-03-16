@@ -40,25 +40,11 @@ class Widget_Login_Login extends iPMS_Widget
 {
 
     /**
-     * Tell whether or not partial must be used for widget rendering
-     * @var bool
-     */
-    protected $_partial = true;
-
-    /**
-     * Widget initialization - Implements {@link iPMS_Widget::init()}
+     * Make widget content available for the view
      *
-     * @return void
-     */
-    public function init()
-    {
-
-    }
-
-    /**
-     * Make widget content available for the view (Here the login form)  - Implements {@link iPMS_Widget::widget()}
+     * Implements {@link iPMS_Widget_Interface::widget()}
      *
-     * @return string content to render
+     * @return string Login form
      */
     public function widget()
     {
@@ -88,39 +74,39 @@ class Widget_Login_Login extends iPMS_Widget
     }
 
     /**
-     * Widget dashboard settings form - - Implements {@link iPMS_Widget::dashBoardSettingsForm()}
+     * Widget dashboard settings form
      *
-     * This methods contains the widget settings form that will be shown on the Widgets dashboard screen
+     * Implements {@link iPMS_Widget_Interface::dashboard()}
      *
-     * @abstract
-     * @param  $instance
      * @return void
      */
-    public function dashBoardSettingsForm($instance)
+    public function dashboard()
     {
-        return $this->buildDashboardSettingsForm($this->getParams())->render();
-    }
-
-    /**
-     * Read param from the widget xml file (will be in abstract class)
-     * @return
-     */
-    public function getParams()
-    {
-        $config = new Zend_Config_Xml(dirname(__FILE__) . '/description.xml');
-        $config = $config->toArray();
-        return $config['params']['param'];
+        //return $this->buildDashboardSettingsForm($this->getParams())->render();
     }
 
     /**
      * Returns HTML login form
+     *
      * @return Zend_Form
      */
     protected function _getForm()
     {
         $form = new Form_Login();
         $form->setElementsBelongTo('login');
+
         return $form;
     }
 
+    /**
+     * Update widget options (either widget property or parameter)
+     *
+     * Implements {@link iPMS_Widget_Interface::update()}
+     *
+     * @return void
+     */
+    public function update()
+    {
+
+    }
 }

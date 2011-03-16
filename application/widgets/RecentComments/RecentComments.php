@@ -40,65 +40,41 @@ class Widget_RecentComments_RecentComments extends iPMS_Widget
 {
 
     /**
-     * Widget initialization
+     * Make widget content available for the view
      *
-     * @return void
-     */
-    public function init()
-    {
-
-    }
-
-    /**
-     * Generate code for rendering process
+     * Implements {@link iPMS_Widget_Interface::widget()}
      *
-     * @return void
+     * @return array array of comments
      */
     public function widget()
     {
-        $commentsModel = new Model_DbTable_Comments();
-        $comments = $commentsModel->fetchAll(null, 'id', 5)->toArray();
+        $model = new Model_DbTable_Comments();
+        $comments = $model->fetchAll(null, 'id', 5)->toArray();
 
-
-        if (count($comments)) {
-            $this->_comments = $comments;
-            $this->_prepareView();
-        }
-    }
-
-    protected $_comments = array();
-    /**
-     * Tell whether or not partial must be used for widget rendering
-     * @var bool
-     */
-    protected $_partial = true;
-
-
-    public function getComments()
-    {
-        return $this->_comments;
+        return $comments;
     }
 
     /**
      * Widget dashboard settings form
      *
-     * This methods must contains the widget settings form that will be shown on the Widgets dashboard screen
+     * Implements {@link iPMS_Widget_Interface::dashboard()}
      *
-     * @abstract
-     * @param  $instance
      * @return void
      */
-    public function dashBoardSettingsForm($instance)
+    public function dashboard()
     {
-        $form = new Zend_Form();
 
-        $form->addElement(new Zend_Form_Element_Text(array(
-                                                          'name' => $this->getName(),
-                                                          'value' => 10,
-                                                          'label' => $this->getTitle()
-                                                     )));
-
-        return $form;
     }
 
+    /**
+     * Update widget options (either widget property or parameter)
+     *
+     * Implements {@link iPMS_Widget_Interface::update()}
+     *
+     * @return void
+     */
+    public function update()
+    {
+
+    }
 }

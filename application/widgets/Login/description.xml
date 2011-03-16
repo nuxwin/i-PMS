@@ -2,28 +2,24 @@
 
 <widget>
     <name>Login</name>
-    <title>Login Form</title>
+    <title>Login</title>
     <description>Display a form to login</description>
     <author>Laurent Declercq / i-PMS Core Team</author>
-    <email>core@ipms.net</email>
+    <email>core@i-pms.net</email>
     <version>1.0.0</version>
     <license>GPLv2</license>
+    <load_type>server</load_type>
+    <id>loginWidget</id>
     <params>
         <param name="title">
-            <description><![CDATA[Allow to set a title for login box]]>
-            </description>
-            <type>Text</type>
-            <value>Login Box Title</value>
-            <label>Title</label>
+            <description><![CDATA[Allow to set a title for login box]]></description>
+            <value>Title</value>
         </param>
         <param name="rememberMe">
             <description>
                 <![CDATA[Tell whether or not a "Remember me" checkbox should be displayed along the login form]]>
             </description>
-            <type>Checkbox</type>
             <value>0</value>
-            <label><![CDATA[Allow remember me ?]]>
-            </label>
         </param>
     </params>
 </widget>

@@ -39,11 +39,38 @@ class Widget_RssFeed_RssFeed extends iPMS_Widget
 {
 
     /**
-     * Hook into action controller preDispatch() workflow
+     * Make widget content available for the view
+     *
+     * Implements {@link iPMS_Widget_Interface::widget()}
+     *
+     * @return mixed widget content
+     */
+    public function widget()
+    {
+
+    }
+
+    /**
+     * Widget dashboard settings form
+     *
+     * Implements {@link iPMS_Widget_Interface::dashboard()}
      *
      * @return void
      */
-    public function preDispatch()
+    public function dashboard()
     {
+        //return $this->buildDashboardSettingsForm($this->getParams())->render();
+    }
+
+    /**
+     * Update widget options (either widget property or parameter)
+     *
+     * Implements {@link iPMS_Widget_Interface::update()}
+     *
+     * @return void
+     */
+    public function update()
+    {
+
     }
 }

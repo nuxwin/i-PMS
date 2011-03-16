@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <widget>
-    <name>Login</name>
-    <title>Login</title>
-    <module>core</module>
+    <name>RecentPosts</name>
+    <title>Recent posts</title>
     <description>Displays a list of the most recent posts</description>
-    <thumbnail></thumbnail>
     <author>Laurent Declercq / i-PMS Core Team</author>
-    <email>core@ipms.net</email>
+    <email>core@i-pms.net</email>
     <version>1.0.0</version>
-    <license>free</license>
+    <license>GPLv2</license>
+    <load_type>server</load_type>
+    <id>recentPostsWidget</id>
     <params>
         <param name="title">
-            <description><![CDATA[Optional RSS feed title]]></description>
+            <description><![CDATA[Optional title]]></description>
         </param>
         <param name="number">
             <description><![CDATA[Maximum number of items to display]]></description>
         </param>
     </params>
-    <resources></resources>
 </widget>
