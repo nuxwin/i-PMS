@@ -38,7 +38,6 @@
  */
 class Widget_RecentComments_RecentComments extends iPMS_Widget
 {
-
     /**
      * Make widget content available for the view
      *
@@ -55,26 +54,28 @@ class Widget_RecentComments_RecentComments extends iPMS_Widget
     }
 
     /**
-     * Widget dashboard settings form
+     * Make the widget settings form available for the dashboard
      *
-     * Implements {@link iPMS_Widget_Interface::dashboard()}
-     *
+     * @abstract
+     * @param  $settings current widget settings
      * @return void
      */
-    public function dashboard()
+    public function dashboard($settings)
     {
-
+        // todo add class for specific widget subform treatment.
     }
 
     /**
-     * Update widget options (either widget property or parameter)
+     * Update widgets settings
      *
      * Implements {@link iPMS_Widget_Interface::update()}
      *
-     * @return void
+     * @param  array $settings array settings to be updated
+     * @param  array $oldSettings old settings
+     * @return array settings to save
      */
-    public function update()
+    public function update($settings, $oldSettings)
     {
-
+        // not yet implemented
     }
 }
