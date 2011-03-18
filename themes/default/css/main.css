@@ -858,7 +858,7 @@ p.moreLink {
 }
 
 .box ul {
-    list-style: none; /*border:1px solid red;*/
+    list-style:inside;
     padding: 5px;
     margin: 0;
     margin-bottom: 15px;
@@ -870,7 +870,6 @@ p.moreLink {
 }
 
 .box li {
-    border-top: 1px dashed rgb(29, 42, 91);
     padding: 5px 0;
 }
 
@@ -1000,10 +999,6 @@ span.underline {
 * Form css
 */
 
-.zend_form {
-/*overflow:auto;*/
-}
-
 dl {
     padding-top: 10px;
 }
@@ -1021,6 +1016,7 @@ dt {
 dt label {
     cursor: pointer;
     line-height: 22px;
+    font-weight:600;
 }
 
 dd {
@@ -1053,4 +1049,6 @@ dd textarea {
     height: 50px;
 }
 
-
+#login-redirect-label, #login-redirect-element{
+    display:none;
+}
