@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget>
+    <name>RssFeed</name>
+    <title>Rss Feed</title>
+    <description>Display a RSS feed</description>
+    <author>Laurent Declercq / iPMS Core Team</author>
+    <email>core@i-pms.net</email>
+    <version>1.0.0</version>
+    <license>GPLv2</license>
+    <load_type>server</load_type>
+    <id>rssFeedWidget</id>
+    <params>
+        <param name="url">
+            <description><![CDATA[RSS feed URL]]></description>
+        </param>
+        <param name="title">
+            <description><![CDATA[Optional RSS feed title]]></description>
+        </param>
+        <param name="number">
+            <description><![CDATA[Maximum number of items to display]]></description>
+        </param>
+    </params>
+</widget>
