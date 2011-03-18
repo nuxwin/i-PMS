@@ -28,7 +28,7 @@
 /**
  * @see iPMS_Widget_Interface.php
  */
-require_once 'iPMS/Widget/Interface.php';
+require_once 'iPMS/Widgets/Interface.php';
 
 /**
  * Abstract class for widget
@@ -41,93 +41,108 @@ require_once 'iPMS/Widget/Interface.php';
 abstract class iPMS_Widget implements iPMS_Widget_Interface
 {
     /**
-     * Widget id
+     * Widgets id
      *
      * @var string|null
      */
     protected $_id;
 
     /**
-     * Widget name
+     * Widget order used by widget container
+     *
+     * @var int|null
+     */
+    protected $_order;
+
+    /**
+     * Widgets name
      *
      * @var string|null
      */
     protected $_name;
 
     /**
-     * Widget title
+     * Widgets title
      *
      * @var string|null
      */
     protected $_title;
 
     /**
-     * Widget description
+     * Widgets description
      *
      * @var string|null
      */
     protected $_description;
 
     /**
-     * Widget version
+     * Widgets version
      *
      * @var string|null
      */
     protected $_version;
 
     /**
-     * Widget author
+     * Widgets author
      *
      * @var string|null
      */
     protected $_author;
 
     /**
-     * Widget author email
+     * Widgets author email
      *
      * @var string|null
      */
     protected $_email;
 
     /**
-     * Widget license
+     * Widgets license
      *
      * @var string|null
      */
     protected $_license;
 
     /**
-     * Widget loading type
+     * Widgets loading type
      *
      * @var string
      */
     protected $_loadType = 'server';
 
     /**
-     * Widget custom properties
+     * Tells whether the widget is active
+     *
+     * @var
+     */
+    protected $_isActive;
+
+    /**
+     * Widgets custom properties
      *
      * @var array
      */
     protected $_properties = array();
 
     /**
-     * Widget parameters
+     * Widgets parameters
      *
      * @var array
      */
     protected $_parameters = array();
 
     /**
-     * Widget content
+     * Widgets content
      *
      * @var string
      */
     protected $_content;
 
+
     /**
      * @var Zend_View_Abstract
      */
-    protected $_view;
+    //protected $view;
 
     /**
      * @var Zend_Controller_Request_Http
@@ -137,14 +152,12 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     /**
      * Constructor
      *
-     * @param  string $name widget name
-     * @param  Zend_View_Abstract $view an instance of Zend_View_Abstract
-     * @return void
+     * @param  string|array $options either an array of widget options or a string that represent the name of widget
      */
-    public function __construct($name, $view)
+    public function __construct($options)
     {
-        $this->_name = $name;
-        $this->_view = $view;
+        $this->_parameters = new stdClass();
+        $this->setOptions($options);
     }
 
     /**
@@ -163,16 +176,36 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setOptions(array $options)
     {
         foreach ($options as $key => $value) {
-            if ($key == 'params') { // widget parameters
-                if (isset($value['param'])) {
-                    $this->setParams($value['param']);
-                }
-            } else { // widget property
+            if (is_string($value)) {
                 $this->set($key, $value);
+            } elseif (is_array($value) && $key === 'params') {
+                $this->setOptions($value['param']);
+            } else {
+                $this->setParams($value);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Sets widget properties using options from an xml file
+     *
+     * @throws iPMS_Widget_Exception if $file is not readable or if invalid options are given
+     * @param null $file xml file that contains widget properties
+     * @return iPMS_Widget fluent interface, returns self
+     */
+    public function setOptionsFromXml($file)
+    {
+        if (is_readable($file)) {
+            $config = new Zend_Config_Xml($file);
+            $options = $config->toArray();
+        } else {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('File $file doesn\'t exist or is not readable');
+        }
+
+        return $this->setOptions($options);
     }
 
     /**
@@ -182,20 +215,15 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * @param  array $params array that contains widget parameters
      * @return iPMS_Widget fluent interface, returns self
      */
-    public function setParams(array $params)
+    public function setParams(array $param)
     {
-        $this->_parameters = new stdClass();
-        foreach ($params as $param) {
-            if (isset($param['name'])) {
-                $name = lcfirst($this->_normalizePropertyName($param['name']));
-                unset($param['name']);
-                $this->_parameters->{$name} = $param;
-            } else {
-                require_once 'iPMS/Widget/Exception.php';
-                throw new iPMS_Widget_Exception(
-                    'All parameters must have a name'
-                );
-            }
+        if (isset($param['name'])) {
+            $name = lcfirst($this->_normalizePropertyName($param['name']));
+            unset($param['name']);
+            $this->_parameters->{$name} = $param;
+        } else {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('All parameters must have a name');
         }
     }
 
@@ -215,28 +243,6 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
-     * Sets widget properties using options from an xml file
-     *
-     * @throws iPMS_Widget_Exception if $file is not readable or if invalid options are given
-     * @param null $file xml file that contains widget properties
-     * @return iPMS_Widget fluent interface, returns self
-     */
-    public function setOptionsFromXml($file)
-    {
-        if (is_readable($file)) {
-            $config = new Zend_Config_Xml($file);
-            $options = $config->toArray();
-        } else {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
-                'File $file doesn\'t exist or is not readable'
-            );
-        }
-
-        return $this->setOptions($options);
-    }
-
-    /**
      * Sets widget id
      *
      * @throws iPMS_Widget_Exception if $id is not a string or number or null
@@ -246,8 +252,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setId($id)
     {
         if (null !== $id && !is_string($id) && !is_numeric($id)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $id must be a string, number or null'
             );
         }
@@ -268,6 +274,49 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
+     * Sets widget order to use in widget container
+     *
+     * @param  int $order [optional] widget order in container. Default is null, which sets no specific order.
+     * @return iPMS_Widget fluent interface, returns self
+     * @throws iPMS_Widgets_Exception if order is not integer or null
+     */
+    public function setOrder($order = null)
+    {
+        if (is_string($order)) {
+            $temp = (int) $order;
+            if ($temp < 0 || $temp > 0 || $order == '0') {
+                $order = $temp;
+            }
+        }
+
+        if (null !== $order && !is_int($order)) {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
+                'Invalid argument: $order must be an integer or null, or a string that casts to an integer'
+            );
+        }
+
+        $this->_order = $order;
+
+        // notify parent, if any
+        //if (isset($this->_parent)) {
+        //    $this->_parent->notifyOrderUpdated();
+        //}
+
+        return $this;
+    }
+
+    /**
+     * Returns widget order used in parent container
+     *
+     * @return int|null widget order or null
+     */
+    public function getOrder()
+    {
+        return $this->_order;
+    }
+
+    /**
      * Sets widget title
      *
      * @throws iPMS_Widget_Exception if $title is not a string or null
@@ -277,8 +326,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setTitle($title)
     {
         if (null !== $title && !is_string($title)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $title must be a string or null'
             );
         }
@@ -289,7 +338,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
-     * Sets widget title
+     * Returns widget title
      *
      * @return string|null widget title
      */
@@ -308,8 +357,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setName($name)
     {
         if (null !== $name && !is_string($name)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $name must be a string or null'
             );
         }
@@ -320,7 +369,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
-     * Sets widget name
+     * Returns widget name
      *
      * @return string|null widget name
      */
@@ -339,8 +388,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setDescription($description)
     {
         if (null !== $description && !is_string($description)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $description must be a string or null'
             );
         }
@@ -370,8 +419,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setVersion($version)
     {
         if (null !== $version && !is_string($version)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $version must be a string or null'
             );
         }
@@ -401,8 +450,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setAuthor($author)
     {
         if (null !== $author && !is_string($author)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $author must be a string or null'
             );
         }
@@ -432,10 +481,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setEmail($email)
     {
         if (null !== $email && !is_string($email)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
-                'Invalid argument: $email must be a string or null'
-            );
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: $email must be a string or null');
         }
 
         $this->_email = $email;
@@ -463,10 +510,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setLicense($license)
     {
         if (null !== $license && !is_string($license)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
-                'Invalid argument: $license must be a string or null'
-            );
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: $license must be a string or null');
         }
 
         $this->_license = $license;
@@ -496,10 +541,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
         $loadType = strtolower($loadType);
 
         if ('server' !== $loadType && !$loadType !== 'client') {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
-                "Invalid argument: $loadType must be 'server' or 'client'"
-            );
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception("Invalid argument: $loadType must be 'server' or 'client'");
         }
 
         $this->_loadType = $loadType;
@@ -518,6 +561,35 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
+     * Sets widget status
+     *
+     * @throws iPMS_Widget_Exception if $id is not a string or number or null
+     * @param  string|int $isActive widget $isActive
+     * @return iPMS_Widget fluent interface, returns self
+     */
+    public function setIsActive($isActive)
+    {
+        if (null !== $isActive && !is_string($isActive) && !is_numeric($isActive)) {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: $isActive must be a string, number or null');
+        }
+
+        $this->_isActive = null === $isActive ? $isActive : (string) $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Returns widget id
+     *
+     * @return string|null
+     */
+    public function getIsActive()
+    {
+        return $this->_isActive;
+    }
+
+    /**
      * Sets widget content
      *
      * Content is passed to the view as this without any treatment.
@@ -533,7 +605,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     }
 
     /**
-     * Returns widget license
+     * Returns widget content
      *
      * @return string|null widget content
      */
@@ -557,7 +629,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     {
         if (!is_string($property) || empty($property)) {
             require_once 'Zend/Navigation/Exception.php';
-            throw new iPMS_Widget_Exception(
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $property must be a non-empty string'
             );
         }
@@ -586,8 +658,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function get($property)
     {
         if (!is_string($property) || empty($property)) {
-            require_once 'iPMS/Widget/Exception.php';
-            throw new iPMS_Widget_Exception(
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(
                 'Invalid argument: $property must be a non-empty string'
             );
         }
@@ -608,10 +680,10 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      *
      * Magic overload for enabling <code>$widget->propname = $value</code>.
      *
+     * @throws iPMS_Widget_Exception if property name is invalid
      * @param  string $name property name
      * @param  mixed  $value value to set
      * @return void
-     * @throws iPMS_Widget_Exception if property name is invalid
      */
     public function __set($name, $value)
     {
@@ -623,9 +695,9 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      *
      * Magic overload for enabling <code>$widget->propname</code>.
      *
+     * @throws iPMS_Widget_Exception if property name is invalid
      * @param  string $name property name
      * @return mixed property value or null
-     * @throws iPMS_Widget_Exception if property name is invalid
      */
     public function __get($name)
     {
@@ -658,18 +730,16 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      *
      * Magic overload for enabling <code>unset($widget->propname)</code>.
      *
+     * @throws Zend_Navigation_Exception if $name is native property
      * @param  string $name property name
      * @return void
-     * @throws Zend_Navigation_Exception if $name is native property
      */
     public function __unset($name)
     {
         $method = 'set' . self::_normalizePropertyName($name);
         if (method_exists($this, $method)) {
-            require_once 'Zend/Navigation/Exception.php';
-            throw new Zend_Navigation_Exception(
-                sprintf('Un-setting native $parameter "%s" is not allowed', $name)
-            );
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception(sprintf('Un-setting native $parameter "%s" is not allowed', $name));
         }
 
         if (isset($this->_properties[$name])) {
@@ -683,9 +753,9 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * @param  string property property|parameter name to normalize
      * @return string normalized property|parameter name
      */
-    protected static function _normalizePropertyName($parameter)
+    protected static function _normalizePropertyName($property)
     {
-        return str_replace(' ', '', ucwords(str_replace('_', ' ', $parameter)));
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
     }
 
     /**
@@ -693,16 +763,18 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      *
      * @return iPMS_Widget fluent interface, returns self
      */
-    final public function _widget()
+    final public function run()
     {
+        /*
         $content = $this->widget();
         $this->setContent($content);
 
-        if ($content != '' && file_exists(APPLICATION_PATH . '/widgets/' . $this->_name . '/partial/widget.phtml')) {
+        if ($content != '' && file_exists(APPLICATION_PATH . '/Widgets/' . $this->_name . '/partial/widget.phtml')) {
             $this->_renderPartial('widget.phtml');
         }
 
         return $this;
+         */
     }
 
     /**
@@ -712,14 +784,16 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      */
     final public function _dashboard()
     {
-        $content = $this->_dashboard();
+        /*
+        $content = $this->dashboard(array());
         $this->setContent($content);
 
-        if ($content !=  '' && file_exists(APPLICATION_PATH . '/widgets/' . $this->_name . '/partial/dashboard.phtml')) {
+        if ($content != '' && file_exists(APPLICATION_PATH . '/Widgets/' . $this->_name . '/partial/dashboard.phtml')) {
             $this->_renderPartial('dashboard.phptml');
         }
 
         return $this;
+         */
     }
 
     /**
@@ -729,7 +803,6 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      */
     final public function _update()
     {
-
     }
 
     /**
@@ -753,6 +826,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      */
     public function __toString()
     {
+        // Todo change to array representation of the widget
         return get_class($this);
     }
 
@@ -763,13 +837,69 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      */
     private function _renderPartial($partial)
     {
+        /*
         try {
-            $view = clone $this->_view;
-            $view->addScriptPath(APPLICATION_PATH . '/widgets/' . $this->_name . '/partial/');
+            $view = clone $this->view;
+            $view->addScriptPath(APPLICATION_PATH . '/Widgets/' . $this->_name . '/partial/');
             $view->assign('widget', $this);
             $this->setContent($view->render($partial)); // update widget content
         } catch (Exception $e) {
             trigger_error('Unable to render the partial for widget', E_USER_ERROR);
         }
+         */
+    }
+
+    /**
+     * Factory for iPMS_Widget classes
+     *
+     * This method will resolve the class to instantiate by using the 'name' that must be the full name of the class to
+     * construct. A valid widget class must extend {@link iPMS_Widget}.
+     *
+     * @throws iPMS_Widgets_Exception if $options is not array
+     * @throws iPMS_Exception if Zend_Loader is unable to load the class
+     * @throws iPMS_Widgets_Exception if something goes wrong during instantiation of the widget
+     * @throws iPMS_Widgets_Exception if the given widget class does not extend this class
+     * @throws iPMS_Widget_Exception if unable to determine which class to instantiate
+     * @param  array $options options used for creating widget
+     * @return iPMS_Widget a widget instance
+     */
+    public static function factory($options)
+    {
+        if (!is_array($options)) {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new Zend_Navigation_Exception('Invalid argument: $options must be an array');
+        }
+
+        if (isset($options['name']) && is_string($options['name']) && !empty($options['name'])) {
+            $className = ucwords($options['name']);
+        } else {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: Unable to determine class to instantiate');
+        }
+
+        if (!class_exists($className)) {
+            require_once 'Zend/Loader.php';
+            @Zend_Loader::loadClass($className);
+        }
+
+        $widget = new $className($options);
+
+        if (!$widget instanceof iPMS_Widget) {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new Zend_Navigation_Exception(sprintf(
+                'Invalid argument: Detected class "%s", which is not an instance of iPMS_Widget', $className));
+        }
+
+        return $widget;
+    }
+
+    /**
+     * Returns a hash code value for the widget
+     *
+     * @return string a hash code value for this widget
+     */
+    public final function hashCode()
+    {
+        return spl_object_hash($this);
     }
 }
