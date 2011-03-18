@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -19,61 +18,67 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_Widgets
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * Widget display the most recent posts
+ * Action helper that load active Widgets
  *
- * @category    i-PMS
- * @package     Widgets
- * @subpackage  Widgets_RecentPosts
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 1.0.0
  */
-class Widget_RecentPosts_RecentPosts extends iPMS_Widget
+class iPMS_Controller_Action_Helper_Widgets extends Zend_Controller_Action_Helper_Abstract
 {
+    /**
+     * Widget container
+     *
+     * @var iPMS_Widgets_Container|null
+     */
+    protected $_widgetContainer = null;
 
     /**
-     * Make the widget content for the view
+     * Retrieve all active Widgets
      *
-     * Implements {@link iPMS_Widget_Interface::widget()}
-     *
-     * @return void
+     * @return iPMS_Widgets_Container widget container
      */
-    public function widget()
+    public function direct()
     {
+        $model = new Model_DbTable_Widgets();
+        $widgets = $model->getWidgetsOptions();
 
+        $container = new iPMS_Widgets_Container($widgets);
+
+        return $container;
     }
 
     /**
-     * Widget dashboard settings form
-     *
-     * Implements {@link iPMS_Widget_Interface::dashboard()}
+     * Execute all Widgets
      *
      * @return void
      */
-    public function dashboard()
+    public function __preDispatch()
     {
+        //$iterator = new IteratorIterator($this->_widgetContainer); // Todo implement iterator
+        $iterator = $this->_widgetContainer;
 
+        /**
+         * @var $widget iPMS_Widget
+         */
+        foreach ($iterator as $widget) {
+            $widget->run();
+        }
     }
 
     /**
-     * Update widget options (either widget property or parameter)
-     *
-     * Implements {@link iPMS_Widget_Interface::update()}
+     * Remove the reference to the widget container
      *
      * @return void
      */
-    public function update()
+    public function postDispatch()
     {
-
+        $this->_widgetContainer = null;
     }
-
 }
-
