@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -21,7 +20,6 @@
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -34,6 +32,20 @@
  */
 class FrontPageController extends Zend_Controller_Action
 {
+
+    /**
+     * @return void
+     */
+    public function init()
+    {
+        /**
+         * @var $widgets iPMS_Controller_Action_Helper_Widgets
+         */
+        $widgetContainer = $this->_helper->Widgets();
+
+         // Make the Widgets container available for the view
+        //$this->view->Widgets()->setContainer($Widgets);
+    }
 
     /**
      * Returns a pageable list of posts
@@ -66,6 +78,9 @@ class FrontPageController extends Zend_Controller_Action
             $maxTitleLength = 25;
             $feeds = array();
 
+            /**
+             * var $item
+             */
             foreach ($rssDoc->getElementsByTagName('item') as $item) {
                 $title = ucfirst(html_entity_decode($item->getElementsByTagName('title')->item(0)->nodeValue));
 
@@ -90,5 +105,4 @@ class FrontPageController extends Zend_Controller_Action
 
         return $feeds;
     }
-
 }
