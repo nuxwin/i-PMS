@@ -26,7 +26,7 @@
  */
 
 /**
- * Widget interface
+ * Widgets interface
  *
  * @category    iPMS
  * @package     iPMS_Widget
@@ -78,13 +78,23 @@ interface iPMS_Widget_Interface
      * @abstract
      * @return void
      */
-    public function dashboard();
 
     /**
-     * Update the widgets options (either a property or parameter)
+     * Make the widget settings form available for the dashboard
      *
      * @abstract
+     * @param  $settings Current widget settings
      * @return void
      */
-    public function update();
+    public function dashboard($settings);
+
+    /**
+     * Update Widgets settings
+     *
+     * @abstract
+     * @param  array $settings array that contain settings to be updated
+     * @param  array $oldSettings array that contains old settings
+     * @return array array that contains settings to save in database
+     */
+    public function update($settings, $oldSettings);
 }
