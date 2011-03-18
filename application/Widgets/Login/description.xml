@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <widget>
-    <name>Login</name>
+    <name>Widgets_Login_Login</name>
     <title>Login</title>
     <description>Display a form to login</description>
     <author>Laurent Declercq / i-PMS Core Team</author>
@@ -13,7 +13,7 @@
     <params>
         <param name="title">
             <description><![CDATA[Allow to set a title for login box]]></description>
-            <value>Title</value>
+            <value/>
         </param>
         <param name="rememberMe">
             <description>

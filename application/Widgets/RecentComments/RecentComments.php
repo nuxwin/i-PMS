@@ -1,4 +1,5 @@
 <?php
+
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -27,50 +28,54 @@
  */
 
 /**
- * Widget display a RSS feed
+ * Widgets display the most recent approved comments
  *
  * @category    i-PMS
  * @package     Widgets
- * @subpackage  Widgets_RssFeed
+ * @subpackage  Widgets_RecentComments
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RssFeed_RssFeed extends iPMS_Widget
+class Widget_RecentComments_RecentComments extends iPMS_Widget
 {
-
     /**
      * Make widget content available for the view
      *
      * Implements {@link iPMS_Widget_Interface::widget()}
      *
-     * @return mixed widget content
+     * @return array array of comments
      */
     public function widget()
     {
+        $model = new Model_DbTable_Comments();
+        $comments = $model->fetchAll(null, 'id', 5)->toArray();
 
+        return $comments;
     }
 
     /**
-     * Widget dashboard settings form
+     * Make the widget settings form available for the dashboard
      *
-     * Implements {@link iPMS_Widget_Interface::dashboard()}
-     *
+     * @abstract
+     * @param  $settings current widget settings
      * @return void
      */
-    public function dashboard()
+    public function dashboard($settings)
     {
-        //return $this->buildDashboardSettingsForm($this->getParams())->render();
+        // todo add class for specific widget subform treatment.
     }
 
     /**
-     * Update widget options (either widget property or parameter)
+     * Update Widgets settings
      *
      * Implements {@link iPMS_Widget_Interface::update()}
      *
-     * @return void
+     * @param  array $settings array settings to be updated
+     * @param  array $oldSettings old settings
+     * @return array settings to save
      */
-    public function update()
+    public function update($settings, $oldSettings)
     {
-
+        // not yet implemented
     }
 }

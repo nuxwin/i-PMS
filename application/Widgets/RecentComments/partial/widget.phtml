@@ -1,0 +1,17 @@
+<div id="widget-<?php echo $this->widget->getId();?>" class="box">
+    <div class="boxHeader">
+        <h1><?php echo $this->widget->getTitle();?></h1>
+    </div>
+    <div class="boxBody">
+        <ul>
+            <?php foreach ($this->widget->getContent() as $comment):?>
+        <li>
+            <a href="<?php echo $this->url(array('id' => $comment['post_id']), 'posts_show').'#comment-'.$comment['id'];?>"
+               title="<?php echo $this->translate('Read more...')?>"
+            >
+                <span><?php echo $this->escape($this->truncate($comment['body'], 35));?></span>
+            </a>
+            <?php endforeach;?>
+        </ul>
+    </div>
+</div>

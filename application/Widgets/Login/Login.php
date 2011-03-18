@@ -28,7 +28,7 @@
  */
 
 /**
- * Widget that display a login form
+ * Widgets that display a login form
  *
  * @category    i-PMS
  * @package     Widgets
@@ -36,7 +36,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_Login_Login extends iPMS_Widget
+class Widgets_Login_Login extends iPMS_Widget
 {
 
     /**
@@ -67,22 +67,22 @@ class Widget_Login_Login extends iPMS_Widget
                 }
             }
 
-            return $this->_getForm()->render();
+            return $this->_getForm();
         }
 
         return '';
     }
 
     /**
-     * Widget dashboard settings form
+     * Widgets dashboard settings form
      *
      * Implements {@link iPMS_Widget_Interface::dashboard()}
      *
      * @return void
      */
-    public function dashboard()
+    public function dashboard($settings)
     {
-        //return $this->buildDashboardSettingsForm($this->getParams())->render();
+        //$form = new Login_Form();
     }
 
     /**
@@ -92,7 +92,9 @@ class Widget_Login_Login extends iPMS_Widget
      */
     protected function _getForm()
     {
+        $url = $this->getRequest()->getBaseUrl();
         $form = new Form_Login();
+        $form->setAction($url);
         $form->setElementsBelongTo('login');
 
         return $form;
@@ -103,10 +105,12 @@ class Widget_Login_Login extends iPMS_Widget
      *
      * Implements {@link iPMS_Widget_Interface::update()}
      *
-     * @return void
+     * @param  array $settings array that contain settings to be updated
+     * @param  array $oldSettings array that contains old settings
+     * @return array settings to save
      */
-    public function update()
+    public function update($settings, $oldSettings)
     {
-
+ 
     }
 }
