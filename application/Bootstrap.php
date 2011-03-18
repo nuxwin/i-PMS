@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -68,6 +67,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $fc = $this->getResource('FrontController');
         //$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
         //$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
+    }
+
+    /**
+     * Add prefix path for iPMS action helpers
+     * 
+     * @return void
+     */
+    public function _initHelpers()
+    {
+        Zend_Controller_Action_HelperBroker::addPrefix('iPMS_Controller_Action_Helper');
     }
 
     /**
