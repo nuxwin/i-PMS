@@ -1,0 +1,144 @@
+<?xml encoding="UTF-8"?>
+<!--
+/**
+ * i-PMS - internet Project Management System
+ * Copyright (C) 2011 by Laurent Declercq
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @category    iPMS
+ * @copyright   2011 by Laurent Declercq
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @link        http://www.i-pms.net i-PMS Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @version     1.0.0
+ */
+ -->
+
+<!--
+The purpose of this dtd is to standardize the writing of XML description files that must be provided with all the
+widgets powered for iPMS.
+-->
+
+<!ELEMENT  widget (name, title, description, author, email?, version, license, load, id?, class?, params?, resources?)>
+
+<!-- widget class name (ex. Widgets_Login_Login) -->
+<!ELEMENT name (#PCDATA)>
+
+<!-- widget title -->
+<!ELEMENT title (#PCDATA)>
+
+<!-- description -->
+<!ELEMENT description (#PCDATA)>
+
+<!-- author (eg last-name first-name) -->
+<!ELEMENT author (#PCDATA)>
+
+<!-- [optional] author email (eg. username@domain.tld) -->
+<!ELEMENT email (#PCDATA)>
+
+<!-- widget version (MAJOR, MINOR, TINY - eg. 1.x.x) -->
+<!ELEMENT version (#PCDATA)>
+
+<!-- license under which the widget is distributed (eg. GPLv2|GPLed) -->
+<!ELEMENT license (#PCDATA)>
+
+<!-- widget loading type, either 'server' or 'client'-->
+<!ELEMENT load (#PCDATA)>
+
+<!-- [optional] CSS id selector to the widget container -->
+<!ELEMENT id (#PCDATA)>
+
+<!-- [optional] CSS class selector to the widget container -->
+<!ELEMENT class (#PCDATA)>
+
+
+<!--
+    [optional] parameter(s) that will be used, either to generate a form as part of the main output of the widget, or
+    to generate a form that will be displayed on the dashboard screen
+-->
+<!ELEMENT params (param)+>
+
+<!ELEMENT param (label, description?, (input|select))>
+
+<!ATTLIST
+    param
+        name CDATA #REQUIRED
+        target (site|dashboard) #IMPLIED
+>
+
+<!-- label for input or select element -->
+<!ELEMENT label (#PCDATA)>
+
+
+<!-- input element -->
+<!ELEMENT input EMPTY>
+
+
+<!ATTLIST
+    input
+        type (text|password|checkbox|radio) #REQUIRED
+        name CDATA #REQUIRED
+        val CDATA #REQUIRED
+        id CDATA #IMPLIED
+        class CDATA #IMPLIED
+>
+
+<!-- select element -->
+<!ELEMENT select (option+|callback)>
+
+<!ATTLIST
+    select
+        name CDATA #REQUIRED
+        multi (true|false) #IMPLIED
+        id CDATA #IMPLIED
+        class CDATA #IMPLIED
+>
+
+<!-- option element -->
+<!ELEMENT option EMPTY>
+
+<!ATTLIST
+    option
+        val CDATA #REQUIRED
+        label CDATA #REQUIRED
+        selected (selected) #IMPLIED
+>
+
+<!-- callback to generate option elements -->
+<!ELEMENT callback (argument*,selected?)>
+
+<!ATTLIST
+    callback
+        name CDATA #REQUIRED
+>
+
+<!-- argument element -->
+<!ELEMENT argument (#PCDATA)>
+
+<!-- selected element -->
+<!ELEMENT selected (#PCDATA)>
+
+<!-- resources -->
+
+<!ELEMENT resources (resource)+>
+
+<!ELEMENT resource EMPTY>
+
+<!ATTLIST
+    resource
+        type (js|css) #REQUIRED
+        src CDATA #IMPLIED
+>

@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * i-PMS - internet Project Management System
+ * Copyright (C) 2011 by Laurent Declercq
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @category    iPMS
+ * @copyright   2011 by Laurent Declercq
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @link        http://www.i-pms.net i-PMS Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
+ -->
+
+<!DOCTYPE widget SYSTEM "../description.dtd">
 
 <widget>
     <name>Widgets_Login_Login</name>
@@ -8,18 +36,24 @@
     <email>core@i-pms.net</email>
     <version>1.0.0</version>
     <license>GPLv2</license>
-    <load_type>server</load_type>
+    <load>server</load>
     <id>loginWidget</id>
     <params>
+        <param target="site" name="username">
+            <label>Username:</label>
+            <input type="text" name="username" val=""/>
+        </param>
+        <param target="site" name="password">
+            <label>Password:</label>
+            <input type="password" name="password" val=""/>
+        </param>
         <param name="title">
-            <description><![CDATA[Allow to set a title for login box]]></description>
-            <value/>
+            <label>Optional title</label>
+            <input type="text" name="title" val="" />
         </param>
         <param name="rememberMe">
-            <description>
-                <![CDATA[Tell whether or not a "Remember me" checkbox should be displayed along the login form]]>
-            </description>
-            <value>0</value>
+            <label>Allow remember me?</label>
+            <input type="checkbox" name="rememberMe" val="0" />
         </param>
     </params>
 </widget>

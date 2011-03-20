@@ -1,24 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * i-PMS - internet Project Management System
+ * Copyright (C) 2011 by Laurent Declercq
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @category    iPMS
+ * @copyright   2011 by Laurent Declercq
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @link        http://www.i-pms.net i-PMS Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
+ -->
+
+<!DOCTYPE widget SYSTEM "../description.dtd">
 
 <widget>
-    <name>RssFeed</name>
+    <name>Widgets_RssFeed_RssFeed</name>
     <title>Rss Feed</title>
     <description>Display a RSS feed</description>
     <author>Laurent Declercq / iPMS Core Team</author>
     <email>core@i-pms.net</email>
     <version>1.0.0</version>
     <license>GPLv2</license>
-    <load_type>server</load_type>
-    <id>rssFeedWidget</id>
+    <load>server</load>
     <params>
         <param name="url">
-            <description><![CDATA[RSS feed URL]]></description>
+            <label>Enter the RSS Url here:</label>
+            <input type="text" name="url" val="http://" />
         </param>
         <param name="title">
-            <description><![CDATA[Optional RSS feed title]]></description>
+            <label>Optional title</label>
+            <input type="text" name="title" val="" />
         </param>
-        <param name="number">
-            <description><![CDATA[Maximum number of items to display]]></description>
+        <param name="entries">
+            <label>How many entries do you want to display?</label>
+            <select name="entries">
+                <callback name="range">
+                    <argument>1</argument>
+                    <argument>20</argument>
+                    <selected>10</selected>
+                </callback>
+            </select>
+        </param>
+        <param name="content">
+            <label>Show item content?</label>
+            <input type="checkbox" name="content" val="0" />
+        </param>
+        <param name="author">
+            <label>Show item author if available?</label>
+            <input type="checkbox" name="author" val="0" />
+        </param>
+        <param name="date">
+            <label>Show item date if available?</label>
+            <input type="checkbox" name="date" val="0" />
         </param>
     </params>
 </widget>
