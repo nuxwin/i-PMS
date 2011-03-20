@@ -32,7 +32,9 @@ The purpose of this dtd is to standardize the writing of XML description files t
 widgets powered for iPMS.
 -->
 
-<!ELEMENT  widget (name, title, description, author, email?, version, license, load, id?, class?, params?, resources?)>
+<!ELEMENT  widget
+    (name, title, description, author, email?, version, license, load, id?, class?, forms?, params?, resources?)
+>
 
 <!-- widget class name (ex. Widgets_Login_Login) -->
 <!ELEMENT name (#PCDATA)>
@@ -65,80 +67,50 @@ widgets powered for iPMS.
 <!ELEMENT class (#PCDATA)>
 
 
-<!--
-    [optional] parameter(s) that will be used, either to generate a form as part of the main output of the widget, or
-    to generate a form that will be displayed on the dashboard screen
--->
 <!ELEMENT params (param)+>
 
-<!ELEMENT param (label, description?, (input|select))>
+<!ELEMENT param (name,value)>
+<!ELEMENT value (#PCDATA)>
 
-<!ATTLIST
-    param
-        name CDATA #REQUIRED
-        target (site|dashboard) #IMPLIED
+<!ELEMENT forms (form)+>
+<!ATTLIST form
+    name CDATA #IMPLIED
+    description CDATA #IMPLIED
+    target (site|dashboard) #IMPLIED
 >
 
-<!-- label for input or select element -->
-<!ELEMENT label (#PCDATA)>
+<!ELEMENT form (element)+>
 
-
-<!-- input element -->
-<!ELEMENT input EMPTY>
-
-
-<!ATTLIST
-    input
-        type (text|password|checkbox|radio) #REQUIRED
-        name CDATA #REQUIRED
-        val CDATA #REQUIRED
-        id CDATA #IMPLIED
-        class CDATA #IMPLIED
+<!ELEMENT element (callback|option+)?>
+<!ATTLIST element
+    type (text|password|checkbox|radio|select) #REQUIRED
+    name NMTOKEN #REQUIRED
+    val CDATA #IMPLIED
+    label CDATA #REQUIRED
+    id NMTOKEN #IMPLIED
+    class NMTOKENS #IMPLIED
 >
 
-<!-- select element -->
-<!ELEMENT select (option+|callback)>
-
-<!ATTLIST
-    select
-        name CDATA #REQUIRED
-        multi (true|false) #IMPLIED
-        id CDATA #IMPLIED
-        class CDATA #IMPLIED
+<!ELEMENT callback (argument*,selected)>
+<!ATTLIST callback
+    function NMTOKEN #REQUIRED
 >
 
-<!-- option element -->
-<!ELEMENT option EMPTY>
-
-<!ATTLIST
-    option
-        val CDATA #REQUIRED
-        label CDATA #REQUIRED
-        selected (selected) #IMPLIED
->
-
-<!-- callback to generate option elements -->
-<!ELEMENT callback (argument*,selected?)>
-
-<!ATTLIST
-    callback
-        name CDATA #REQUIRED
->
-
-<!-- argument element -->
 <!ELEMENT argument (#PCDATA)>
-
-<!-- selected element -->
 <!ELEMENT selected (#PCDATA)>
 
-<!-- resources -->
+<!ELEMENT option EMPTY>
+<!ATTLIST option
+    val CDATA #IMPLIED
+    label CDATA #REQUIRED
+    selected (selected) #IMPLIED
+>
 
 <!ELEMENT resources (resource)+>
 
 <!ELEMENT resource EMPTY>
-
 <!ATTLIST
     resource
         type (js|css) #REQUIRED
-        src CDATA #IMPLIED
+        src CDATA #REQUIRED
 >
