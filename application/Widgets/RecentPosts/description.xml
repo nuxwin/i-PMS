@@ -29,7 +29,7 @@
 <!DOCTYPE widget SYSTEM "../description.dtd">
 
 <widget>
-    <name>RecentPosts</name>
+    <name>Widgets_RecentPosts_RecentPosts</name>
     <title>Recent posts</title>
     <description>Displays a list of the most recent posts</description>
     <author>Laurent Declercq / i-PMS Core Team</author>

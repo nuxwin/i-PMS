@@ -36,7 +36,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RecentPosts_RecentPosts extends iPMS_Widget
+class Widgets_RecentPosts_RecentPosts extends iPMS_Widget
 {
 
     /**

@@ -36,7 +36,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RecentComments_RecentComments extends iPMS_Widget
+class Widgets_RecentComments_RecentComments extends iPMS_Widget
 {
     /**
      * Make widget content available for the view

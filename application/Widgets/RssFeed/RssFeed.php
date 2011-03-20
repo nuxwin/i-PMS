@@ -35,7 +35,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.0
  */
-class Widget_RssFeed_RssFeed extends iPMS_Widget
+class Widgets_RssFeed_RssFeed extends iPMS_Widget
 {
 
     /**
