@@ -84,7 +84,7 @@ widgets powered for iPMS.
 <!ATTLIST element
     type (text|password|checkbox|radio|select) #REQUIRED
     name NMTOKEN #REQUIRED
-    val CDATA #IMPLIED
+    val CDATA #REQUIRED
     label CDATA #REQUIRED
     required (0|1) #REQUIRED
     id NMTOKEN #IMPLIED
@@ -101,7 +101,7 @@ widgets powered for iPMS.
 
 <!ELEMENT option EMPTY>
 <!ATTLIST option
-    val CDATA #IMPLIED
+    val CDATA #REQUIRED
     label CDATA #REQUIRED
     selected (selected) #IMPLIED
 >
