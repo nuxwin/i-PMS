@@ -52,7 +52,6 @@ class Widgets_Login_Login extends iPMS_Widget
         if(!$auh->hasIdentity()) {
             $form = $this->getForm('loginForm');
 
-            // && is_array($request->getPost('loginForm')
             if($request->isPost() && is_array($request->getPost('loginForm')) &&
                $form->isValid($request->getPost('loginForm'))) {
 
