@@ -1,6 +1,0 @@
-[submodule ".submodules/zf"]
-	path = .submodules/zf
-	url = git://gitorious.org/zf/zf.git
-[submodule ".submodules/ZendX"]
-	path = .submodules/ZendX
-	url = git://github.com/bkw/ZendX.git
