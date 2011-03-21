@@ -38,22 +38,25 @@
     <license>GPLv2</license>
     <load>server</load>
     <id>loginWidget</id>
-    <params>
-        <param target="site" name="username">
-            <label>Username:</label>
-            <input type="text" name="username" val=""/>
-        </param>
-        <param target="site" name="password">
-            <label>Password:</label>
-            <input type="password" name="password" val=""/>
-        </param>
-        <param name="title">
-            <label>Optional title</label>
-            <input type="text" name="title" val="" />
-        </param>
-        <param name="rememberMe">
-            <label>Allow remember me?</label>
-            <input type="checkbox" name="rememberMe" val="0" />
-        </param>
-    </params>
+    <forms>
+        <form name="loginForm">
+            <element type="text" name="username" val="" label="Username" required="1">
+                <filter>StripTags</filter>
+                <filter>StringTrim</filter>
+             </element>
+            <element type="password" name="password" val="" label="Password" required="1">
+                <filter>StripTags</filter>
+                <filter>StringTrim</filter>
+            </element>
+        </form>
+        <form name="dashboardForm">
+            <element type="text" name="title" val="" label="Optional title" required="0">
+                <filter>StripTags</filter>
+                <filter>StringTrim</filter>
+            </element>
+            <element type="checkbox" name="rememberMe" label="Add the 'remember me' option ?" val="0" required="1">
+                <validator>Int</validator>
+            </element>
+        </form>
+    </forms>
 </widget>
