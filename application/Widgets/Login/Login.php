@@ -40,69 +40,49 @@ class Widgets_Login_Login extends iPMS_Widget
 {
 
     /**
-     * Make widget content available for the view
-     *
      * Implements {@link iPMS_Widget_Interface::widget()}
      *
-     * @return string Login form
+     * @param Zend_Controller_Request_Http $request
+     * @return Zend_Form|null A Zend_Form instance or null if user is already authenticated
      */
-    public function widget()
+    public function widget(Zend_Controller_Request_Http $request)
     {
         $auh = Zend_Auth::getInstance();
 
-        if (!$auh->hasIdentity()) {
-            $request = $this->getRequest();
-            if ($request->isPost() && is_array($request->getPost('login'))) {
-                $form = $this->_getForm();
-                if ($form->isValid($request->getPost())) {
-                    // Perform authentication against database
-                    $userModel = new Model_DbTable_Users();
-                    $userModel->setIdentity($form->getValue('username'))
-                            ->setCredential($form->getValue('password'));
-                    $authResult = $auh->authenticate($userModel);
-                    if ($authResult->isValid()) {
-                        Zend_Session::regenerateId(); // Protection against session's fixation attacks
-                        return '';
-                    }
+        if(!$auh->hasIdentity()) {
+            $form = $this->getForm('loginForm');
+
+            if($request->isPost() && is_array($request->getPost('loginForm') && $form->isValid($request->getPost()))) {
+                // Perform authentication against database
+                $userModel = new Model_DbTable_Users();
+                $userModel->setIdentity($form->getValue('username'))
+                    ->setCredential($form->getValue('password'));
+                $authResult = $auh->authenticate($userModel);
+
+                if ($authResult->isValid()) {
+                    Zend_Session::regenerateId(); // Protection against session's fixation attacks
+                    return null;
                 }
             }
 
-            return $this->_getForm();
+            return $form; // invalid form
         }
 
-        return '';
+        return null;
     }
 
     /**
-     * Widgets dashboard settings form
-     *
      * Implements {@link iPMS_Widget_Interface::dashboard()}
      *
-     * @return void
+     * @return Zend_Form Dashboard for for setting purpose
      */
     public function dashboard($settings)
     {
-        //$form = new Login_Form();
+        return $this->getForm('dashboardForm');
     }
 
-    /**
-     * Returns HTML login form
-     *
-     * @return Zend_Form
-     */
-    protected function _getForm()
-    {
-        $url = $this->getRequest()->getBaseUrl();
-        $form = new Form_Login();
-        $form->setAction($url);
-        $form->setElementsBelongTo('login');
-
-        return $form;
-    }
 
     /**
-     * Update widget options (either widget property or parameter)
-     *
      * Implements {@link iPMS_Widget_Interface::update()}
      *
      * @param  array $settings array that contain settings to be updated
