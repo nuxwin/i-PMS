@@ -52,8 +52,10 @@ class Widgets_Login_Login extends iPMS_Widget
         if(!$auh->hasIdentity()) {
             $form = $this->getForm('loginForm');
 
-            if($request->isPost() && is_array($request->getPost('loginForm') && $form->isValid($request->getPost()))) {
-                // Perform authentication against database
+            // && is_array($request->getPost('loginForm')
+            if($request->isPost() && is_array($request->getPost('loginForm')) &&
+               $form->isValid($request->getPost('loginForm'))) {
+
                 $userModel = new Model_DbTable_Users();
                 $userModel->setIdentity($form->getValue('username'))
                     ->setCredential($form->getValue('password'));
@@ -65,7 +67,7 @@ class Widgets_Login_Login extends iPMS_Widget
                 }
             }
 
-            return $form; // invalid form
+            return $form;
         }
 
         return null;
