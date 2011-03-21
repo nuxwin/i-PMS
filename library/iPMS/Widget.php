@@ -41,7 +41,7 @@ require_once 'iPMS/Widgets/Interface.php';
 abstract class iPMS_Widget implements iPMS_Widget_Interface
 {
     /**
-     * Widgets id
+     * Widget id
      *
      * @var string|null
      */
@@ -55,60 +55,60 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     protected $_order;
 
     /**
-     * Widgets name
+     * Widget name
      *
      * @var string|null
      */
     protected $_name;
 
     /**
-     * Widgets title
+     * Widget title
      *
      * @var string|null
      */
     protected $_title;
 
     /**
-     * Widgets description
+     * Widget description
      *
      * @var string|null
      */
     protected $_description;
 
     /**
-     * Widgets version
+     * Widget version
      *
      * @var string|null
      */
     protected $_version;
 
     /**
-     * Widgets author
+     * Widget author
      *
      * @var string|null
      */
     protected $_author;
 
     /**
-     * Widgets author email
+     * Widget author email
      *
      * @var string|null
      */
     protected $_email;
 
     /**
-     * Widgets license
+     * Widget license
      *
      * @var string|null
      */
     protected $_license;
 
     /**
-     * Widgets loading type
+     * Widget loading type
      *
      * @var string
      */
-    protected $_loadType = 'server';
+    protected $_load = 'server';
 
     /**
      * Tells whether the widget is active
@@ -118,31 +118,23 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     protected $_isActive;
 
     /**
-     * Widgets custom properties
+     * Widget custom properties
      *
      * @var array
      */
     protected $_properties = array();
 
     /**
-     * Widgets parameters
+     * Widget parameters
      *
      * @var array
      */
     protected $_parameters = array();
 
     /**
-     * Widgets content
-     *
-     * @var string
+     * Widget forms definition
      */
-    protected $_content;
-
-
-    /**
-     * @var Zend_View_Abstract
-     */
-    //protected $view;
+    protected $_forms = array();
 
     /**
      * @var Zend_Controller_Request_Http
@@ -152,12 +144,42 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     /**
      * Constructor
      *
-     * @param  string|array $options either an array of widget options or a string that represent the name of widget
+     * @throws iPMS_Widget_Exception if invalid options are given
+     * @param  array|Zend_Config $options [optional] widget options Default is null, which should set defaults.
      */
-    public function __construct($options)
+    public function __construct($options = null)
     {
         $this->_parameters = new stdClass();
-        $this->setOptions($options);
+
+        if (is_array($options)) {
+            $this->setOptions($options);
+        } elseif ($options instanceof Zend_Config) {
+            $this->setConfig($options);
+        }
+
+        // do custom initialization
+        $this->_init();
+    }
+
+    /**
+     * Initializes widget (used by subclasses)
+     *
+     * @return void
+     */
+    protected function _init()
+    {
+    }
+
+    /**
+     * Sets widget properties using a Zend_Config object
+     *
+     * @throws iPMS_Widgets_Exception if invalid options are given
+     * @param  Zend_Config $config config object to get properties from
+     * @return iPMS_Widget fluent interface, returns self
+     */
+    public function setConfig(Zend_Config $config)
+    {
+        return $this->setOptions($config->toArray());
     }
 
     /**
@@ -176,54 +198,49 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function setOptions(array $options)
     {
         foreach ($options as $key => $value) {
-            if (is_string($value)) {
-                $this->set($key, $value);
-            } elseif (is_array($value) && $key === 'params') {
-                $this->setOptions($value['param']);
-            } else {
-                $this->setParams($value);
-            }
+            $this->set($key, $value);
         }
 
         return $this;
     }
 
     /**
-     * Sets widget properties using options from an xml file
+     * Sets the given form(s)
      *
-     * @throws iPMS_Widget_Exception if $file is not readable or if invalid options are given
-     * @param null $file xml file that contains widget properties
+     * @param  array $forms array that contains widget parameter(s)
      * @return iPMS_Widget fluent interface, returns self
      */
-    public function setOptionsFromXml($file)
+    protected function setForms($forms)
     {
-        if (is_readable($file)) {
-            $config = new Zend_Config_Xml($file);
-            $options = $config->toArray();
-        } else {
-            require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception('File $file doesn\'t exist or is not readable');
-        }
+        $forms = $forms['form'];
 
-        return $this->setOptions($options);
+        if(array_key_exists('name', $forms)) {
+            $this->_forms[$forms['name']] = $forms;
+        } else {
+            foreach($forms as $form) {
+                $this->_forms[$form['name']] = $form;
+            }
+        }
     }
 
     /**
-     * Sets the given parameter
+     * Sets the given parameter(s)
      *
-     * @throws iPMS_Widget_Exception if a parameter has no name
      * @param  array $params array that contains widget parameters
      * @return iPMS_Widget fluent interface, returns self
      */
-    public function setParams(array $param)
+    protected function setParams($params)
     {
-        if (isset($param['name'])) {
-            $name = lcfirst($this->_normalizePropertyName($param['name']));
-            unset($param['name']);
-            $this->_parameters->{$name} = $param;
+        $params = $params['param'];
+
+        if(array_key_exists('name', $params)) {
+            $name = lcfirst($this->_normalizePropertyName($params['name']));
+            $this->_parameters->{$name} = $params['value'];
         } else {
-            require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception('All parameters must have a name');
+            foreach($params as $param) {
+                $name = lcfirst($this->_normalizePropertyName($param['name']));
+                $this->_parameters->{$name} = $param['value'];
+            }
         }
     }
 
@@ -233,10 +250,10 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * @param  $name parameter name
      * @return mixed parameter value or null
      */
-    public function getParam($param)
+    public function getParam($name)
     {
-        if (isset($this->_parameters->{$param})) {
-            return $this->_parameters->{$param};
+        if (isset($this->_parameters->{$name})) {
+            return $this->_parameters->{$name};
         }
 
         return null;
@@ -533,19 +550,19 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * Sets widget loading type
      *
      * @throws iPMS_Widget_Exception if loading type is not 'server or 'client'
-     * @param  $loadType loading type (server|client)
+     * @param  $load loading type (server|client)
      * @return iPMS_Widget fluent interface, returns self
      */
-    public function setLoadType($loadType)
+    public function setLoad($load)
     {
-        $loadType = strtolower($loadType);
+        $load = strtolower($load);
 
-        if ('server' !== $loadType && !$loadType !== 'client') {
+        if ('server' !== $load && !$load !== 'client') {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception("Invalid argument: $loadType must be 'server' or 'client'");
+            throw new iPMS_Widgets_Exception("Invalid argument: $load must be 'server' or 'client'");
         }
 
-        $this->_loadType = $loadType;
+        $this->_load = $load;
 
         return $this;
     }
@@ -555,9 +572,9 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      *
      * @return string server or client
      */
-    public function getLoadType()
+    public function getLoad()
     {
-        return $this->_loadType;
+        return $this->_load;
     }
 
     /**
@@ -597,22 +614,26 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * @param  string $content widget content
      * @return iPMS_Widget fluent interface, returns self
      */
+    /*
     public function setContent($content)
     {
         $this->_content = $content;
 
         return $this;
     }
+     */
 
     /**
      * Returns widget content
      *
      * @return string|null widget content
      */
+    /*
     public function getContent()
     {
         return $this->_content;
     }
+     */
 
     /**
      * Sets the given property
@@ -628,10 +649,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public function set($property, $value)
     {
         if (!is_string($property) || empty($property)) {
-            require_once 'Zend/Navigation/Exception.php';
-            throw new iPMS_Widgets_Exception(
-                'Invalid argument: $property must be a non-empty string'
-            );
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: $property must be a non-empty string');
         }
 
         $method = 'set' . self::_normalizePropertyName($property);
@@ -659,9 +678,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     {
         if (!is_string($property) || empty($property)) {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception(
-                'Invalid argument: $property must be a non-empty string'
-            );
+            throw new iPMS_Widgets_Exception('Invalid argument: $property must be a non-empty string');
         }
 
         $method = 'get' . self::_normalizePropertyName($property);
@@ -761,10 +778,23 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     /**
      * Make the widget content available for the view
      *
+     * @throws iPMS_Widgets_Exception
+     * @param string $context context for which the widget is run
      * @return iPMS_Widget fluent interface, returns self
      */
-    final public function run()
+    final public function run($context = 'site')
     {
+        if($context == 'site') {
+            $result = $this->widget($this->getRequest());
+        } elseif($context == 'dashboard') {
+           $result = $this->dashboard(array(), array());
+        } else {
+            require_once 'iPMS/Widgets/Exception.php';
+            throw new iPMS_Widgets_Exception('Invalid argument: $context must be either \'site\' or \'dashboard\'');
+        }
+
+        return $result;
+
         /*
         $content = $this->widget();
         $this->setContent($content);
@@ -780,7 +810,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     /**
      * Make the widget settings available for the dashboard
      *
-     * @return PMS_Widget fluent interface, returns self
+     * @return iPMS_Widget fluent interface, returns self
      */
     final public function _dashboard()
     {
@@ -860,14 +890,18 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
      * @throws iPMS_Widgets_Exception if something goes wrong during instantiation of the widget
      * @throws iPMS_Widgets_Exception if the given widget class does not extend this class
      * @throws iPMS_Widget_Exception if unable to determine which class to instantiate
-     * @param  array $options options used for creating widget
+     * @param  array|Zend_Config $options options used for creating widget
      * @return iPMS_Widget a widget instance
      */
     public static function factory($options)
     {
+        if ($options instanceof Zend_Config) {
+            $options = $options->toArray();
+        }
+
         if (!is_array($options)) {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new Zend_Navigation_Exception('Invalid argument: $options must be an array');
+            throw new Zend_Navigation_Exception('Invalid argument: $options must be an array or Zend_Config');
         }
 
         if (isset($options['name']) && is_string($options['name']) && !empty($options['name'])) {
@@ -879,7 +913,7 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
 
         if (!class_exists($className)) {
             require_once 'Zend/Loader.php';
-            @Zend_Loader::loadClass($className);
+            Zend_Loader::loadClass($className);
         }
 
         $widget = new $className($options);
@@ -887,7 +921,8 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
         if (!$widget instanceof iPMS_Widget) {
             require_once 'iPMS/Widgets/Exception.php';
             throw new Zend_Navigation_Exception(sprintf(
-                'Invalid argument: Detected class "%s", which is not an instance of iPMS_Widget', $className));
+                'Invalid argument: Detected class "%s", which is not an instance of iPMS_Widget', $className)
+            );
         }
 
         return $widget;
@@ -901,5 +936,107 @@ abstract class iPMS_Widget implements iPMS_Widget_Interface
     public final function hashCode()
     {
         return spl_object_hash($this);
+    }
+
+    /**
+     * Returns a form definition
+     *
+     * @throws iPMS_Widgets_Exception if form definition was not found
+     * @param  $name name of form for which definition must be returned
+     * @return array form definition
+     */
+    private function getFormDefinition($name)
+    {
+        if(isset($this->_forms[$name])) {
+            return $this->_forms[$name];
+        } else {
+            throw new iPMS_Widgets_Exception('Form definition not found');
+        }
+    }
+
+    /**
+     * Returns a Form builds from widget's form definition
+     *
+     * A widget can define Forms in its  xml description file. The Forms can be  used, either as main output of the
+     * widget, or on the dashboard screen for setting purpose. The alternative way is to build the Form in the
+     * {@link iPMS_Widget_Interface::widget()} or {@link iPMS_Widget_Interface::dashboard()} mehtods directly. See the
+     * 'Login' widget to learn more.
+     *
+     * @throws iPMS_Widgets_Exception if form definition was not foundd)
+     * @param string $name name of form to build
+     * @return Zend_Form
+     */
+    protected function getForm($name)
+    {
+        $formDef = $this->getFormDefinition($name);
+        $elementStack = array();
+
+        foreach($formDef['element'] as $elementDef) {
+            /**
+             * @var $element Zend_Form_Element|Zend_Form_Element_Select
+             */
+            $className = 'Zend_Form_Element_'.ucfirst($elementDef['type']);
+            $element = new $className($elementDef['name'], array(
+                'label'     => $elementDef['label'],
+                'value'     => $elementDef['val'],
+                'helper'    => 'form' . ucfirst($elementDef['type']),
+                'required'  => $elementDef['required']
+            ));
+
+            if($elementDef['type'] == 'select') {
+                if(isset($elementDef['callback'])) {
+                    $options = call_user_func_array($elementDef['callback']['function'],
+                        (array) isset($elementDef['callback']['argument'])
+                            ? $elementDef['callback']['argument']
+                            : array()
+                    );
+
+                    if($elementDef['callback']['function'] == 'range')
+                        $options = array_combine($options, $options);
+                    
+                    $element->addMultiOptions($options);
+
+                    if(isset($elementDef['callback']['selected']))
+                        $element->setValue($elementDef['callback']['selected']);
+
+                } elseif(isset($elementDef['option'])) {
+                    foreach($elementDef['option'] as $option) {
+                        $element->addMultiOptions(array($option['val'] => $option['label']));
+
+                        if(isset($option['selected']))
+                            $element->setValue($option['val']);
+                    }
+                }
+            }
+
+            if(isset($elementDef['id'])) // CSS id selector for the element
+                $element->setAttrib('id', $elementDef['id']);
+            if(isset($elementDef['class'])) // CSS class selector for the element
+                $element->setAttrib('class', $elementDef['class']);
+            if(isset($elementDef['filter']))
+                $element->addFilters((array) $elementDef['filter']);
+            if(isset($elementDef['validator']))
+                $element->addValidators((array) $elementDef['validator']);
+
+            $elementStack[] = $element;
+        }
+
+        // Submit element
+        $submit = new Zend_Form_Element_Submit('submit');
+        $submit->setLabel('submit');
+        $elementStack[] = $submit;
+
+        $form = new Zend_Form();
+        $form->setAction($this->getRequest()->getBaseUrl().'?widget='.$this->hashCode())
+            ->setName(isset($formDef['name']) ? $formDef['name'] : $this)
+            ->setElementsBelongTo(isset($formDef['name']) ? $formDef['name'] : $this)
+            ->addElements($elementStack);
+
+        if(isset($formDef['description'])) {
+            $form->setDescription($formDef['description'])
+                ->addDecorator('Description', array('placement' => 'prepend'));
+        }
+
+        return $form;
     }
 }
