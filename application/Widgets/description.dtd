@@ -74,19 +74,19 @@ widgets powered for iPMS.
 
 <!ELEMENT forms (form)+>
 <!ATTLIST form
-    name CDATA #IMPLIED
+    name CDATA #REQUIRED
     description CDATA #IMPLIED
-    target (site|dashboard) #IMPLIED
 >
 
 <!ELEMENT form (element)+>
 
-<!ELEMENT element (callback|option+)?>
+<!ELEMENT element (callback|option+,validator*,filter*)?>
 <!ATTLIST element
     type (text|password|checkbox|radio|select) #REQUIRED
     name NMTOKEN #REQUIRED
     val CDATA #IMPLIED
     label CDATA #REQUIRED
+    required (0|1) #REQUIRED
     id NMTOKEN #IMPLIED
     class NMTOKENS #IMPLIED
 >
@@ -105,6 +105,8 @@ widgets powered for iPMS.
     label CDATA #REQUIRED
     selected (selected) #IMPLIED
 >
+<!ELEMENT validator (#PCDATA)>
+<!ELEMENT filter (#PCDATA)>
 
 <!ELEMENT resources (resource)+>
 
