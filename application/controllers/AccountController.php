@@ -163,17 +163,15 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _passwordAuthentication()
     {
-        $userModel = new Model_DbTable_Users();
-        $userModel->setIdentity($this->_identity)
-                ->setCredential($this->_credential);
+        $authDbAdapter = new Zend_Auth_Adapter_DbTable(null,'users', 'username', 'password', 'MD5(?) AND active = 1');
+        $authDbAdapter->setIdentity($this->_identity)->setCredential($this->_credential);
+        $result = $authDbAdapter->authenticate();
 
-        $authResult = Zend_Auth::getInstance()->authenticate($userModel);
-
-        if (!$authResult->isValid()) {
-            $this->_invalidCredentials($authResult);
+        if (!$result->isValid()) {
+            $this->_invalidCredentials($result);
             return false;
         } else {
-            $this->_successfulAuthentication($authResult);
+            $this->_successfulAuthentication($result);
             return true;
         }
     }
