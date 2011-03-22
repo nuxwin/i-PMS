@@ -106,7 +106,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         // Set jquery core and ui versions to be used
         // See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
         $jquery->setVersion('1.5.1');
-        $jquery->setUiVersion('1.8.10');
+        $jquery->setUiVersion('1.8.11');
         $jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/smoothness/jquery-ui.css');
 
         // Will enable both jquery (core) and jquery (UI)
