@@ -80,6 +80,12 @@ class Form_Post extends Zend_Form
 
         // Hidden field that contain post id
         $id = new Zend_Form_Element_Hidden('id');
+
+        $id->getDecorator('Label')->setOption('tagClass','hidden');
+        $id->getDecorator('HtmlTag')->setOption('class','hidden');
+
+
+        /*
         $id->setLabel('&#160;')
                 ->clearDecorators()
                 ->addDecorator('ViewHelper')
@@ -93,6 +99,7 @@ class Form_Post extends Zend_Form
                 ->addDecorator(array(
                                     'openDt' => 'HtmlTag',), array('tag' => 'dt', 'openOnly' => true, 'class' => 'hidden')
         );
+         */
 
         $category = clone $id;
         $category->setName('categorie')
