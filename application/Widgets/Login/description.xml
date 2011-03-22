@@ -40,21 +40,22 @@
     <id>loginWidget</id>
     <forms>
         <form name="loginForm">
-            <element type="text" name="username" val="" label="Username" required="1">
+            <element type="text" name="username" label="Username" required="1">
                 <filter>StripTags</filter>
                 <filter>StringTrim</filter>
              </element>
-            <element type="password" name="password" val="" label="Password" required="1">
+            <element type="password" name="password" label="Password" required="1">
                 <filter>StripTags</filter>
                 <filter>StringTrim</filter>
             </element>
+            <element type="submit" name="submit" label="Connection"/>
         </form>
         <form name="dashboardForm">
-            <element type="text" name="title" val="" label="Optional title" required="0">
+            <element type="text" name="title" label="Optional title">
                 <filter>StripTags</filter>
                 <filter>StringTrim</filter>
             </element>
-            <element type="checkbox" name="rememberMe" label="Add the 'remember me' option ?" val="0" required="1">
+            <element type="checkbox" name="rememberMe" label="Add the 'remember me' option ?" val="0">
                 <validator>Int</validator>
             </element>
         </form>

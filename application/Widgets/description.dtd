@@ -82,11 +82,11 @@ widgets powered for iPMS.
 
 <!ELEMENT element (callback|option+,validator*,filter*)?>
 <!ATTLIST element
-    type (text|password|checkbox|radio|select) #REQUIRED
+    type (text|password|checkbox|radio|select|submit) #REQUIRED
     name NMTOKEN #REQUIRED
-    val CDATA #REQUIRED
-    label CDATA #REQUIRED
-    required (0|1) #REQUIRED
+    val CDATA #IMPLIED
+    label CDATA #IMPLIED
+    required (1|0) #IMPLIED
     id NMTOKEN #IMPLIED
     class NMTOKENS #IMPLIED
 >

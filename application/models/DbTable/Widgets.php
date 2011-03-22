@@ -34,11 +34,12 @@ class Model_DbTable_Widgets extends Zend_Db_Table_Abstract
 {
 
     /**
-     * Database table to operate
+     * Database table to operate on
      *
      * @var string
      */
     protected $_name = 'widgets';
+
     /**
      * Primary key
      *
@@ -51,7 +52,7 @@ class Model_DbTable_Widgets extends Zend_Db_Table_Abstract
      *
      * @return array
      */
-    public function getWidgetsOptions()
+    public function getActiveWidgetsOptions()
     {
         $select = $this->select();
         $select->from($this, 'options')
