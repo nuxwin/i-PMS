@@ -25,7 +25,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 // Define path to application directory
+
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
+defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
 
 // Define application environment
 defined('APPLICATION_ENV')

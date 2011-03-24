@@ -12,7 +12,7 @@
         'href' => '/themes/default/images/favicon.ico'
     ));
     echo $this->headLink()->appendStylesheet('themes/default/css/main.css'), PHP_EOL .
-        $this->headTitle($this->pageTitle), PHP_EOL . $this->headScript(), PHP_EOL . $this->jQuery();
+        $this->headTitle($this->pageTitle), PHP_EOL . $this->headScript(), PHP_EOL;
 ?>
 </head>
 <body>
@@ -93,5 +93,6 @@
     </ul>
     <p>&copy; 2010 - 2011 i-MSCP Team. All Rights Reserved. - Site by Laurent Declercq</p>
 </div>
+<?php echo $this->jQuery(); ?>
 </body>
 </html>

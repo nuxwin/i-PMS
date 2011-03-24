@@ -35,55 +35,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
     /**
-     * Init autoloader
-     *
-     * @return Zend_Application_Module_Autoloader
-     */
-    protected function _initAutoload()
-    {
-        $moduleLoader = new Zend_Application_Module_Autoloader(array(
-            'namespace' => '',
-            'basePath' => APPLICATION_PATH
-        ));
-
-        //$moduleLoader->addResourceType('plugin', 'plugins/', 'Plugin');
-
-        return $moduleLoader;
-    }
-
-    /**
-     * Initialize plugins
-     *
-     * @return void
-     * @todo can be done in configuration file
-     */
-    public function _initPlugins()
-    {
-        $this->bootstrap('FrontController');
-
-        /**
-         * @var $fc Zend_Controller_Front
-         */
-        $fc = $this->getResource('FrontController');
-        //$fc->registerPlugin(new Plugin_PermissionsCheck(Zend_Auth::getInstance(), Model_Acl::getInstance()));
-        //$fc->registerPlugin(new Plugin_WidgetsLoader($this->getEnvironment()), 1);
-    }
-
-    /**
-     * Add prefix path for iPMS action helpers
-     * 
-     * @return void
-     */
-    public function _initHelpers()
-    {
-        Zend_Controller_Action_HelperBroker::addPrefix('iPMS_Controller_Action_Helper');
-    }
-
-    /**
      * Initialize view
      *
      * @return Zend_View
-     * @todo move it to plugin resource
      */
     public function _initSetupView()
     {
@@ -97,20 +51,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             ->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
             ->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
         $view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
-
-        // Add jQuery support
-        ZendX_JQuery::enableView($view);
-
-        $jquery = $view->jQuery();
-
-        // Set jquery core and ui versions to be used
-        // See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
-        $jquery->setVersion('1.5.1');
-        $jquery->setUiVersion('1.8.11');
-        $jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/smoothness/jquery-ui.css');
-
-        // Will enable both jquery (core) and jquery (UI)
-        $jquery->uiEnable();
 
         return $view;
     }
