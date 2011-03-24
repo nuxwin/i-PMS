@@ -51,14 +51,12 @@ class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
     /**
      * Constructor
      *
-     * @param Zend_Auth $auth
-     * @param Zend_Acl $acl
      * @return void
      */
-    public function __construct(Zend_Auth $auth, Zend_Acl $acl)
+    public function __construct()
     {
-        $this->_auth = $auth;
-        $this->_acl = $acl;
+        $this->_auth = Zend_Auth::getInstance();
+        $this->_acl = Model_Acl::getInstance();
     }
 
     /**
