@@ -25,6 +25,10 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+
+// Prevent direct access
+defined('APPLICATION_PATH') or die;
+
 /**
  * Bootsrap
  *
