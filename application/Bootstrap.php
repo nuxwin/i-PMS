@@ -45,13 +45,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('View');
         $view = $this->getResource('View');
 
-        $view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site');
+        $view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site')
+            ->setSeparator(' - ');
         $view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
         $view->headScript()
             ->appendFile('/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
             ->appendScript("\tDD_belatedPNG.fix('*');\n", 'text/javascript', array('conditional' => 'lt IE 7'));
         $view->addHelperPath('iPMS/View/Helper/', 'iPMS_View_Helper_');
-
         return $view;
     }
 
