@@ -50,37 +50,37 @@
  *
  * http://docs.jquery.com/UI/Theming/API
  *
- * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Arial,%20Helvetica,%20Tahoma,%20sans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=3b5998&bgTextureHeader=01_flat.png&bgImgOpacityHeader=75&borderColorHeader=1d2a5b&fcHeader=ffffff&iconColorHeader=a9a9c0&bgColorContent=a0a9c0&bgTextureContent=01_flat.png&bgImgOpacityContent=0&borderColorContent=1d2a5b&fcContent=000000&iconColorContent=1d2a5b&bgColorDefault=1d2a5b&bgTextureDefault=01_flat.png&bgImgOpacityDefault=0&borderColorDefault=ffffff&fcDefault=ffffff&iconColorDefault=a0a9c0&bgColorHover=a0a9c0&bgTextureHover=01_flat.png&bgImgOpacityHover=0&borderColorHover=ffffff&fcHover=ffffff&iconColorHover=1d2a5b&bgColorActive=a0a9c0&bgTextureActive=01_flat.png&bgImgOpacityActive=65&borderColorActive=ffffff&fcActive=ffffff&iconColorActive=1d2a5b&bgColorHighlight=fbf9ee&bgTextureHighlight=01_flat.png&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=05_inset_soft.png&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=1d2a5b&bgTextureOverlay=07_diagonals_medium.png&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=1d2a5b&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Trebuchet%20MS,%20Tahoma,%20Verdana,%20Arial,%20sans-serif&fwDefault=bold&fsDefault=1.2em&cornerRadius=4px&bgColorHeader=3b5998&bgTextureHeader=01_flat.png&bgImgOpacityHeader=35&borderColorHeader=1d2a5b&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=dcdcdc&bgTextureContent=01_flat.png&bgImgOpacityContent=100&borderColorContent=1d2a5b&fcContent=333333&iconColorContent=1d2a5b&bgColorDefault=1d2a5b&bgTextureDefault=01_flat.png&bgImgOpacityDefault=100&borderColorDefault=1d2a5b&fcDefault=ffffff&iconColorDefault=a0a9c0&bgColorHover=a0a9c0&bgTextureHover=01_flat.png&bgImgOpacityHover=100&borderColorHover=1d2a5b&fcHover=ffffff&iconColorHover=ffffff&bgColorActive=a0a9c0&bgTextureActive=01_flat.png&bgImgOpacityActive=40&borderColorActive=1d2a5b&fcActive=ffffff&iconColorActive=1d2a5b&bgColorHighlight=a0a9c0&bgTextureHighlight=01_flat.png&bgImgOpacityHighlight=75&borderColorHighlight=1d2a5b&fcHighlight=363636&iconColorHighlight=1d2a5b&bgColorError=1d2a5b&bgTextureError=01_flat.png&bgImgOpacityError=100&borderColorError=1d2a5b&fcError=fefefe&iconColorError=a0a9c0&bgColorOverlay=1d2a5b&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=20&opacityOverlay=50&bgColorShadow=000000&bgTextureShadow=01_flat.png&bgImgOpacityShadow=10&opacityShadow=20&thicknessShadow=5px&offsetTopShadow=-5px&offsetLeftShadow=-5px&cornerRadiusShadow=5px
  */
 
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: Arial, Helvetica, Tahoma, sans-serif; font-size: 1.1em; }
+.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1.2em; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial, Helvetica, Tahoma, sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #1d2a5b; background: #a0a9c0 url(images/ui-bg_flat_0_a0a9c0_40x100.png) 50% 50% repeat-x; color: #000000; }
-.ui-widget-content a { color: #000000; }
-.ui-widget-header { border: 1px solid #1d2a5b; background: #3b5998 url(images/ui-bg_flat_75_3b5998_40x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: 1em; }
+.ui-widget-content { border: 1px solid #1d2a5b; background: #dcdcdc url(../../images/jQuery/ui-bg_flat_100_dcdcdc_40x100.png) 50% 50% repeat-x; color: #333333; }
+.ui-widget-content a { color: #333333; }
+.ui-widget-header { border: 1px solid #1d2a5b; background: #3b5998 url(../../images/jQuery/ui-bg_flat_35_3b5998_40x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
 .ui-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #ffffff; background: #1d2a5b url(images/ui-bg_flat_0_1d2a5b_40x100.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; }
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #1d2a5b; background: #1d2a5b url(../../images/jQuery/ui-bg_flat_100_1d2a5b_40x100.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #ffffff; background: #a0a9c0 url(images/ui-bg_flat_0_a0a9c0_40x100.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #1d2a5b; background: #a0a9c0 url(../../images/jQuery/ui-bg_flat_100_a0a9c0_40x100.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #ffffff; background: #a0a9c0 url(images/ui-bg_flat_65_a0a9c0_40x100.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #1d2a5b; background: #a0a9c0 url(../../images/jQuery/ui-bg_flat_40_a0a9c0_40x100.png) 50% 50% repeat-x; font-weight: bold; color: #ffffff; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }
 
 /* Interaction Cues
 ----------------------------------*/
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fcefa1; background: #fbf9ee url(images/ui-bg_flat_55_fbf9ee_40x100.png) 50% 50% repeat-x; color: #363636; }
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #1d2a5b; background: #a0a9c0 url(../../images/jQuery/ui-bg_flat_75_a0a9c0_40x100.png) 50% 50% repeat-x; color: #363636; }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #fef1ec url(images/ui-bg_inset-soft_95_fef1ec_1x100.png) 50% bottom repeat-x; color: #cd0a0a; }
-.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #cd0a0a; }
-.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #cd0a0a; }
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #1d2a5b; background: #1d2a5b url(../../images/jQuery/ui-bg_flat_100_1d2a5b_40x100.png) 50% 50% repeat-x; color: #fefefe; }
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #fefefe; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #fefefe; }
 .ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
@@ -89,14 +89,14 @@
 ----------------------------------*/
 
 /* states and images */
-.ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_1d2a5b_256x240.png); }
-.ui-widget-content .ui-icon {background-image: url(images/ui-icons_1d2a5b_256x240.png); }
-.ui-widget-header .ui-icon {background-image: url(images/ui-icons_a9a9c0_256x240.png); }
-.ui-state-default .ui-icon { background-image: url(images/ui-icons_a0a9c0_256x240.png); }
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_1d2a5b_256x240.png); }
-.ui-state-active .ui-icon {background-image: url(images/ui-icons_1d2a5b_256x240.png); }
-.ui-state-highlight .ui-icon {background-image: url(images/ui-icons_2e83ff_256x240.png); }
-.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(images/ui-icons_cd0a0a_256x240.png); }
+.ui-icon { width: 16px; height: 16px; background-image: url(../../images/jQuery/ui-icons_1d2a5b_256x240.png); }
+.ui-widget-content .ui-icon {background-image: url(../../images/jQuery/ui-icons_1d2a5b_256x240.png); }
+.ui-widget-header .ui-icon {background-image: url(../../images/jQuery/ui-icons_ffffff_256x240.png); }
+.ui-state-default .ui-icon { background-image: url(../../images/jQuery/ui-icons_a0a9c0_256x240.png); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(../../images/jQuery/ui-icons_ffffff_256x240.png); }
+.ui-state-active .ui-icon {background-image: url(../../images/jQuery/ui-icons_1d2a5b_256x240.png); }
+.ui-state-highlight .ui-icon {background-image: url(../../images/jQuery/ui-icons_1d2a5b_256x240.png); }
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(../../images/jQuery/ui-icons_a0a9c0_256x240.png); }
 
 /* positioning */
 .ui-icon-carat-1-n { background-position: 0 0; }
@@ -291,8 +291,8 @@
 .ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
 
 /* Overlays */
-.ui-widget-overlay { background: #1d2a5b url(images/ui-bg_diagonals-medium_0_1d2a5b_40x40.png) 50% 50% repeat; opacity: .30;filter:Alpha(Opacity=30); }
-.ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #1d2a5b url(images/ui-bg_flat_0_1d2a5b_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
+.ui-widget-overlay { background: #1d2a5b url(../../images/jQuery/ui-bg_flat_20_1d2a5b_40x100.png) 50% 50% repeat-x; opacity: .50;filter:Alpha(Opacity=50); }
+.ui-widget-shadow { margin: -5px 0 0 -5px; padding: 5px; background: #000000 url(../../images/jQuery/ui-bg_flat_10_000000_40x100.png) 50% 50% repeat-x; opacity: .20;filter:Alpha(Opacity=20); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }/*
  * jQuery UI Resizable 1.8.11
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
@@ -349,7 +349,7 @@
  *
  * http://docs.jquery.com/UI/Autocomplete#theming
  */
-.ui-autocomplete { position: absolute; cursor: default; }	
+.ui-autocomplete { position: absolute; cursor: default; }
 
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
@@ -405,8 +405,8 @@
 .ui-button { display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; } /* the overflow property removes extra width in IE */
 .ui-button-icon-only { width: 2.2em; } /* to make room for the icon, a width needs to be set here */
 button.ui-button-icon-only { width: 2.4em; } /* button elements seem to need a little more width */
-.ui-button-icons-only { width: 3.4em; } 
-button.ui-button-icons-only { width: 3.7em; } 
+.ui-button-icons-only { width: 3.4em; }
+button.ui-button-icons-only { width: 3.7em; }
 
 /*button text element */
 .ui-button .ui-button-text { display: block; line-height: 1.4;  }
@@ -442,7 +442,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-dialog { position: absolute; padding: .2em; width: 300px; overflow: hidden; }
 .ui-dialog .ui-dialog-titlebar { padding: .4em 1em; position: relative;  }
-.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; } 
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .1em 0; }
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
@@ -514,7 +514,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
 .ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
-.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
 .ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
 .ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
