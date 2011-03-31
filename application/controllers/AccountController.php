@@ -75,8 +75,7 @@ class AccountController extends Zend_Controller_Action
      */
     public function logoutAction()
     {
-        //$this->_flushIdentity();
-        Zend_Session::destroy();
+        $this->_flushIdentity();
         $this->_redirect('/');
     }
 
@@ -115,7 +114,7 @@ class AccountController extends Zend_Controller_Action
      */
     protected function _flushIdentity()
     {
-        $auth = Zend_Auth::getInstance()->clearIdentity();
+        Zend_Auth::getInstance()->clearIdentity();
     }
 
     /**
@@ -171,7 +170,7 @@ class AccountController extends Zend_Controller_Action
             $this->_invalidCredentials($result);
             return false;
         } else {
-            $this->_successfulAuthentication($result);
+            $this->_successfulAuthentication($authDbAdapter);
             return true;
         }
     }
@@ -179,13 +178,15 @@ class AccountController extends Zend_Controller_Action
     /**
      * Store identity and set successful authentication message
      *
-     * @param  Zend_Auth_Result $authenticationResult
+     * @param  Zend_Auth_Adapter_DbTable $adapter authentication adapter
      * @return void
      */
-    protected function _successfulAuthentication(Zend_Auth_Result $authResult)
+    protected function _successfulAuthentication(Zend_Auth_Adapter_DbTable $adapter)
     {
         // Protection against session's fixation attacks
         Zend_Session::regenerateId();
+
+        Zend_Auth::getInstance()->getStorage()->write($adapter->getResultRowObject(null, 'password'));
 
         // Todo send autologin
         //if($this->_request->getParam('autologin', false)) {

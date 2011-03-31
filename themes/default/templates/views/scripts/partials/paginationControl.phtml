@@ -1,48 +1,34 @@
 <div id="paginationInner">
-
-    <?php if (isset($this->previous)): ?>
-
+    <?php if (isset($this->previous)):?>
     <p id="paginationPrevious">
-        <a href="<?php echo $this->url(array('page' => $this->previous)); ?>" title="Previous Page">
-            <span><?php echo $this->translate('Previous Page'); ?></span>
+        <a href="<?php echo $this->url(array('page' => $this->previous), 'posts_list');?>" title="Previous page">
+            <span><?php echo $this->translate('Previous page');?></span>
         </a>
     </p>
-
-    <?php else: ?>
-
+    <?php else:?>
     <p id="paginationPrevious">
-        <?php echo $this->translate('Previous Page'); ?>
+        <?php echo $this->translate('Previous page');?>
     </p>
-
-    <?php endif; ?>
-
+    <?php endif;?>
     <p id="paginationNumbered">
-
-        <?php foreach ($this->pagesInRange as $page): ?>
-        <?php if ($page != $this->current): ?>
-            <a href="<?php echo $this->url(array('page' => $page)); ?>"><span><?php echo $page; ?></span></a>
-            <?php else: ?>
-            <?php echo $page; ?>
-            <?php endif; ?>
-        <?php endforeach; ?>
-
+        <?php foreach ($this->pagesInRange as $page):
+            if ($page != $this->current):?>
+            <a href="<?php echo $this->url(array('page' => $page), 'posts_list');?>"><span><?php echo $page;?></span></a>
+            <?php else:
+                echo $page;
+            endif;
+        endforeach;?>
     </p>
-
-    <?php if (isset($this->next)): ?>
-
+    <?php if (isset($this->next)):?>
     <p id="paginationNext">
-        <a href="<?php echo $this->url(array('page' => $this->next)); ?>" title="Next Page">
-            <span><?php echo $this->translate('Next Page'); ?></span>
+        <a href="<?php echo $this->url(array('page' => $this->next));?>" title="Next page">
+            <span><?php echo $this->translate('Next page'); ?></span>
         </a>
     </p>
-
-    <?php else: ?>
-
+    <?php else:?>
     <p id="paginationNext">
-        <?php echo $this->translate('Next Page'); ?>
+        <?php echo $this->translate('Next page');?>
     </p>
-
-    <?php endif; ?>
-
+    <?php endif;?>
     <div class="clearer"></div>
 </div>

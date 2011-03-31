@@ -3,16 +3,11 @@
 <head>
 <base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl();?>/"/>
 <?php
-    echo $this->headMeta()
-        ->setName('author', 'Laurent Declercq - i-MSCP Team')->setName('generator', 'i-PMS 1.0.0')
-        ->setName('language', 'en'), PHP_EOL;
-    $this->headLink(array(
-        'rel' => 'favicon',
-        'type' => 'image/x-icon',
-        'href' => '/themes/default/images/favicon.ico'
-    ));
-    echo $this->headLink()->appendStylesheet('themes/default/css/main.css'), PHP_EOL .
-        $this->headTitle($this->pageTitle), PHP_EOL . $this->headScript(), PHP_EOL;
+    echo $this->headTitle(), PHP_EOL;
+    echo $this->headMeta(), PHP_EOL;
+    echo $this->headLink()->appendStylesheet('/themes/default/css/main.css'), PHP_EOL;
+    echo $this->headScript(), PHP_EOL;
+    echo $this->jQuery(), PHP_EOL;
 ?>
 </head>
 <body>
@@ -93,6 +88,5 @@
     </ul>
     <p>&copy; 2010 - 2011 i-MSCP Team. All Rights Reserved. - Site by Laurent Declercq</p>
 </div>
-<?php echo $this->jQuery(); ?>
 </body>
 </html>
