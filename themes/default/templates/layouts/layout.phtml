@@ -3,11 +3,11 @@
 <head>
 <base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl();?>/"/>
 <?php
-    echo $this->headTitle(), PHP_EOL;
-    echo $this->headMeta(), PHP_EOL;
-    echo $this->headLink()->appendStylesheet('/themes/default/css/main.css'), PHP_EOL;
-    echo $this->headScript(), PHP_EOL;
-    echo $this->jQuery(), PHP_EOL;
+    echo $this->headTitle(), PHP_EOL .
+        $this->headMeta(), PHP_EOL .
+        $this->headLink()->appendStylesheet('/themes/default/css/main.css'), PHP_EOL .
+        $this->headScript(), PHP_EOL .
+        $this->jQuery(), PHP_EOL;
 ?>
 </head>
 <body>
