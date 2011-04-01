@@ -74,70 +74,50 @@ class Form_Post extends Zend_Form
      */
     public function init()
     {
-        $this->setName('postFrm')
-                ->setMethod('post')
-                ->setEnctype('application/x-www-form-urlencoded');
-
-        // Hidden field that contain post id
-        $id = new Zend_Form_Element_Hidden('id');
-
-        $id->getDecorator('Label')->setOption('tagClass','hidden');
-        $id->getDecorator('HtmlTag')->setOption('class','hidden');
-
-
-        /*
-        $id->setLabel('&#160;')
-                ->clearDecorators()
-                ->addDecorator('ViewHelper')
-                ->addDecorator(array(
-                                    'element' => 'HtmlTag'), array('tag' => 'dd', 'class' => 'hidden')
-        )
-                ->addDecorator(
-            array('closeDt' => 'HtmlTag'), array('tag' => 'dt', 'closeOnly' => true, 'placement' => 'prepend')
-        )
-                ->addDecorator('Label')
-                ->addDecorator(array(
-                                    'openDt' => 'HtmlTag',), array('tag' => 'dt', 'openOnly' => true, 'class' => 'hidden')
-        );
-         */
-
-        $category = clone $id;
-        $category->setName('categorie')
-                ->setValue('home');
+        $this->setName('postForm')
+            ->setElementsBelongTo('postForm')
+            ->setMethod('post')
+            ->setEnctype('application/x-www-form-urlencoded');
 
         $title = new Zend_Form_Element_Text('title');
         $title->setLabel('Title')
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+            ->setAttrib('class', 'input-title')
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
 
         $teaser = new Zend_Form_Element_Textarea('teaser');
         $teaser->setLabel('Teaser')
-                ->setRequired(true)
-        //->setAttrib('rows', 4)
-        //->setAttrib('cols', 75)
-                ->addFilter('StripTags', array(
-                                              'allowTags' => $this->_allowedXhtmlTags, 'allowAttribs' => $this->_allowedXhtmlAttributes)
-        )
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+            ->setAttrib('class', 'input-teaser')
+            ->setRequired(true)
+            ->addFilter('StripTags', array(
+                'allowTags' => $this->_allowedXhtmlTags,
+                'allowAttribs' => $this->_allowedXhtmlAttributes))
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
 
         $body = clone $teaser;
         $body->setName('body')
-                ->setLabel('Content');
-        //->setAttrib('rows', 25);
-        // Comments checkbox (Tell whether or not the post is open for new comments
+            ->setAttrib('class', 'input-body')
+            ->setLabel('Content');
+
         $allowComments = new Zend_Form_Element_Checkbox('allow_comments');
         $allowComments->setLabel('Open for new comments ?')
-                ->setValue('1');
+            ->setValue('1');
 
+        $id = new Zend_Form_Element_Hidden('id');
+        $id->getDecorator('Label')->setOption('tagClass','hidden');
+        $id->getDecorator('HtmlTag')->setOption('class','hidden');
 
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Submit');
+        $category =new Zend_Form_Element_Hidden('categorie');
+        $category  ->setValue('home');
+        $category->getDecorator('Label')->setOption('tagClass','hidden');
+        $category->getDecorator('HtmlTag')->setOption('class','hidden');
 
+        $submit = new Zend_Form_Element_Submit('postSubmit');
+        $submit ->setLabel('Submit');
 
-        $this->addElements(array($id, $category, $title, $teaser, $body, $allowComments, $submit));
+        $this->addElements(array($title, $teaser, $body, $allowComments, $id, $category, $submit));
     }
-
 }
