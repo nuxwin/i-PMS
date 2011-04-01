@@ -42,36 +42,44 @@ class Form_Login extends Zend_Form
      */
     public function init()
     {
-        $this->setName('loginFrm');
-
-        $redirect = new Zend_Form_Element_Hidden('redirect');
-        $fc = Zend_Controller_Front::getInstance();
-        $redirect->setValue($fc->getRequest()->getRequestUri())
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+        $this->setName('loginForm');
+        $this->setElementsBelongTo('loginForm');
 
         $username = new Zend_Form_Element_Text('username');
         $username->setLabel('Username')
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
 
         $password = new Zend_Form_Element_Password('password');
         $password->setLabel('Password')
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
+
+        //$rememberMe = new Zend_Form_Element_Checkbox('rememberMe');
+        //$rememberMe->setLabel('Remember me');
+
+        /**
+         * @var $request Zend_Controller_Request_Http
+         */
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+
+        $redirect = new Zend_Form_Element_Hidden('redirect');
+        $redirect->setValue($request->getParam('from', '/'))
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
+
+        $redirect->getDecorator('HtmlTag')->setOption('class', 'hidden');
+        $redirect->getDecorator('Label')->setOption('tagClass', 'hidden');
 
         $submit = new Zend_Form_Element_Submit('submit');
-
-        $submit->setAttrib('id', 'submit')
-                ->setLabel('Connection');
+        $submit->setLabel('Connection');
 
         $this->addElements(array($username, $password, $redirect, $submit));
     }
-
 }

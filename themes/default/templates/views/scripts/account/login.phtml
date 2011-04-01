@@ -1,5 +1,18 @@
-<?php
+<h2>Authentication</h2>
 
-echo $this->errorMessage;
-echo $this->loginFrm->setAction($this->url());
-?>
+<div style="width:50%;margin-left:auto;margin-right:auto;">
+    <div style="margin-top:20px;background:#A0A9C0;border:1px solid rgb(29, 42, 91); padding:5px;">
+        <?php echo $this->form;?>
+        <div class="clearer"></div>
+    </div>
+</div>
+
+<?php if(isset($this->errorMessage)):?>
+<div class="error"><?php echo $this->errorMessage;?></div>
+<?php endif;?>
+
+<p class="backLink">
+    <a href="<?php echo $this->previousPage;?>" title="<?php echo $this->translate('Back to the previous page');?>">
+        <span><strong><?php echo $this->translate('Back');?></strong></span>
+    </a>
+</p>

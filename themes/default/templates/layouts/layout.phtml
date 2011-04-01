@@ -45,15 +45,14 @@
                 </a>
                 <span>-</span>
                 <a class="logoutSmallIcon smallIcon"
-                   href="<?php echo $this->url(array(), 'account_logout');?>"
+                   href="<?php echo $this->url(array(), 'logout');?>"
                    type="<?php echo $this->translate('Logout'); ?>"
                 >
                     <span><?php echo $this->translate('Logout');?></span>
                 </a>
                 <?php else:?>
-                <a href="#" title="<?php echo $this->translate('Create new account');?>">
-                    <span><?php echo $this->translate('Register');?></span>
-                </a>
+                <a href="<?php echo $this->url(array(), 'login');?>?from=<?php echo $this->url();?>"
+                   title="<?php echo $this->translate('Login');?>"><span><?php echo $this->translate('Login');?></span></a>
                 <span>|</span>
                 <a href="#" title="<?php echo $this->translate('Lost Password');?>">
                     <span><?php echo $this->translate('Lost Password');?></span>

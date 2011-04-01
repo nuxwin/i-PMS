@@ -54,18 +54,25 @@ class AccountController extends Zend_Controller_Action
      */
     public function loginAction()
     {
-        $form = new Form_Login();
+        if(!Zend_Auth::getInstance()->hasIdentity()) {
+            $form = new Form_Login();
 
-        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-            $this->_identity = $form->getValue('username');
-            $this->_credential = $form->getValue('password');
+            if ($this->_request->isPost() && $form->isValid($this->_request->getPost('loginForm', array()))) {
+                $this->_identity = $form->getValue('username');
+                $this->_credential = $form->getValue('password');
 
-            if ($this->_authenticateUser()) {
-                $this->_redirect($form->getValue('redirect'));
+                if ($this->_authenticateUser()) {
+                    $this->_redirect($form->getValue('redirect'));
+                }
             }
-        }
 
-        $this->view->assign('loginFrm', $form);
+            $this->view->assign(array(
+                'form' => $form,
+                'previousPage' => $this->_request->getParam('from', '/')));
+
+        } else {
+            $this->_redirect('/');
+        }
     }
 
     /**

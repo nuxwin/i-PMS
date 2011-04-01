@@ -449,7 +449,7 @@ img.postImageRight {
     margin-left: 5px;
 }
 
-.note {
+.note, .error {
     border-right: 2px solid;
     border-left: 2px solid;
     margin-top: 2.5em; /*margin-right : 16px;*/
@@ -457,7 +457,7 @@ img.postImageRight {
     font-weight: bold;
 }
 
-.note .first {
+.note .first, .error .first {
     margin-top: 0;
 }
 
@@ -656,7 +656,7 @@ img.postImageRight {
 }
 */
 
-p.moreLink {
+p.moreLink, p.backLink{
     border-top: 1px dashed;
     margin-top: 10px; /*margin-right: 16px;*/
     padding-top: 10px;
@@ -808,7 +808,12 @@ img.postImageRight {
     border-color: rgb(29, 42, 91);
 }
 
-.note a {
+.error {
+    background: rgb(203, 209, 224) url(../images/icons/medium/warning.png) 10px 8px no-repeat;
+    border-color: rgb(29, 42, 91);
+}
+
+.note a, .error a {
     font-weight: bold;
 }
 
@@ -822,7 +827,7 @@ img.postImageRight {
 
 }
 
-p.moreLink {
+p.moreLink, p.backLink {
     border-color: rgb(160, 169, 192);
 }
 
@@ -1051,4 +1056,13 @@ dd textarea {
 
 #login-redirect-label, #login-redirect-element{
     display:none;
+}
+
+.hint {
+    margin:0;
+    padding:0;
+    color: rgb(29, 42, 91);
+    font-size: 1.5em;
+    font-weight:bold;
+    text-decoration:underline;
 }
