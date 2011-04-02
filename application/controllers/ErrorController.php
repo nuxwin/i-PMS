@@ -21,10 +21,8 @@
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
- *
  */
 
 /**
@@ -40,7 +38,7 @@ class ErrorController extends Zend_Controller_Action
     {
         $errors = $this->_getParam('error_handler');
 
-        if (!$errors) {
+        if (!$errors || !$errors instanceof ArrayObject) {
             $this->view->message = 'You have reached the error page';
             return;
         }
@@ -63,10 +61,9 @@ class ErrorController extends Zend_Controller_Action
         }
 
         // Log exception, if logger available
-        $log = $this->getLog();
-        if ($log) {
+        if ($log = $this->getLog()) {
             $log->log($this->view->message, $priority, $errors->exception);
-            $log->log('Request Parameters', $priority, $request->getParams());
+            $log->log('Request Parameters', $priority, $errors->request->getParams());
         }
 
         // conditionally display exceptions
@@ -74,12 +71,13 @@ class ErrorController extends Zend_Controller_Action
             $this->view->exception = $errors->exception;
         }
 
-        $this->view->request = $errors->request;
+        $this->view->request   = $errors->request;
     }
 
     /**
-     * Get log
-     * @return Zend_Log
+     * Returns Zend_Log instance if one was sets
+     *
+     * @return mixed instance of Zend_Log or false if no one was sets
      */
     public function getLog()
     {
@@ -91,9 +89,23 @@ class ErrorController extends Zend_Controller_Action
         return $log;
     }
 
+    /**
+     *
+     * @return void
+     */
     public function denyAction()
     {
         $this->getResponse()->setHttpResponseCode(403);
     }
 
+    /**
+     * Action for 404 error
+     *
+     * @throws Zend_Controller_Action_Exception
+     * @return void
+     */
+    public function notFoundAction()
+    {
+        throw new Zend_Controller_Action_Exception('Page not found!', '404');
+    }
 }
