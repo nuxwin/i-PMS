@@ -1,33 +1,41 @@
-<h1><?php echo $this->translate('All posts');?></h1>
-<?php if (count($this->paginator)): ?>
-<?php foreach ($this->paginator as $post):?>
+<h1><?php echo $this->translate('Posts list');?></h1>
+
+<?php if (count($this->paginator)):
+    foreach ($this->paginator as $post):
+?>
 <div class="post">
-    <h1>
-        <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show');?>" title="Read more...">
-            <span><?php echo $this->escape($post['title']); ?></span>
-        </a>
-    </h1>
-    <div class="postBody">
-        <div class="teaser" style="margin-top:16px;"><?php echo $post['teaser'];?></div>
-        <p style="color:#666;font-weight:bold;">
-            <?php
-                echo $this->translate('Posted on') . ' ' . date('F d, Y', strtotime($post['created_at'])) .
-                    ', ' . $this->translate('in') . ' ';
-            ?>
-            <a href="<?php echo $this->baseUrl() . '/categories/view/' . $post['categorie'];?>"
-                title="<?php echo $this->translate('View categorie');?>">
-                <span><?php echo ucfirst($post['categorie']); ?></span>
-            </a>
-        </p>
-    </div>
-    <p class="moreLink">
+    <h2>
         <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show');?>"
-                title="<?php echo $this->translate('Read more...');?>">
-            <span><?php echo $this->translate('Read more...');?></span>
-        </a>
+           title="<?php echo $this->translate('Read more...');?>"><?php echo $this->escape($post['title']);?></a>
+    </h2>
+    <p style="color:#666;">
+        <?php printf($this->translate('Posted on %s, by '), date('F d, Y', strtotime($post['created_at'])))?>
+        <a style="color:#666;" href="#" title="view profile"><?php echo $post['username'];?></a>
     </p>
+    <div class="postBody">
+        <div class="teaser" style="margin-top:16px;">
+            <?php echo $post['teaser'];?>
+        </div>
+    </div>
+    <div style="margin-top:20px;">
+        <div style="float:left;color:#666;">
+            <span>Posted in</span>
+            <a style="color:#666;" href="<?php echo $this->baseUrl() . '/categories/view/' . $post['categorie'];?>"
+                title="<?php echo $this->translate('View categorie');?>"><?php echo ucfirst($post['categorie']);?></a>
+            <span>|</span>
+            <a style="color:#666;" href="#" title="Comments"><?php printf('%s Comments', $post['comments_count']);?></a>
+            <span>|</span>
+            <a style="color:#666;" href="#" title="Edit post"><?php echo $this->translate('Edit');?></a>
+        </div>
+        <div style="float:right;">
+            <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show');?>"
+                title="<?php echo $this->translate('Read more...');?>"><?php echo $this->translate('Read more...');?></a>
+        </div>
+        <div class="clearer"></div>
+    </div>
 </div>
-<?php endforeach; ?>
+<br />
+<?php endforeach;?>
 <?php endif;
 if (count($this->paginator) > 1):?>
 <div id="paginationOuter">
