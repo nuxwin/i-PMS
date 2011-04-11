@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -18,94 +17,104 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
- * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @link        http://www.i-pms.net i-PMS Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category	iPMS
+ * @copyright	2011 by Laurent Declercq
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @link		http://www.i-pms.net i-PMS Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
  * Error controller
  *
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author	Laurent Declercq <l.declercq@nuxwin.com>
+ * @version	1.0.0
  */
 class ErrorController extends Zend_Controller_Action
 {
 
-    public function errorAction()
-    {
-        $errors = $this->_getParam('error_handler');
+	/**
+	 * Initialize controller
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->_helper->layout()->setLayout('error');
+	}
 
-        if (!$errors || !$errors instanceof ArrayObject) {
-            $this->view->message = 'You have reached the error page';
-            return;
-        }
+	public function errorAction()
+	{
+		$errors = $this->_getParam('error_handler');
 
-        switch ($errors->type) {
-            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
-            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
-            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
-                // 404 error -- controller or action not found
-                $this->getResponse()->setHttpResponseCode(404);
-                $priority = Zend_Log::NOTICE;
-                $this->view->message = 'Page not found';
-                break;
-            default:
-                // application error
-                $this->getResponse()->setHttpResponseCode(500);
-                $priority = Zend_Log::CRIT;
-                $this->view->message = 'Application error';
-                break;
-        }
+		if (!$errors || !$errors instanceof ArrayObject) {
+			$this->view->message = 'You have reached the error page';
+			return;
+		}
 
-        // Log exception, if logger available
-        if ($log = $this->getLog()) {
-            $log->log($this->view->message, $priority, $errors->exception);
-            $log->log('Request Parameters', $priority, $errors->request->getParams());
-        }
+		switch ($errors->type) {
+			case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
+			case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
+			case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
+				// 404 error -- controller or action not found
+				$this->getResponse()->setHttpResponseCode(404);
+				$priority = Zend_Log::NOTICE;
+				$this->view->message = 'Page not found';
+				break;
+			default:
+				// application error
+				$this->getResponse()->setHttpResponseCode(500);
+				$priority = Zend_Log::CRIT;
+				$this->view->message = 'Application error';
+				break;
+		}
 
-        // conditionally display exceptions
-        if ($this->getInvokeArg('displayExceptions') == true) {
-            $this->view->exception = $errors->exception;
-        }
+		// Log exception, if logger available
+		if ($log = $this->getLog()) {
+			$log->log($this->view->message, $priority, $errors->exception);
+			$log->log('Request Parameters', $priority, $errors->request->getParams());
+		}
 
-        $this->view->request   = $errors->request;
-    }
+		// conditionally display exceptions
+		if ($this->getInvokeArg('displayExceptions') == true) {
+			$this->view->exception = $errors->exception;
+		}
 
-    /**
-     * Returns Zend_Log instance if one was sets
-     *
-     * @return mixed instance of Zend_Log or false if no one was sets
-     */
-    public function getLog()
-    {
-        $bootstrap = $this->getInvokeArg('bootstrap');
-        if (!$bootstrap->hasResource('Log')) {
-            return false;
-        }
-        $log = $bootstrap->getResource('Log');
-        return $log;
-    }
+		$this->view->request = $errors->request;
+	}
 
-    /**
-     *
-     * @return void
-     */
-    public function denyAction()
-    {
-        $this->getResponse()->setHttpResponseCode(403);
-    }
+	/**
+	 * Returns Zend_Log instance if one was sets
+	 *
+	 * @return mixed instance of Zend_Log or false if no one was sets
+	 */
+	public function getLog()
+	{
+		$bootstrap = $this->getInvokeArg('bootstrap');
+		if (!$bootstrap->hasResource('Log')) {
+			return false;
+		}
+		$log = $bootstrap->getResource('Log');
+		return $log;
+	}
 
-    /**
-     * Action for 404 error
-     *
-     * @throws Zend_Controller_Action_Exception
-     * @return void
-     */
-    public function notFoundAction()
-    {
-        throw new Zend_Controller_Action_Exception('Page not found!', '404');
-    }
+	/**
+	 *
+	 * @return void
+	 */
+	public function denyAction()
+	{
+		$this->getResponse()->setHttpResponseCode(403);
+	}
+
+	/**
+	 * Action for 404 error
+	 *
+	 * @throws Zend_Controller_Action_Exception
+	 * @return void
+	 */
+	public function notFoundAction()
+	{
+		throw new Zend_Controller_Action_Exception('Page not found!', '404');
+	}
 }

@@ -1,0 +1,104 @@
+<?php echo $this->doctype(), PHP_EOL; ?>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+<head>
+<base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl();?>/"/>
+<?php
+	echo $this->headTitle($this->translate('An Error Occurred')), PHP_EOL .
+        $this->headMeta(), PHP_EOL .
+		$this->jQuery(), PHP_EOL;
+?>
+<style type="text/css">
+	<!--
+	*
+	{
+		margin:0;
+		padding:0;
+ 	}
+
+ 	body {
+ 		background:#f9f9f9;
+ 	}
+
+	#header {
+		height:89px;
+		background:#3B5998;
+		border-bottom:1px solid #1D2A5B;
+	}
+
+ 	h1 {
+ 		margin: 20px 0 20px 0;
+		text-align:center;
+		color:#1D2A5B;
+		font-variant:small-caps;
+
+	}
+
+	h2 {
+		margin-bottom:20px;
+		color:#1D2A5B;
+	}
+
+	#content {
+		width:750px;
+		margin: 0 auto 20px auto;;
+	}
+
+	#message {
+		background: #A0A9C0;
+		font-size: 1.5em;
+		color: #ffffff;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	pre {
+		width: 98%;
+		margin: 5px 0 20px 0;
+		padding: 10px;
+		background-color: #eeeeee;
+		border-radius: 4px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		font-size: 11px;
+	}
+
+	#tabs {
+		display:none;
+		margin-top:20px;
+		font-size:0.9em;
+	}
+
+	a {
+		color:#666;
+		text-decoration:none;
+	}
+
+	a:hover {
+		text-decoration:underline;
+
+	}
+
+	.js #tabs {
+		display: none;
+	}
+
+	.no-js #tabs {
+		display: block;
+	}
+
+	.no-js #debug_data,
+	.no-js #tabsnav {
+		display:none;
+	}
+	-->
+</style>
+</head>
+<body class="no-js">
+	<div id="header">
+		<img src="/themes/default/images/imscp_logo.png" alt="i-MSCP" />
+	</div>
+	<div id="content">
+		<?php echo $this->layout()->content;?>
+	</div>
+</body>
+</html>

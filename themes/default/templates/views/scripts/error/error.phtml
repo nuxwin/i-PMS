@@ -1,23 +1,56 @@
-<div class="error" style="text-align:center;">
-    <h1>An error occurred</h1>
+<?php $this->jQuery()->addOnLoad('
+	$("body").removeClass("no-js").addClass("js");
+	$("#debug_data").click(function(){$("#tabs").slideToggle("slow");return false;});
+	$( "#tabs" ).tabs();
+');?>
 
-    <h2><?php echo $this->message; ?></h2>
-
-    <?php if (isset($this->exception)): ?>
-
-    <h3>Exception information:</h3>
-    <p>
-        <b>Message:</b> <?php echo $this->exception->getMessage(); ?>
-    </p>
-
-    <h3>Stack trace:</h3>
-    <pre style="margin-top:30px;margin:16px;word-wrap: break-word;">
-	<?php echo $this->exception->getTraceAsString(); ?>
-    </pre>
-
-    <h3>Request Parameters:</h3>
-    <pre style="margin-top:30px;overflow-x:scroll;margin:16px;">
-	<?php echo var_export($this->request->getParams(), true); ?>
-    </pre>
-    <?php endif; ?>
-</div>
+		<h1 style=""><?php echo $this->translate('An error occurred');?></h1>
+		<?php if(isset($this->exception)):?>
+		<pre id="message"><?php echo $this->message . PHP_EOL . $this->exception->getMessage();?></pre>
+		<p><a href="#" id="debug_data"><?php echo $this->translate('Debug Data');?></a></p>
+		<div id="tabs">
+			<ul id="tabsnav">
+				<li><a href="#trace"><?php echo $this->translate('Backtrace');?></a></li>
+				<li><a href="#request-parameters"><?php echo $this->translate('Request parameters');?></a></li>
+				<li><a href="#session">$_SESSION</a></li>
+				<li><a href="#get">$_GET</a></li>
+				<li><a href="#post">$_POST</a></li>
+				<li><a href="#cookie">$_COOKIE</a></li>
+				<li><a href="#files">$_FILES</a></li>
+			</ul>
+			<noscript><h2><?php echo $this->translate('BackTrace');?></h2></noscript>
+			<div id="trace">
+				<pre id="framework_trace"><code><?php echo wordwrap($this->exception->getTraceAsString(), 100);?></code></pre>
+			</div>
+			<noscript><h2><?php echo $this->translate('Request parameters');?></h2></noscript>
+			<div id="request-parameters">
+				<?php $params = $this->request->getParams();?>
+				<pre><?php echo !empty($params) ? print_r($params, true) : $this->translate('No request parameters found!');?></pre>
+			</div>
+			<noscript><h2>$_SESSION</h2></noscript>
+			<div id="session">
+				<pre><?php Zend_Session::start(); echo (!empty($_SESSION)) ? print_r($_SESSION, true) : $this->translate('$_SESSION is empty!');?></pre>
+			</div>
+			<noscript><h2>$_GET</h2></noscript>
+			<div id="get">
+				<pre><?php echo (!empty($_GET)) ? print_r($_GET, true) : $this->translate('$_GET is empty!');?></pre>
+			</div>
+			<noscript><h2>$_POST</h2></noscript>
+			<div id="post">
+				<pre><?php echo (!empty($_POST)) ? print_r($_POST, true) : $this->translate('$_POST is empty!');?></pre>
+			</div>
+			<noscript><h2>$_COOKIE</h2></noscript>
+			<div id="cookie">
+				<pre><?php echo (!empty($_COOKIE)) ? htmlentities(print_r($_COOKIE, true)) : $this->translate('$_COOKIE is empty!');?></pre>
+			</div>
+			<noscript><h2>$_FILES</h2></noscript>
+			<div id="files">
+				<pre><?php echo (!empty($_FILES)) ? print_r($_FILES, true) : $this->translate('$_FILES is empty!');?></pre>
+			</div>
+		</div>
+		<?php else:?>
+			<pre id="message"><?php echo $this->message;?></pre>
+		<?php endif;?>
+		<br />
+		<p><a style="float:right;" href="javascript: history.go(-1)" title="Back to previous page"><strong>Back</strong></a></p>
+		<br />
