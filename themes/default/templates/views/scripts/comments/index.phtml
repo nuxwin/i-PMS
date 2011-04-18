@@ -1,3 +1,4 @@
+<br />
 <?php if (count($this->comments)):?>
 <div id="comments">
     <div id="commentsHeading">
@@ -17,8 +18,7 @@
         <div id="comment-<?php echo $comment['id'];?>" class="commentAuthor">
 		    <span>
 		    <?php if ($comment['author_id']):
-                echo $this->translate('Posted on').' '.$this->escape(date('F d, Y', strtotime($comment['created_on'])))
-                    .' '.$this->translate('by').' ';
+				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
             ?>
                 <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['author_id'];?>"
                    title="<?php echo $this->translate('Author profile');?>"
@@ -26,14 +26,14 @@
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php elseif($comment['website']):
-                echo $this->translate('Posted on').' '.$this->escape(date('F d, Y', strtotime($comment['created_on'])))
-                    .' '.$this->translate('by').' ';
+				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
             ?>
                 <a href="<?php echo $this->escape($comment['website']);?>"
                    title="<?php echo $this->translate('Author Website');?>">
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php else:
+				printf($this->translate('Posted on %s by'), date('F d, Y', strtotime($comment['created_on'])));
                 echo $this->translate('Posted on').' '.$this->escape(date('F d, Y', strtotime($comment['created_on'])))
                     .' '.$this->translate('by').' '.$this->escape($comment['name']);;
              ?>
@@ -61,8 +61,11 @@
     </div>
     <?php endforeach;?>
 </div>
-<?php elseif ($this->post['allow_comments']):?>
-<div class="note">
-    <span><?php echo $this->translate('No comments found');?></span>
-</div>
 <?php endif;?>
+<!--
+<?php //elseif ($this->post['allow_comments']):?>
+<div class="note">
+    <span><?php //echo $this->translate('No comments found');?></span>
+</div>
+<?php //endif;?>
+-->

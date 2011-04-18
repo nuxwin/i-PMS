@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -19,10 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_Widgets
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -34,7 +32,7 @@
  * @package     Widgets
  * @subpackage  Widgets_RecentPosts
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @version     0.0.1
  */
 class Widgets_RecentPosts_RecentPosts extends iPMS_Widget
 {

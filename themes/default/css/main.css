@@ -19,7 +19,6 @@
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -63,10 +62,10 @@ body {
 .clearer {
     display: block;
     clear: both;
-    /*height : 1px;
+    height : 1px;
      margin-bottom : -1px;
      font-size : 1px;
-     line-height : 1px;*/
+     line-height : 1px;
 }
 
 .hidden {
@@ -141,38 +140,7 @@ body {
 /***********************************************************************************************************************
 /* Navigation css
 */
-/*
-ul#navigation {
-	float : right;
-	margin-right : 5px;
-}
 
-ul#navigation {
-	list-style-type : none;
-}
-
-ul#navigation li {
-	display : inline;
-}
-
-#navigation li a {
-	line-height : 25px;
-	border : 1px solid;
-	border-top : none;
-	-moz-border-radius : 0 0 5px 5px;
-	border-radius : 0 0 5px 5px;
-	padding : 5px;
-	font-size : 110%;
-	font-variant : small-caps;
-	font-weight : bold;
-	text-decoration : none;
-}
-
-#navigation li a:hover,
-#navigation li.active a {
-	padding-bottom : 8px;
-}
-*/
 
 ul#navigation {
     float: right;
@@ -260,7 +228,7 @@ ul#navigation li.active a {
 #content {
     display: inline;
     float: left;
-    width: 71%; /*margin-top : 0;*/
+    width: 71%;
     margin-left: 16px;
     clear: both;
 }
@@ -415,8 +383,8 @@ ol {
 }
 
 #content ul {
-    margin-top: 1.5em;
-    margin-left: 1.5em;
+    /*margin-top: 1.5em;*/
+    /*margin-left: 1.5em;*/
 }
 
 #content .postBody ul {
@@ -471,8 +439,8 @@ img.postImageRight {
 
 .post textarea {
 /*padding:5px;*/
-    background-color: rgb(203, 209, 224);
-    background-color: rgb(205, 205, 205);
+    /*background-color: rgb(203, 209, 224);
+    background-color: rgb(205, 205, 205);*/
 }
 
 .postBody {
@@ -657,7 +625,7 @@ img.postImageRight {
 */
 
 p.moreLink, p.backLink{
-    border-top: 1px dashed;
+    border-top: 1px solid;
     margin-top: 10px; /*margin-right: 16px;*/
     padding-top: 10px;
     text-align: right;
@@ -744,6 +712,7 @@ body {
 
 body {
     color: rgb(51, 51, 51);
+	background:#f9f9f9;
 }
 
 a {
@@ -938,6 +907,19 @@ p.moreLink, p.backLink {
     padding: 2px 0px 2px 20px;
 }
 
+
+.settingsMediumIcon {
+     background-image: url("../images/icons/medium/settings.png");
+}
+
+.mediumIcon {
+    background-color: transparent;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    padding: 20px 0px 20px 50px;
+}
+
 #profileBox ul {
 /*font-size:0.8em;*/
 /*margin : 0;*/
@@ -1004,6 +986,7 @@ span.underline {
 * Form css
 */
 
+
 dl {
     padding-top: 10px;
 }
@@ -1021,7 +1004,6 @@ dt {
 dt label {
     cursor: pointer;
     line-height: 22px;
-    font-weight:600;
 }
 
 dd {
@@ -1031,15 +1013,16 @@ dd {
 
 dd input,
 dd textarea {
-    border: 1px solid rgb(29, 42, 91);
+    border: 3px inset rgb(29, 42, 91);
+    border: 1px solid #cccccc;
     padding: 3px;
     outline: none;
+    border-radius:4px;
+    -moz-border-radius:4px;
 }
 
-dd input:hover, dd textarea:hover,
 dd input:focus, dd textarea:focus {
     background-color: rgb(242, 242, 242);
-    border-color: green;
 }
 
 
@@ -1051,7 +1034,6 @@ dd input:focus, dd textarea:focus {
     height: 50px;
 }
 
-/* class form form description */
 .hint {
     margin:0;
     padding:0;
@@ -1059,4 +1041,90 @@ dd input:focus, dd textarea:focus {
     font-size: 1.5em;
     font-weight:bold;
     text-decoration:underline;
+}
+
+#submit {
+    background:rgb(29, 42, 91);
+    margin-top:10px;
+    border:1px solid rgb(29, 42, 91);
+    border-radius:4px;
+    -moz-border-radius:4px;
+    color:#ffffff;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#submit:hover {
+    background-color: rgb(160, 169, 192);
+    border:1px solid rgb(29, 42, 91);
+
+}
+
+select {
+    background:#ffffff;
+    padding:3px;
+    outline:none;
+    border: 1px solid #cccccc;
+    border-radius:4px;
+    -moz-border-radius:4px;
+}
+
+option {
+    padding-left:10px;
+    outline:none;
+}
+span.required,
+.required span {
+	color:#dc143c;
+	font-weight:bold;
+}
+
+label {
+	font-weight:bold;
+	color:#666;
+}
+
+ul.errors {
+	margin-top:10px;
+	list-style-type:none;
+	color:#dc143c;
+}
+
+input ul.errors {
+	border: 1px solid #dc143c;
+}
+
+
+/* forum */
+table {
+	margin-top:20px;
+	border: 1px solid #1D2A5B;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th {
+	font-family: monospace;
+	font-size: 1.5em;
+	border: thin solid #1D2A5B;
+	padding: 5px;
+	background-color: #A0A9C0;
+	font-style: italic;
+	text-align:center;
+}
+
+td {
+	font-family: sans-serif;
+	border: thin solid #1D2A5B;
+	padding: 5px;
+	text-align: left;
+
+}
+
+.meta {
+	color:#666;
+}
+
+.smalltext {
+	font-size: 0.8em;
 }

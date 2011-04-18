@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,66 +28,79 @@
 /**
  * Comments form
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Form_Comments extends Zend_Form
 {
 
-    /**
-     * Initialize comment form
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->setName('commentsFrm');
-        $this->setAction('comments/add');
+	/**
+	 * Initialize comment form
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->setName('commentsForm');
+		$this->setAction('comments/add');
 
-        if (!Zend_Auth::getInstance()->hasIdentity()) {
-            // Name field
-            $name = new Zend_Form_Element_Text('name');
-            $name->setLabel('Name')
-                    ->setRequired(true)
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->addValidator('NotEmpty');
+		if (!Zend_Auth::getInstance()->hasIdentity()) {
+			// Name field
+			$name = new Zend_Form_Element_Text('name');
+			$name->setLabel('Name')
+				->setRequired(true)
+				->addFilter('StripTags')
+				->addFilter('StringTrim')
+				->addValidator('NotEmpty');
 
-            // Email field
-            $email = new Zend_Form_Element_Text('email');
-            $email->setLabel('Email')
-                    ->setRequired(true)
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->addValidator('NotEmpty');
+			// Email field
+			$email = new Zend_Form_Element_Text('email');
+			$email->setLabel('Email')
+				->setRequired(true)
+				->addFilter('StripTags')
+				->addFilter('StringTrim')
+				->addValidator('NotEmpty');
 
-            // Website field
-            $website = new Zend_Form_Element_Text('website');
-            $website->setLabel('WebSite')
-                    ->setRequired(true)
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->addValidator('NotEmpty');
+			// Website field
+			$website = new Zend_Form_Element_Text('website');
+			$website->setLabel('WebSite')
+				->addFilter('StripTags')
+				->addFilter('StringTrim')
+				->addValidator('NotEmpty');
 
-            $this->addElements(array($name, $email, $website));
-        }
+			$this->addElements(array($name, $email, $website));
+			$this->_setRequiredSuffix();
+		}
 
-        // Comment field
-        $comment = new Zend_Form_Element_Textarea('body');
-        $comment->setLabel('Comment')
-                ->setRequired(true)
-                ->setAttrib('rows', 7)
-                ->setAttrib('cols', 30)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
+		// Comment field
+		$comment = new Zend_Form_Element_Textarea('body');
+		$comment->setLabel('Comment')
+			->setAttrib('rows', 7)
+			->addFilter('StripTags')
+			->addFilter('StringTrim')
+			->addValidator('NotEmpty');
 
-        // Submit button
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Comment')->setAttribs(array('id' => 'comment-submit'));
+		// Submit button
+		$submit = new Zend_Form_Element_Submit('submit');
+		$submit->setLabel('Add comment')->setAttribs(array('id' => 'comment-submit'));
 
-        // Add elements to the form
-        $this->addElements(array($comment, $submit));
-    }
+		// Add elements to the form
+		$this->addElements(array($comment, $submit));
+	}
 
+	/**
+	 * Sets required suffix for all required elements
+	 *
+	 * @return void
+	 */
+	protected function _setRequiredSuffix()
+	{
+		foreach ($this->getElements() as $element) {
+			if ($element->isRequired()) {
+				$element->addDecorator('Label', array('tag' => 'dt',
+				                                     'escape' => false,
+				                                     'requiredSuffix' => ' <span>*</span>'));
+			}
+		}
+	}
 }

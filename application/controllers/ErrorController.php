@@ -19,7 +19,8 @@
  *
  * @category	iPMS
  * @copyright	2011 by Laurent Declercq
- * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link		http://www.i-pms.net i-PMS Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -27,8 +28,8 @@
 /**
  * Error controller
  *
- * @author	Laurent Declercq <l.declercq@nuxwin.com>
- * @version	1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class ErrorController extends Zend_Controller_Action
 {
@@ -40,9 +41,16 @@ class ErrorController extends Zend_Controller_Action
 	 */
 	public function init()
 	{
-		$this->_helper->layout()->setLayout('error');
+		$this->_helper->layout()
+			->setLayoutPath(THEME_PATH . '/default/templates/layouts') // Ensure we have correct layout path
+			->setLayout('error');
 	}
 
+	/**
+	 * Show error page
+	 *
+	 * @return void
+	 */
 	public function errorAction()
 	{
 		$errors = $this->_getParam('error_handler');
@@ -59,7 +67,12 @@ class ErrorController extends Zend_Controller_Action
 				// 404 error -- controller or action not found
 				$this->getResponse()->setHttpResponseCode(404);
 				$priority = Zend_Log::NOTICE;
-				$this->view->message = 'Page not found';
+				//$this->view->message = 'Page not found';
+				$this->view->message = "The resource you are looking for (or one of its dependencies) " .
+									   "could have been removed, had its name changed, or is temporarily unavailable." .
+				                       " Please review the following URL and make sure that it is spelled correctly: " .
+										$_SERVER['SERVER_NAME'] . $errors->request->getRequestUri();
+				;
 				break;
 			default:
 				// application error

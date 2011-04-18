@@ -19,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     1.0.0
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -33,8 +33,8 @@ defined('APPLICATION_PATH') or die;
  *
  * Based on idea from Matthew Weier O'Phinney
  *
- * @author  Laurent Declercq
- * @version 1.0.0
+ * @author  Laurent Declercq l.declercq@nuxwin.com
+ * @version 0.0.1
  *
  */
 class Dashboard_Plugin_Menu extends Zend_Controller_Plugin_Abstract
@@ -60,7 +60,7 @@ class Dashboard_Plugin_Menu extends Zend_Controller_Plugin_Abstract
      */
     private function loadMenu()
     {
-
+    /*
         $menu = new Zend_Config_Xml(APPLICATION_PATH . '/modules/Dashboard/config/menu.xml', 'navigation');
         $menuContainer = new Zend_Navigation($menu);
         $view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
@@ -69,5 +69,7 @@ class Dashboard_Plugin_Menu extends Zend_Controller_Plugin_Abstract
             $("#dashboardMenu").accordion(
                 {"navigation":true,"header":"h3","collapsibledisabled":true,"autoHeight":false});
         ');
+     
+     */
     }
 }

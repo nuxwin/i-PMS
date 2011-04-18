@@ -20,44 +20,49 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
  -->
 
-<!DOCTYPE widget SYSTEM "../description.dtd">
-
-<widget>
+<config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
     <name>Widgets_Login_Login</name>
     <title>Login</title>
     <description>Display a form to login</description>
     <author>Laurent Declercq / i-PMS Core Team</author>
-    <email>core@i-pms.net</email>
+    <email>core@i-pms.net"</email>
     <version>1.0.0</version>
     <license>GPLv2</license>
     <load>server</load>
     <id>loginWidget</id>
-    <forms>
-        <form name="loginForm">
-            <element type="text" name="username" label="Username" required="1">
-                <filter>StripTags</filter>
-                <filter>StringTrim</filter>
-             </element>
-            <element type="password" name="password" label="Password" required="1">
-                <filter>StripTags</filter>
-                <filter>StringTrim</filter>
+    <parameters>
+        <partial_site><zf:const zf:name="APPLICATION_PATH"/>/Widgets/Login/partial/widget.phtml</partial_site>
+        <partial_dashboard><zf:const zf:name="APPLICATION_PATH"/>/Widgets/Login/partial/dashboard.phtml</partial_dashboard>
+    </parameters>
+    <form_definitions>
+        <!--  Form that will be displayed as main output of the widget -->
+        <login_form>
+            <element type="text" name="username" val="" label="Username" required="1">
+                <filter value="StripTags"/>
+                <filter value="StringTrim" />
             </element>
-            <element type="submit" name="submit" label="Connection"/>
-        </form>
-        <form name="dashboardForm">
-            <element type="text" name="title" label="Optional title">
-                <filter>StripTags</filter>
-                <filter>StringTrim</filter>
+            <element type="password" name="password" val="" label="Password" required="1">
+                <filter value="StripTags"/>
+                <filter value="StringTrim"/>
             </element>
-            <element type="checkbox" name="rememberMe" label="Add the 'remember me' option ?" val="0">
-                <validator>Int</validator>
+            <element type="submit" name="submit" val="" label="Connection"/>
+        </login_form>
+        <!-- Form that allow to set the widget via the dashboard -->
+        <dashboard>
+            <element type="text" name="title" val="" label="Optional title">
+                <filter value="StripTags"/>
+                <filter value="StringTrim"/>
             </element>
-        </form>
-    </forms>
-</widget>
+            <element type="checkbox" name="rememberMe" label="Allow 'remember me' ?" value="0">
+                <validator value="Int"/>
+            </element>
+        </dashboard>
+    </form_definitions>
+</config>

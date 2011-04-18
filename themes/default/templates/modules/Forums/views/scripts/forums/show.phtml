@@ -1,0 +1,53 @@
+<h1>
+	<a href="<?php echo $this->url(array(), 'forums_index');?>"
+	   title="<?php echo $this->translate('Forums list');?>"><?php echo $this->translate('Forums');?></a>
+	-
+	<?php echo $this->escape($this->forum['name']);?>
+</h1>
+
+<table>
+	<tr>
+		<th  colspan="2" style="width:55%;text-align:left;"><?php echo $this->translate('Thread / Author');?></th>
+		<th style="width:10%;"><?php echo $this->translate('Replies');?></th>
+		<th style="width:10%;"><?php echo $this->translate('Views');?></th>
+		<th style="width:25%;"><?php echo $this->translate('Last Post');?></th>
+	</tr>
+	<?php
+		if(count($this->threads)):
+		foreach($this->threads as $thread):
+	?>
+	<tr style="background-color:<?php echo $this->cycle(array("#F0F0F0","#CCC"))->next();?>">
+		<td style="width:7%;text-align:center;">status</td>
+		<td>
+			<a href="<?php echo $this->url(array('tid' => $thread['tid']), 'forums_threads_show');?>"
+				title="<?php echo $this->translate('Show thread');?>"><strong><?php echo $this->escape($thread['subject']);?></strong></a>
+			<br />
+			<?php echo $thread['username'];?>
+		</td>
+		<td style="text-align:center;"><?php echo $thread['count_replies'];?></td>
+		<td style="text-align:center;"><?php echo $thread['count_views'];?></td>
+		<td style="text-align:right;">
+			<div style="font-size:0.8em;">
+				<?php echo date('d-m-Y g:i A', $thread['lastpost_date']);?>
+				<div class="meta">
+				<a href="<?php echo $this->url(array('tid' => $this->forum['lastthread_id'], 'action' => 'lastpost'), 'forums_threads_show');?>"
+				   title="<?php echo $this->translate('Jump to last post in thread');?>">Last Post:</a> <?php echo $thread['lastposter_username'];?>
+				</div>
+			</div>
+		</td>
+	</tr>
+	<?php
+		endforeach;
+		else:
+	?>
+	<tr>
+		<td colspan="5">
+			<strong><?php echo $this->translate('Sorry but there are currently no threads in this forum.');?></strong>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>
+
+<p style="text-align:right">
+	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forums_threads_add');?>" title="New thread"><strong><?php echo $this->translate('New thread');?></strong></a>
+</p>

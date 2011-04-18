@@ -1,5 +1,14 @@
+<?php $this->headTitle($this->translate('Edit post') . ': ' . $this->escape($this->form->getValue('title')));?>
+
 <div class="post">
     <h2><?php echo $this->translate('Edit post'); ?></h2>
-    <?php echo $this->postForm; ?>
+    <?php echo $this->form; ?>
     <div class="clearer"></div>
 </div>
+
+<p class="backLink">
+    <a href="<?php echo $this->url(array('id' => $this->form->getValue('id')), 'posts_show');?>"
+       title="<?php echo $this->translate('Abort');?>">
+        <strong><?php echo $this->translate('Abort');?></strong>
+    </a>
+</p>

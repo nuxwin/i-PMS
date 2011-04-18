@@ -19,20 +19,17 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     1.0.0
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-// Prevent direct access
-defined('APPLICATION_PATH') or die;
-
 /**
  * Bootstrap class for Dashboard module
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Dashboard_Bootstrap extends Zend_Application_Module_Bootstrap
 {
@@ -49,7 +46,6 @@ class Dashboard_Bootstrap extends Zend_Application_Module_Bootstrap
          * @var $front Zend_Controller_Front
          */
         $front = $this->getResource('FrontController');
-        $front->registerPlugin(new Dashboard_Plugin_Layout());
         $front->registerPlugin(new Dashboard_Plugin_Menu());
     }
 }

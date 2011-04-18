@@ -19,7 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -27,8 +28,8 @@
 /**
  * Index controller (Home page)
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class FrontPageController extends Zend_Controller_Action
 {
@@ -38,10 +39,44 @@ class FrontPageController extends Zend_Controller_Action
      */
     public function init()
     {
+
+        $options =  new Zend_Config_Xml(APPLICATION_PATH . '/Widgets/Login/description.xml');
+
+        //echo '<pre>';
+        //    print_r($options->toArray());
+        //echo '<pre>';
+        //exit;
+
+        $options = $options->toArray();
+        $model = new Model_DbTable_Widgets();
+        $widget = $model->find(1)->current();
+        $widget->options = $options;
+        $widget->save();
+
         /**
-         * @var $widgets iPMS_Controller_Action_Helper_Widgets
+         * @var $widgetContainer iPMS_Widgets_Container
          */
-        $widgetContainer = $this->_helper->Widgets();
+       $widgetContainer = $this->_helper->Widgets();
+               //->getContainer();
+       // exit;
+       //$this->view->widgets($widgetContainer);
+          //  echo '<pre>';
+          //      print_r($widgetContainer);
+          //  echo '</pre>';
+        //exit;
+
+        /*
+        require_once APPLICATION_PATH .'/Widgets/Login/Login.php';
+        $widgetContainer->addWidget(new Widgets_Login_Login(
+            new Zend_Config_Xml(APPLICATION_PATH . '/Widgets/Login/description.xml')
+        ));
+        */
+
+
+        //echo '<pre>';
+        //    print_r($widgetContainer);
+        //echo'</pre>';
+        //exit;
 
          // Make the Widgets container available for the view
         //$this->view->Widgets()->setContainer($Widgets);

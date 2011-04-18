@@ -18,10 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_View
- * @subpackage  Helper
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -44,7 +43,7 @@ require_once 'Zend/View/Helper/HtmlElement.php';
  * @package     iPMS_View
  * @subpackage  Helper
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @version     0.0.1
  */
 abstract class iPMS_View_Helper_Widgets_HelperAbstract extends Zend_View_Helper_HtmlElement
     implements iPMS_View_Widgets_Helper

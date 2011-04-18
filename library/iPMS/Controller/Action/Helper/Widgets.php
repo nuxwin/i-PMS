@@ -19,7 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -28,7 +29,7 @@
  * Action helper that load active Widgets
  *
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @version 0.0.1
  */
 class iPMS_Controller_Action_Helper_Widgets extends Zend_Controller_Action_Helper_Abstract
 {
@@ -40,18 +41,15 @@ class iPMS_Controller_Action_Helper_Widgets extends Zend_Controller_Action_Helpe
     protected $_widgetContainer = null;
 
     /**
-     * Retrieve all active Widgets
+     * Perform helper when called as $this->_helper->widtes() from an action controller
      *
-     * @return iPMS_Widgets_Container widget container
+     * Proxies to {@link getContainer()}
+     *
+     * @return iPMS_Widgets_Container
      */
     public function direct()
     {
-        $model = new Model_DbTable_Widgets();
-        $widgets = $model->getWidgetsOptions();
-
-        $container = new iPMS_Widgets_Container($widgets);
-
-        return $container;
+        return $this->getContainer();
     }
 
     /**
@@ -59,26 +57,68 @@ class iPMS_Controller_Action_Helper_Widgets extends Zend_Controller_Action_Helpe
      *
      * @return void
      */
-    public function __preDispatch()
+    public function preDispatch()
     {
-        //$iterator = new IteratorIterator($this->_widgetContainer); // Todo implement iterator
-        $iterator = $this->_widgetContainer;
+        // Process only exception wasn't trapped in the response object and container is not null
+        if(!$this->getResponse()->isException() && null!== $this->_widgetContainer) {
+            /**
+             * @var $request Zend_Controller_Request_Http
+             */
+            $request = $this->getRequest();
 
-        /**
-         * @var $widget iPMS_Widget
-         */
-        foreach ($iterator as $widget) {
-            $widget->run();
+            // request for widget update
+            /*
+            if($request->isPost() && ($widgetName = $request->getParam('widgetUpdate', false))) {
+                $widget = $this->_widgetContainer->findOneByName($request->getParam($widgetName));
+                if(null !== $widget) {
+                    $form = $widget->getForm('dashboard');
+
+                    if($form->isValid($request->getPost('dashboard'))) {
+                         $widget->update(array(), array());
+                    }
+                }
+            }
+             */
+
+            $iterator = new IteratorIterator($this->_widgetContainer);
+
+            /**
+             * @var $widget iPMS_Widget
+             */
+            foreach ($iterator as $widget) {
+                echo $widget->run();
+            }
         }
     }
 
     /**
-     * Remove the reference to the widget container
+     * Remove the reference to the widgets container
      *
      * @return void
      */
     public function postDispatch()
     {
         $this->_widgetContainer = null;
+    }
+
+    /**
+     * Returns widget container
+     *
+     * @return iPMS_Widgets_Container|null
+     */
+    public function getContainer()
+    {
+        if(null == $this->_widgetContainer) {
+            $model = new Model_DbTable_Widgets();
+            $widgetsOptions = $model->getOptions(true);
+            //echo '<pre>';
+            //    print_r($widgetsOptions);
+            //echo '</pre>';
+            $this->_widgetContainer = new iPMS_Widgets_Container($widgetsOptions);
+
+
+        }
+
+        return $this->_widgetContainer;
     }
 }

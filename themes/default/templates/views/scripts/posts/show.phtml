@@ -1,5 +1,4 @@
-<!-- Show post - begin -->
-<?php if ($this->post):?>
+<?php $this->headTitle($this->translate('Post') . ': ' .$this->escape($this->post->title));?>
 <div class="post">
     <h1><?php echo $this->escape($this->post->title);?></h1>
     <div class="subTitle">
@@ -17,20 +16,17 @@
             </a>
     	</span>
     	<span>
-	    <?php
-            echo $this->translate('Posted on').' '.date('F d, Y', strtotime($this->post['created_at'])).' '.
-                $this->translate('by');
-        ?>
-            <a href="<?php echo $this->url(array('id' => $this->post['id']), 'posts_show');?>"
+			<?php printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($this->post->created_at)));?>
+            <a href="<?php echo $this->url(array('id' => $this->post->id), 'posts_show');?>"
                title="<?php echo $this->translate('View user profile');?>"
             >
                 <span>
                 <?php
-                    if(null != $this->post->lastname && null != $this->post['firstname']):
-                        echo $this->escape($this->post->lastname.' '.$this->post->firstname);
-                    else:
+                    if(null != $this->post->lastname && null != $this->post->firstname) {
+						$this->escape(printf('%s %s', $this->post->lastname, $this->post->firstname));
+                    } else {
                         echo $this->escape($this->post->username);
-                    endif;
+                    }
                 ?>
 		    </span>
         </a>
@@ -43,8 +39,8 @@
         <?php echo $this->post->body;?>
     </div>
 </div>
-<?php endif;?>
-<!-- Show post - end -->
-<!-- Show post comments end -->
-<?php echo $this->action('index', 'comments', null, array('parent' => $this->post));?>
-<!-- Show post comments - end-->
+
+<?php
+	echo $this->action('index', 'comments', null, array('parent' => $this->post));
+	echo $this->action('add', 'comments', null, array('pCtrl' => 'posts', 'pId' => $this->post['id']));
+?>

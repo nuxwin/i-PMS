@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -21,7 +20,8 @@
  * @category    iPMS
  * @package     iPMS_Controllers
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -33,67 +33,64 @@
  * @package     iPMS_Controllers
  * @subpackage  comments
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @version     0.0.1
  */
 class CommentsController extends Zend_Controller_Action
 {
 
-    /**
-     * List all comments belong to one object
-     *
-     * @return void
-     */
-    public function indexAction()
-    {
-        $parent = $this->_request->getParam('parent');
-        $comments = new Model_DbTable_Comments();
-        $comments = $comments->getComments($parent);
-        $this->view->assign(array('comments' => $comments));
-    }
+	/**
+	 * List all comments belong to one object
+	 *
+	 * @return void
+	 */
+	public function indexAction()
+	{
+		$parent = $this->_request->getParam('parent');
+		$comments = new Model_DbTable_Comments();
+		$comments = $comments->getComments($parent);
+		$this->view->assign('comments', $comments);
+	}
 
-    /**
-     * Add comment
-     *
-     * @return void
-     */
-    public function addAction()
-    {
+	/**
+	 * Add comment
+	 *
+	 * @return void
+	 */
+	public function addAction()
+	{
+		$parentController = $this->_request->getParam('pCtrl', null);
+		$parentId = $this->_request->getParam('pId', null);
 
-        $parentId = (int)$this->_request->getParam('id');
-        $form = new Form_Comments();
+		if(!is_null($parentController) && !is_null($parentId)) {
+			$form = new Form_Comments();
 
-        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
-            if (null == $parentId) {
-                throw new Zend_Controller_Action_Exception("Comment parent ID not found!", 404);
-            }
+			if ($this->_request->isPost() && $form->isValid($this->_request->getParams('commentsForm'))) {
+				$model = new Model_DbTable_Comments();
+				$model->insert($form->getValues());
+				$form->reset();
+			}
 
-            $model = new Model_DbTable_Comments();
-            $model->insert($form->getValues());
-            $form->reset();
-        }
+			$form->setAction($form->getAction() . "/?pCtrl={$parentController}&pId={$parentId}");
+			$this->view->assign('form', $form);
+		} else {
+			$this->_redirect('/');
+		}
+	}
 
-        $form->setAction($parentController . '/' . $parentId . '/comments');
-        $this->view->assign('form', $form);
-    }
+	/**
+	 * Delete comment
+	 *
+	 * @throws Zend_Controller_Action_Exception
+	 * @return void
+	 */
+	public function deleteAction()
+	{
+		$id = (int)$this->_request->getParam('id');
 
-    /**
-     * Delete comment
-     *
-     * @throws Zend_Controller_Action_Exception
-     * @return void
-     */
-    public function deleteAction()
-    {
-        $commentId = (int)$this->_request->getParam('id');
+		$model = new Model_DbTable_Comments();
+		$model->delete($id);
 
-        if (null == $commentId) {
-            throw new Zend_Controller_Action_Exception("Post ID not found!", 404);
-        } else {
-            $commentsModel = new Model_DbTable_Comments();
-            $commentsModel->delete($commentId);
-        }
-
-        $this->_redirect('/');
-    }
+		$this->_redirect('/');
+	}
 
 }

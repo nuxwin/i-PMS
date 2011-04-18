@@ -19,7 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -30,11 +31,10 @@
  * @package     iPMS
  * @subpackage  iPMS_Widgets
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @version     0.0.1
  */
 class iPMS_Widgets_Container implements Iterator, Countable
 {
-
     /**
      * Contains Widgets
      *
@@ -59,16 +59,19 @@ class iPMS_Widgets_Container implements Iterator, Countable
     /**
      * Creates a new Widgets container
      *
-     * @param array $widgets [optional] Widgets to add
+     * @param array|Zend_Config $widgets [optional] Widgets to add
      * @throws iPMS_Widgets_Exception if $Widgets is invalid
      */
     public function __construct($widgets = null)
     {
-        if (is_array($widgets)) {
+
+        if (is_array($widgets) || $widgets instanceof Zend_Config) {
             $this->addWidgets($widgets);
         } elseif (null !== $widgets) {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception('Invalid argument: $Widgets must be an array or null');
+            throw new iPMS_Widgets_Exception(
+                'Invalid argument: $Widgets must be an array, an instance of Zend_Config, or null'
+            );
         }
     }
 
@@ -116,33 +119,35 @@ class iPMS_Widgets_Container implements Iterator, Countable
      * Adds a widget to the container
      *
      * This method will inject the container as the given page's parent by
-     * calling {@link iPMS_Widgets::setParent()}.
+     * calling {@link iPMS_Widget::setParent()}.
      *
-     * @param  iPMS_Widget|array $widget widget to add
+     * @param  iPMS_Widget|array|Zend_Config $widget widget to add
      * @return iPMS_Widgets_Container fluent interface, returns self
      * @throws iPMS_Widgets_Exception if widget is invalid
      */
     public function addWidget($widget)
     {
-        if (is_array($widget)) {
+        if (is_array($widget) || $widget instanceof Zend_Config) {
             require_once 'iPMS/Widget.php';
             $widget = iPMS_Widget::factory($widget);
         } elseif (!$widget instanceof iPMS_Widget) {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new iPMS_Widgets_Exception('Invalid argument: $widget must be an instance of iPMS_Widget or an array');
+            throw new iPMS_Widgets_Exception(
+                'Invalid argument: $widget must be an instance of iPMS_Widget or Zend_Config, or an array'
+            );
         }
 
         // Retrieve the widget hash
-        $hash = $widget->hashCode(); // Todo to be added to the iPMS_Widget abstract class
+        $hash = $widget->hashCode();
 
         if (array_key_exists($hash, $this->_index)) {
-            // page is already in container
+            // widget is already in container
             return $this;
         }
 
         // adds page to container and sets dirty flag
         $this->_widgets[$hash] = $widget;
-        $this->_index[$hash] = $widget->getOrder(); // Todo method to be added in the iPMS_Widget abstract class
+        $this->_index[$hash] = $widget->getOrder();
         $this->_dirtyIndex = true;
 
         // inject self as widget parent
@@ -163,7 +168,7 @@ class iPMS_Widgets_Container implements Iterator, Countable
     {
         if (!is_array($widgets)) {
             require_once 'iPMS/Widgets/Exception.php';
-            throw new Zend_Navigation_Exception('Invalid argument: $widget must be an array');
+            throw new iPMS_Widgets_Exception('Invalid argument: $widget must be an array');
         }
 
         foreach ($widgets as $widget) {

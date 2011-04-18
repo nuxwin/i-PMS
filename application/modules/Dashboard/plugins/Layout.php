@@ -19,37 +19,34 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     1.0.0
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
-// Prevent direct access
-defined('APPLICATION_PATH') or die;
 
 /**
  * Plugin for switching to the Dashboard layout
  *
  * Based on idea from Matthew Weier O'Phinney
  *
- * @author  Laurent Declercq
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  *
  */
 class Dashboard_Plugin_Layout extends Zend_Controller_Plugin_Abstract
 {
 
-    /**
-     * Sets layout path for the Dasbboard if needed
-     *
-     * @param Zend_Controller_Request_Abstract $request
-     * @return void
-     */
-    public function routeShutdown(Zend_Controller_Request_Abstract $request)
-    {
-        if ('Dashboard' == $request->getModuleName()) {
-            Zend_Layout::getMvcInstance()->setLayoutPath(APPLICATION_PATH . '/modules/Dashboard/layouts');
-        }
-    }
+	/**
+	 * Sets layout path for the Dasbboard if needed
+	 *
+	 * @param Zend_Controller_Request_Abstract $request
+	 * @return void
+	 */
+	public function routeShutdown(Zend_Controller_Request_Abstract $request)
+	{
+		if ('Dashboard' == $request->getModuleName()) {
+			//Zend_Layout::getMvcInstance()->setLayoutPath(APPLICATION_PATH . '/modules/Dashboard/layouts');
+		}
+	}
 }

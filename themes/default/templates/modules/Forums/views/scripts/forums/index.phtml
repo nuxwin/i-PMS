@@ -1,0 +1,49 @@
+<div class="navlinks" style="margin-top:20px;font-weight:bold;font-size:1.2em;">
+	<?php echo $this->translate('Forums');?>
+</div>
+	
+<?php if(count($this->forums)):?>
+<table>
+	<tr>
+		<th colspan="2" style="width:55%;text-align:left;"><?php echo $this->translate('Forum');?></th>
+		<th style="width:10%;"><?php echo $this->translate('Threads');?></th>
+		<th style="width:10%;"><?php echo $this->translate('Posts');?></th>
+		<th style="width:25%;"><?php echo $this->translate('Last Post');?></th>
+	</tr>
+	<?php foreach($this->forums as $forum):?>
+
+	<tr style="background-color:<?php echo $this->cycle(array("#F0F0F0","#CCC"))->next();?>">
+		<td style="width:7%;text-align:center;">new/old</td>
+		<td>
+			<a href="<?php echo $this->url(array('fid' => $forum['fid']), 'forums_show');?>"
+			   title="View forum"><strong><?php echo $forum['name'];?></strong></a>
+			<br />
+			<div style="font-size:0.9em";><?php echo $forum['description'];?></div>
+		</td>
+		<td style="text-align:center"><?php echo $forum['count_threads'];?></td>
+		<td style="text-align:center"><?php echo $forum['count_posts'];?></td>
+		<td style="text-align:right;">
+			<?php if($forum['count_posts'] > 0):?>
+			<div style="font-size:0.8em;">
+				<a href="<?php echo $this->url(array('tid' => $forum['lastthread_id'], 'action' => 'lastpost'), 'forums_threads_show');?>"
+				   title="<?php echo $forum['lastthread_subject'];?>">
+					<strong><?php echo $this->truncate($forum['lastthread_subject'], 25);?></strong>
+				</a>
+				<br />
+				<div class="meta">
+					<?php echo date('d-m-Y g:i A', $forum['lastpost_date']);?>
+					<br />
+					<?php echo sprintf('by %s', $forum['lastposter_username']);?>
+				</div>
+			</div>
+			<?php else:?>
+			<div style="text-align:center"><?php echo $this->translate('Never');?></div>
+			<?php endif;?>
+
+		</td>
+	</tr>
+	<?php endforeach;?>
+</table>
+<?php else:?>
+<div class="note"><?php echo $this->translate('No forums found!');?></div>
+<?php endif;?>

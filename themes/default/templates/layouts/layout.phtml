@@ -3,7 +3,7 @@
 <head>
 <base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl();?>/"/>
 <?php
-    echo $this->headTitle(), PHP_EOL .
+    echo $this->headTitle('Error'), PHP_EOL .
         $this->headMeta(), PHP_EOL .
         $this->headLink()->appendStylesheet('/themes/default/css/main.css'), PHP_EOL .
         $this->headScript(), PHP_EOL .
@@ -46,7 +46,7 @@
                 <span>-</span>
                 <a class="logoutSmallIcon smallIcon"
                    href="<?php echo $this->url(array(), 'logout');?>"
-                   type="<?php echo $this->translate('Logout'); ?>"
+                   title="<?php echo $this->translate('Logout'); ?>"
                 >
                     <span><?php echo $this->translate('Logout');?></span>
                 </a>

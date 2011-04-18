@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,8 +28,8 @@
 /**
  * Post model class
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Model_DbTable_Posts extends Zend_Db_Table_Abstract
 {

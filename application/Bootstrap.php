@@ -19,20 +19,17 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     1.0.0
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
-
-// Prevent direct access
-defined('APPLICATION_PATH') or die;
 
 /**
  * Main bootsrap class
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @version 0.0.1
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {

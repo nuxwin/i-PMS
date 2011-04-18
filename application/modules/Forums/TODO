@@ -1,0 +1,27 @@
+Features that will be implemented in future releases
+
+Global features:
+
+Forums features:
+	- jump dropdown box (Allows users to jum in another forum easily)
+	- mark as read (Allows users to mark a forum as read)
+	- password protection (Allow to protect a forum with password)
+	- subscription (Allows users to subscribe a forum)
+
+Threads features:
+	- forum jump dropdown box (Allows users to jum in another forum easily)
+	- jump to unread posts (Allows users to jump at unread posts)
+	- jump to newest posts (Allows users to jump at newest posts)
+	- jump to the next oldest posts (Allows users to jump at next oldest posts)
+	- poll (Allows users to add poll in thread)
+	- prefix (Allow to add a prefix to a thread)
+	- quick reply (Allows users to post a quickly answer to a thread)
+	- rating (Allows users to rate a thread)
+	- similar threads table (Allows to show a table that list some similar threads)
+	- subscription (Allows users to subsribe to a thread)
+	- users viewing thread (Allows to show  users viewing a specific thread)
+
+Posts features:
+	- bbcode (Allows user to use bbcode)
+	- posts attachments (Allows users to add attachments in posts)
+	- smilies (Allows users to add smilies in posts)

@@ -1,0 +1,88 @@
+
+<div class="navlinks" style="margin-top:20px;font-weight:bold;font-size:1.1em;">
+	<a href="<?php echo $this->url(array(), 'forums_index');?>"
+	   title="<?php echo $this->translate('Forums list');?>"><?php echo $this->translate('Forums');?></a>
+	/
+	<a href="<?php echo $this->url(array('fid' =>$this->forum['fid']), 'forums_show');?>"
+	   title="<?php echo $this->escape($this->forum['name']);?>"><?php echo $this->escape($this->forum['name']);?></a>
+	/
+	<?php echo $this->escape($this->thread['subject']);?>
+</div>
+
+<table>
+	<tr>
+		<th style="width:15%;text-align:left;"><?php echo $this->translate('Author');?></th>
+		<th style="text-align:left;"><?php echo $this->translate('Message');?></th>
+	</tr>
+
+	<?php
+		$i = 1;
+		foreach($this->posts as $post):
+	?>
+	<tr style="background-color:<?php echo $this->cycle(array("#f0f0f0","#cccccc"))->next();?>" id="pid<?php echo $post['pid'];?>">
+		<td style="white-space: nowrap; text-align: center;" valign="top" width="15%">
+		<strong><span class="largetext"><a href="#"><?php echo $post['username'];?></a></span></strong>
+		<!--<img src="" title="Offline" alt="Offline">-->
+		<br>
+		<span class="smalltext">
+			ROLE
+			<br />
+			<br />
+			<?php echo $this->translate('Posts');?>: 2
+			<br />
+			<?php echo $this->translate('Joined on');?>: Feb 2011
+		</span>
+		</td>
+		<td>
+			<div style="background:#f9f9f9;padding:5px;border:1px solid #cccccc">
+				<div style="float:right;width:auto;vertical-align:top;">
+					<span class="smalltext">
+						<strong>
+							<?php echo $this->translate('Post');?>:
+							<a href="<?php echo $this->url(array('tid' => $post['tid']),'forums_threads_show');?>/#pid<?php echo $post['pid'];?>"
+							   title="<?php echo $this->translate(sprintf('Post %s', $i));?>">#<?php echo $i;?></a>
+						</strong>
+						<!--| <input class="checkbox" name="inlinemod_538" id="inlinemod_538" value="1"
+					       style="vertical-align:middle;" type="checkbox">-->
+					</span>
+					<div class="clearer"></div>
+				</div>
+			<span class="smalltext"><strong><?php echo $this->escape($post['subject']);?></strong></span>
+			</div>
+			<br>
+			<div style="padding: 5px 0pt;">
+				<?php echo $this->escape($post['message']);?>
+			</div>
+			<div style="text-align:right;vertical-align:bottom;font-size:0.6em">
+				<!--<div>
+					<?php
+						echo $this->translate(
+							sprintf('This post was last modified: %s by %s.', '11-23-2010 10:26 AM', 'Nuxwin'));
+					?>
+				</div>-->
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="white-space:nowrap;text-align:center;vertical-align:middle;">
+			<span class="smalltext">02-15-2011 06:02 PM</span>
+		</td>
+		<td style="vertical-align:middle;text-align:right;">
+			<a href="#" title="<?php echo $this->translate('Edit this post');?>"><?php echo $this->translate('Edit');?></a>
+			-
+			<a href="#" title="<?php echo $this->translate('Delete this post');?>"><?php echo $this->translate('Delete');?></a>
+			-
+			<a href="<?php echo $this->url(array('tid' => 1, 'pid' => 2), 'forums_posts_reply');?>"
+			   title="Quote this message in a reply"><?php echo $this->translate('Reply');?></a>
+		</td>
+	</tr>
+	<?php
+		$i++;
+		endforeach;
+	?>
+</table>
+
+<p style="text-align:right">
+	<a href="<?php echo $this->url(array('tid' => 1), 'forums_posts_reply');?>"
+	   title="New Reply"><strong><?php echo $this->translate('New reply');?></strong></a>
+</p>

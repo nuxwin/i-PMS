@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,8 +28,8 @@
 /**
  * Users model class
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Model_DbTable_Users extends Zend_Db_Table_Abstract
 {
@@ -55,7 +54,8 @@ class Model_DbTable_Users extends Zend_Db_Table_Abstract
     protected $_dependentTables = array(
         'Model_DbTable_Posts',
         'Model_DbTable_Comments',
-        'Model_DbTable_Tokens'
+        'Model_DbTable_Tokens',
+		'Model_DbTable_Messages',
     );
 
 }

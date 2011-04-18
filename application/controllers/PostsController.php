@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,8 +28,8 @@
 /**
  * Posts controller
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class PostsController extends Zend_Controller_Action
 {
@@ -43,7 +42,8 @@ class PostsController extends Zend_Controller_Action
     public function indexAction()
     {
         $model = new Model_DbTable_Posts();
-        $pageablePosts = $model->getPageablePostsList((int)$this->_request->getParam('page', 1), 1);
+        // Todo get max post per pages from user settings (currently hardcoded to 15)
+        $pageablePosts = $model->getPageablePostsList($this->_request->getParam('page', 1));
         $this->view->assign('paginator', $pageablePosts);
     }
 
@@ -54,7 +54,7 @@ class PostsController extends Zend_Controller_Action
      */
     public function showAction()
     {
-        $id = (int)$this->_getParam('id', 0);
+        $id = (int) $this->_getParam('id');
 
         $model = new Model_DbTable_Posts();
         $row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
@@ -82,13 +82,14 @@ class PostsController extends Zend_Controller_Action
         $identity = Zend_Auth::getInstance()->getIdentity()->id;
 
         if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-            $data = $form->getValues();
+            $data = $form->getValues('postForm');
             $data['author_id'] = $identity['id'];
 
             $model = new Model_DbTable_Posts();
+			print_r($data);
             $id = $model->insert($data);
 
-            $this->_redirect('/posts/' . $id);
+            $this->_redirect("/posts/{$id}");
         }
 
         $this->view->assign('form', $form);
@@ -101,35 +102,40 @@ class PostsController extends Zend_Controller_Action
      */
     public function editAction()
     {
+        $id = (int) $this->_request->getParam('id');
+        $model = new Model_DbTable_Posts();
 
-        $postId = (int) $this->_request->getParam('id');
-        $postsModel = new Model_DbTable_Posts();
-
-        if (null == ($postRow = $postsModel->find($postId)->current())) {
+        if (null == ($row = $model->find($id)->current())) {
             throw new Zend_Controller_Action_Exception("Post not found!", 404);
         } else {
             $form = new Form_Post();
 
             if ($this->_request->isPost() && $form->isValid($this->_request->getPost('postForm'))) {
-                $postRow->setFromArray($form->getValues('postForm'))->save();
-                $this->_redirect("posts/{$postId}");
+                $row->setFromArray($form->getValues('postForm'))->save();
+                $this->_redirect("posts/{$id}");
             } else {
-                $form->populate($postRow->toArray());
+                $form->populate($row->toArray());
             }
 
-            $form->setAction("/posts/{$postId}/edit");
-            $this->view->assign('postForm', $form);
+            $form->setAction("/posts/{$id}/edit");
+            $this->view->assign('form', $form);
         }
     }
 
     /**
-     * Delete a post and his related comments
+     * Deletes a post and its comments
      *
      * @return void
      */
     public function deleteAction()
     {
-        $postModel = new Model_DbTable_Posts();
-        $postModel->delete((int) $this->_request->getParam('id'));
+        $model = new Model_DbTable_Posts();
+        $row = $model->find((int) $this->_request->getParam('id', 0))->current();
+
+		if(null !== $row) {
+			$row->delete();
+		}
+
+		$this->_redirect('/');
     }
 }

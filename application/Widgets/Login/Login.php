@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -19,10 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_Widgets
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -34,7 +32,7 @@
  * @package     Widgets
  * @subpackage  Widgets_Login
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.0
+ * @version     0.0.1
  */
 class Widgets_Login_Login extends iPMS_Widget
 {
@@ -52,17 +50,22 @@ class Widgets_Login_Login extends iPMS_Widget
         if(!$auh->hasIdentity()) {
             $form = $this->getForm('loginForm');
 
-            if($request->isPost() && is_array($request->getPost('loginForm')) &&
-               $form->isValid($request->getPost('loginForm'))) {
+            if($request->isPost() && is_array($request->getPost('loginForm'))
+                && $form->isValid($request->getPost('loginForm'))) {
+                $authDbAdapter = new Zend_Auth_Adapter_DbTable(
+                    null,'users', 'username', 'password', 'MD5(?) AND active = 1');
+                $authDbAdapter->setIdentity($form->getValue('username'))->setCredential($form->getValue('password'));
+                $result = $authDbAdapter->authenticate();
 
-                $userModel = new Model_DbTable_Users();
-                $userModel->setIdentity($form->getValue('username'))
-                    ->setCredential($form->getValue('password'));
-                $authResult = $auh->authenticate($userModel);
-
-                if ($authResult->isValid()) {
+                if ($result->isValid()) {
+                    $auh->getStorage()->write($authDbAdapter->getResultRowObject(null, 'password'));
                     Zend_Session::regenerateId(); // Protection against session's fixation attacks
-                    return null;
+
+                    /**
+                     * @var $redirector Zend_Controller_Action_Helper_Redirector
+                     */
+                    $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+                    $redirector->gotoUrl('/');
                 }
             }
 

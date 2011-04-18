@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,8 +28,8 @@
 /**
  * Post form
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Form_Post extends Zend_Form
 {
@@ -75,6 +74,7 @@ class Form_Post extends Zend_Form
     public function init()
     {
         $this->setName('postForm')
+			->setAction('/posts/add')
             ->setElementsBelongTo('postForm')
             ->setMethod('post')
             ->setEnctype('application/x-www-form-urlencoded');
@@ -110,7 +110,7 @@ class Form_Post extends Zend_Form
         $id->getDecorator('Label')->setOption('tagClass','hidden');
         $id->getDecorator('HtmlTag')->setOption('class','hidden');
 
-        $category =new Zend_Form_Element_Hidden('categorie');
+        $category = new Zend_Form_Element_Hidden('categorie');
         $category  ->setValue('home');
         $category->getDecorator('Label')->setOption('tagClass','hidden');
         $category->getDecorator('HtmlTag')->setOption('class','hidden');
@@ -119,5 +119,22 @@ class Form_Post extends Zend_Form
         $submit ->setLabel('Submit');
 
         $this->addElements(array($title, $teaser, $body, $allowComments, $id, $category, $submit));
+		$this->_setRequiredSuffix();
     }
+
+	/**
+	 * Sets required suffix for all required elements
+	 *
+	 * @return void
+	 */
+	protected function _setRequiredSuffix()
+	{
+		foreach ($this->getElements() as $element) {
+			if ($element->isRequired()) {
+				$element->addDecorator('Label', array('tag' => 'dt',
+				                                     'escape' => false,
+				                                     'requiredSuffix' => ' <span>*</span>'));
+			}
+		}
+	}
 }

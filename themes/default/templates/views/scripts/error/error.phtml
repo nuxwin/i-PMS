@@ -6,7 +6,11 @@
 
 		<h1 style=""><?php echo $this->translate('An error occurred');?></h1>
 		<?php if(isset($this->exception)):?>
-		<pre id="message"><?php echo $this->message . PHP_EOL . $this->exception->getMessage();?></pre>
+		<div id="message" class="wordwraps" style="text-align:left;">
+			<?php echo $this->message;?>
+			<br />
+			<p style="margin-top:10px;">Exception: <?php echo $this->exception->getMessage();?></p>
+		</div>
 		<p><a href="#" id="debug_data"><?php echo $this->translate('Debug Data');?></a></p>
 		<div id="tabs">
 			<ul id="tabsnav">
@@ -49,7 +53,9 @@
 			</div>
 		</div>
 		<?php else:?>
-			<pre id="message"><?php echo $this->message;?></pre>
+		<div id="message" class="wordwraps" style="text-align:left;">
+			<?php echo $this->message;?>
+		</div>
 		<?php endif;?>
 		<br />
 		<p><a style="float:right;" href="javascript: history.go(-1)" title="Back to previous page"><strong>Back</strong></a></p>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * i-PMS - internet Project Management System
  * Copyright (C) 2011 by Laurent Declercq
@@ -20,8 +19,8 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,8 +28,8 @@
 /**
  * Comments Model class
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 1.0.0
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_Resource_Interface, Zend_Acl_Assert_Interface
 {
@@ -41,12 +40,14 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
      * @var string
      */
     protected $_name = 'comments';
+
     /**
      * Primary key
      *
      * @var string
      */
     protected $_primary = 'id';
+
     /**
      * Table relations
      *
@@ -68,11 +69,13 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
             SELF::ON_DELETE => SELF::SET_NULL
         ),
     );
+
     /**
      * Resource owner identifier
      * @var int
      */
     protected $_resourceOwnerId = null;
+
     /**
      * Resource string identifier
      * @var string
@@ -90,8 +93,7 @@ class Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_
         $comments = $parent->findDependentRowset(
             $this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
                 ->setIntegrityCheck(false)
-                ->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar')
-        );
+                ->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar'));
 
         return $comments;
     }
