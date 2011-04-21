@@ -33,7 +33,6 @@
  */
 class ErrorController extends Zend_Controller_Action
 {
-
 	/**
 	 * Initialize controller
 	 *
@@ -44,6 +43,20 @@ class ErrorController extends Zend_Controller_Action
 		$this->_helper->layout()
 			->setLayoutPath(THEME_PATH . '/default/templates/layouts') // Ensure we have correct layout path
 			->setLayout('error');
+
+
+		/**
+		 * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
+		 */
+		//$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+		//$viewRenderer->setView($this->view)
+          //  ->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module/views')
+           // ->initView();
+
+
+		//	echo '<pre>';
+		//	print_r($this->view->getScriptPaths());
+		//exit;
 	}
 
 	/**

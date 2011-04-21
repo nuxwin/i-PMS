@@ -37,14 +37,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      * Initialize view
      *
      * @return Zend_View
+     * @todo Move this in a plugin resource (view)
      */
     public function _initSetupView()
     {
         $this->bootstrap('View');
+
+        /**
+         * @var $view Zend_View
+         */
         $view = $this->getResource('View');
 
-        // Site title
-        $view->headTitle('internet Multi Server Control Panel (i-MSCP) - Project Web Site')
+        // Site title (prefix)
+        $view->headTitle($view->translate('internet Multi Server Control Panel (i-MSCP) - Project Web Site'))
             ->setSeparator(' - ');
 
         // Meta
@@ -63,6 +68,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headScript()
             ->appendFile('/themes/default/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
             ->appendScript("\tDD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'lt IE 7'));
+
+
+
+	    /**
+	     * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
+	     */
+	    $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+
+	    // Set view script path specification
+	    $viewRenderer->setView($view)
+		    ->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module/views');
 
         return $view;
     }

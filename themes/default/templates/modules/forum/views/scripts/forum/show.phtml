@@ -1,0 +1,134 @@
+<h1>
+	<a href="<?php echo $this->url(array(), 'forum_index');?>"
+	   title="<?php echo $this->translate('Forums index');?>"><?php echo $this->translate('Forums');?></a>
+	-
+	<?php echo $this->escape($this->forum['name']);?>
+</h1>
+
+<form name="bulkActionForm" action="" method="post" enctype="application/x-www-form-urlencoded">
+<table>
+	<tr>
+		<th colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">
+			<div style="float: right;">
+				<span class="smalltext">
+					<strong>
+						<a style="color:#ffffff;" href=""><?php echo $this->translate('Mark this forum read');?></a>
+						|
+						<a style="color:#ffffff;" href=""><?php echo $this->translate('Subscribe to this forum');?></a>
+					</strong>
+				</span>
+			</div>
+			<div>
+				<strong><?php echo $this->escape($this->forum['name']);?></strong>
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<th  colspan="2" style="width:60%;text-align:left;"><?php echo $this->translate('Thread / Author');?></th>
+		<th style="width:7%;"><?php echo $this->translate('Replies');?></th>
+		<th style="width:7%;"><?php echo $this->translate('Views');?></th>
+		<th style="width:25%;"><?php echo $this->translate('Last Post');?></th>
+		<th id="th5" style="width:1%;text-align:center"></th>
+	</tr>
+	<?php
+		if(count($this->threads)):
+		foreach($this->threads as $thread):
+	?>
+	<tr class="<?php echo $this->cycle(array("odd","even"))->next();?>">
+		<td style="width:7%;text-align:center;">
+			<img src="/themes/default/images/imscp32x32.png" style="vertical-align:middle;" alt="status" />
+		</td>
+		<td>
+			<a href="<?php echo $this->url(array('tid' => $thread['tid']), 'forum_thread_show');?>"
+				title="<?php echo $this->translate('Show thread');?>"><strong><?php echo $this->escape($thread['subject']);?></strong></a>
+			<br />
+			<?php echo $thread['username'];?>
+		</td>
+		<td style="text-align:center;"><?php echo $thread['count_replies'];?></td>
+		<td style="text-align:center;"><?php echo $thread['count_views'];?></td>
+		<td style="text-align:right;">
+			<div style="font-size:0.8em;">
+				<?php echo date('d-m-Y g:i A', $thread['lastpost_date']);?>
+				<div class="meta">
+					<a href="<?php echo $this->url(array('tid' => $this->forum['lastthread_id'], 'action' => 'lastpost'), 'forum_thread_show');?>"
+				   title="<?php echo $this->translate('Jump to last post in thread');?>"><?php echo $this->translate('Last Post');?>:</a>
+					<?php echo $thread['lastposter_username'];?>
+				</div>
+			</div>
+		</td>
+		<td style="white-space:nowrap;text-align:center;">
+			<input style="vertical-align:middle;" type="checkbox" class="checkbox" name="bulkActionsForm[threads][]"
+			       value="<?php echo $thread['tid'];?>" />
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">&nbsp;</td>
+	</tr>
+	<?php else:?>
+	<tr>
+		<td colspan="5">
+			<strong><?php echo $this->translate('Sorry but there are currently no threads in this forum.');?></strong>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">&nbsp;</td>
+	</tr>
+	<?php endif;?>
+
+</table>
+
+<p style="text-align:right">
+	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forum_thread_add');?>"
+	   title="New thread"><strong><?php echo $this->translate('New thread');?></strong></a>
+</p>
+
+<div style="text-align:right;margin-top:20px;">
+	<label for="action" style="margin-right:10px;">
+		<?php echo $this->translate('Bulks Actions');?>:
+	</label>
+	<select name="bulkActionsForm[action]" id="bulkActions" >
+		<optgroup label="Moderation tools" style="padding:5px">
+			<option value="close" selected=selected><?php echo $this->translate('Close Threads');?></option>
+			<option value="open"><?php echo $this->translate('Open Threads');?></option>
+			<option value="delete">Delete Threads</option>
+		</optgroup>
+	</select>
+	<input type="submit" name="bulkActionsForm[submit]" value="Execute" />&nbsp;
+	<input type="reset" value="reset" name="bulkActionsForm[reset]" />
+</div>
+</form>
+
+<?php $this->jQuery()->addOnLoad('
+
+	$("<input style=\"vertical-align:middle;\" type=\"checkbox\" name=\"bulkActionsForm[all]\" id=\"bulkActionsAll\" value=\"all\" />").appendTo($("#th5"));
+	$("#bulkActions, [name^=\'bulkActionsForm[submit]\'], [name^=\'bulkActionsForm[reset]\']").attr("disabled", "disabled");
+
+	$("[name^=\'bulkActionsForm[reset]\']").change(function(){
+		$("#bulkActions, [name^=\'bulkActionsForm[submit]\'], [name^=\'bulkActionsForm[reset]\']").attr("disabled", "disabled");
+
+	});
+	
+	$("[name^=\'bulkActionsForm[reset]\']").click(function(){
+		$("tr").removeClass("checked");
+	});
+
+
+	$("input[type=checkbox]").change(function(){
+		if(this.id == "bulkActionsAll") $("input[type=checkbox]").attr("checked", this.checked)
+		var checked = false;
+		$("input[type=checkbox]").each(function(){
+			if(this.checked){
+				checked = true;
+				$(this).parents("tr:eq(0)").addClass("checked");
+			} else {
+				$(this).parents("tr:eq(0)").removeClass("checked");
+			}
+		});
+		if(checked){
+			$(":disabled").removeAttr("disabled");
+		} else {
+			$("#bulkActions, [name^=\'bulkActionsForm[submit]\'], [name^=\'bulkActionsForm[reset]\']").attr("disabled", "disabled");
+		}
+	});
+');?>
