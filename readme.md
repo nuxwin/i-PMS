@@ -1,4 +1,5 @@
 i-PMS - Project Management System
 ========================================
 
-The project is still in development. It's not yet ready to use.
+This application is still under development (prototype state). Don't try to use it for now. An Alpha release will
+come ASAP.

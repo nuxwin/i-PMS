@@ -19,26 +19,19 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
-defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
 
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(realpath(ROOT_PATH . '/library'), get_include_path())));
-
-/** Zend_Application */
-require_once 'Zend/Application.php';
-
-// Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$application->bootstrap()->run();
+/**
+ * Bootstrap class for Dashboard module
+ *
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
+ */
+class Forums_Bootstrap extends Zend_Application_Module_Bootstrap
+{
+}

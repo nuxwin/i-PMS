@@ -4,14 +4,16 @@
 	$( "#tabs" ).tabs();
 ');?>
 
-		<h1 style=""><?php echo $this->translate('An error occurred');?></h1>
+		<h1><?php echo $this->translate('An error occurred');?></h1>
 		<?php if(isset($this->exception)):?>
 		<div id="message" class="wordwraps" style="text-align:left;">
 			<?php echo $this->message;?>
 			<br />
 			<p style="margin-top:10px;">Exception: <?php echo $this->exception->getMessage();?></p>
 		</div>
+
 		<p><a href="#" id="debug_data"><?php echo $this->translate('Debug Data');?></a></p>
+
 		<div id="tabs">
 			<ul id="tabsnav">
 				<li><a href="#trace"><?php echo $this->translate('Backtrace');?></a></li>
@@ -22,35 +24,43 @@
 				<li><a href="#cookie">$_COOKIE</a></li>
 				<li><a href="#files">$_FILES</a></li>
 			</ul>
+
 			<noscript><h2><?php echo $this->translate('BackTrace');?></h2></noscript>
 			<div id="trace">
-				<pre id="framework_trace"><code><?php echo wordwrap($this->exception->getTraceAsString(), 100);?></code></pre>
+				<pre class="wordwrap"><code><?php echo $this->exception->getTraceAsString();?></code></pre>
 			</div>
+
 			<noscript><h2><?php echo $this->translate('Request parameters');?></h2></noscript>
 			<div id="request-parameters">
 				<?php $params = $this->request->getParams();?>
-				<pre><?php echo !empty($params) ? print_r($params, true) : $this->translate('No request parameters found!');?></pre>
+				<pre class="wordwrap"><?php echo !empty($params) ? print_r($params, true) : $this->translate('No request parameters found!');?></pre>
 			</div>
+
 			<noscript><h2>$_SESSION</h2></noscript>
 			<div id="session">
-				<pre><?php Zend_Session::start(); echo (!empty($_SESSION)) ? print_r($_SESSION, true) : $this->translate('$_SESSION is empty!');?></pre>
+				<pre class="wordwrap"><?php Zend_Session::start(); echo (!empty($_SESSION)) ? print_r($_SESSION, true) : $this->translate('$_SESSION is empty!');?></pre>
 			</div>
+
 			<noscript><h2>$_GET</h2></noscript>
 			<div id="get">
-				<pre><?php echo (!empty($_GET)) ? print_r($_GET, true) : $this->translate('$_GET is empty!');?></pre>
+				<pre class="wordwrap"><?php echo (!empty($_GET)) ? print_r($_GET, true) : $this->translate('$_GET is empty!');?></pre>
 			</div>
+
 			<noscript><h2>$_POST</h2></noscript>
 			<div id="post">
-				<pre><?php echo (!empty($_POST)) ? print_r($_POST, true) : $this->translate('$_POST is empty!');?></pre>
+				<pre class="wordwrap"><?php echo (!empty($_POST)) ? print_r($_POST, true) : $this->translate('$_POST is empty!');?></pre>
 			</div>
+
 			<noscript><h2>$_COOKIE</h2></noscript>
 			<div id="cookie">
-				<pre><?php echo (!empty($_COOKIE)) ? htmlentities(print_r($_COOKIE, true)) : $this->translate('$_COOKIE is empty!');?></pre>
+				<pre class="wordwrap"><?php echo (!empty($_COOKIE)) ? htmlentities(print_r($_COOKIE, true)) : $this->translate('$_COOKIE is empty!');?></pre>
 			</div>
+
 			<noscript><h2>$_FILES</h2></noscript>
 			<div id="files">
-				<pre><?php echo (!empty($_FILES)) ? print_r($_FILES, true) : $this->translate('$_FILES is empty!');?></pre>
+				<pre class="wordwrap"><?php echo (!empty($_FILES)) ? print_r($_FILES, true) : $this->translate('$_FILES is empty!');?></pre>
 			</div>
+
 		</div>
 		<?php else:?>
 		<div id="message" class="wordwraps" style="text-align:left;">

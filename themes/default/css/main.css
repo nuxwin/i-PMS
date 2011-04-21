@@ -1101,21 +1101,28 @@ table {
 	border: 1px solid #1D2A5B;
 	border-collapse: collapse;
 	width: 100%;
+
+
+	/*border:none;*/
 }
 
 th {
 	font-family: monospace;
 	font-size: 1.5em;
 	border: thin solid #1D2A5B;
+	border: thin solid #666;
 	padding: 5px;
 	background-color: #A0A9C0;
 	font-style: italic;
 	text-align:center;
+
+
 }
 
 td {
 	font-family: sans-serif;
-	border: thin solid #1D2A5B;
+	/*border: thin solid #1D2A5B;*/
+	border: thin solid #666;
 	padding: 5px;
 	text-align: left;
 
@@ -1127,4 +1134,18 @@ td {
 
 .smalltext {
 	font-size: 0.8em;
+}
+
+.odd {
+
+	background-color: #dedede;
+}
+
+.even {
+	background-color:#f9f9f9;
+}
+
+.checked {
+	/*background-color: #fffbd9;*/
+	background-color: #e7f7e0;
 }
