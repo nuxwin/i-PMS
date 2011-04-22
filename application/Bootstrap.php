@@ -44,9 +44,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	Zend_Registry::set('Config', new Zend_Config($this->getOptions()));
     }
 
-    #initializes the DEBUG constant to true or false based on config. settings and/or cookie
-    #and stores a copy of the Zend_Logger in the Registry for future references
-
 	/**
 	 * Initialize the DEBUG mode
 	 *
@@ -76,7 +73,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     }
 
 	/**
-	 * Initializses the ZFDebug if DEBUG is ON
+	 * Initializses ZFDebug if DEBUG mode is ON
 	 *
 	 * @return bool
 	 */
