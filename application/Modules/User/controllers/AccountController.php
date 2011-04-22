@@ -31,7 +31,7 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Account_AccountController extends Zend_Controller_Action
+class User_AccountController extends Zend_Controller_Action
 {
     /**
      * User identity
@@ -60,7 +60,7 @@ class Account_AccountController extends Zend_Controller_Action
 	    //exit;
 
         if(!Zend_Auth::getInstance()->hasIdentity()) {
-            $form = new Front_Form_Login();
+            $form = new User_Form_Login();
 
             if ($this->_request->isPost() && $form->isValid($this->_request->getPost('loginForm', array()))) {
                 $this->_identity = $form->getValue('username');

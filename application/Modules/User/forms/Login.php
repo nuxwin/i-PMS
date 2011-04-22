@@ -31,7 +31,7 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Front_Form_Login extends Zend_Form
+class User_Form_Login extends Zend_Form
 {
 
     /**
