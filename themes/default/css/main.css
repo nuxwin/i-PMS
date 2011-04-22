@@ -303,9 +303,9 @@ h3 {
 }
 
 h4 {
-    margin-top: 1.5em;
+   /* margin-top: 1.5em;
     margin-bottom: -0.75em;
-    font-size: 1.3em;
+    font-size: 1.3em;*/
 }
 
 #content postBody h4 {
@@ -313,7 +313,7 @@ h4 {
 }
 
 #content .postBody * h4 {
-    margin-right: 0;
+    /*margin-right: 0;*/
 }
 
 ol {

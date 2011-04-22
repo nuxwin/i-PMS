@@ -33,6 +33,80 @@
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+
+	/**
+	 * Stores a copy of the config object in the Registry for future references
+	 * 
+	 * @return void
+	 */
+	protected function _initConfig()
+    {
+    	Zend_Registry::set('Config', new Zend_Config($this->getOptions()));
+    }
+
+    #initializes the DEBUG constant to true or false based on config. settings and/or cookie
+    #and stores a copy of the Zend_Logger in the Registry for future references
+
+	/**
+	 * Initialize the DEBUG mode
+	 *
+	 * Initialize the DEBUG constant to TRUE or FALSE based on current environment.
+	 * Also store a copy of Zend_Logger in the Registry for future references.
+	 *
+	 * Note: To make Firebug writer workable on your system, you must use Firefox >= 2, and
+	 * have extensions Firebug and FirePHP installed and activated.
+	 *
+	 * @return void
+	 */
+ 	protected function _initDebug()
+    {
+	    if(!defined('DEBUG')) {
+	        if($this->getEnvironment() === 'development') {
+		        define('DEBUG', true);
+	        } else {
+		        define('DEBUG', false);
+	        }
+	    }
+
+    	$logger = new Zend_Log();
+		$writer = new Zend_Log_Writer_Firebug();
+		$logger->addWriter($writer);
+
+		Zend_Registry::set('logger', $logger);
+    }
+
+	/**
+	 * Initializses the ZFDebug if DEBUG is ON
+	 *
+	 * @return bool
+	 */
+	protected function _initZFDebug()
+	{
+		$this->bootstrap('debug');
+
+		if (!DEBUG) return false;
+
+        // Ensure the front controller is initialized
+        $this->bootstrap('FrontController');
+
+		// Ensure database is initialized for auto discovery
+		if($this->hasPluginResource('db')) {
+			$this->bootstrap('db');
+		}
+
+        // Retrieve the front controller from the bootstrap registry
+        $front = $this->getResource('FrontController');
+
+        if ($this->hasOption('zfdebug'))
+        {
+            // Create ZFDebug instance
+            $zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
+
+            // Register ZFDebug with the front controller
+            $front->registerPlugin($zfdebug);
+        }
+    }
+
 	/**
 	 * Initialize view
 	 *
