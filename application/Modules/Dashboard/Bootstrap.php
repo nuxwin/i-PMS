@@ -33,19 +33,19 @@
  */
 class Dashboard_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-
     /**
-     * Initialize plugins for Dashboard module
+     * Initialize plugins
      *
      * @return void
      */
     protected function _initPlugins()
     {
         $this->bootstrap('FrontController');
+
         /**
          * @var $front Zend_Controller_Front
          */
         $front = $this->getResource('FrontController');
-        $front->registerPlugin(new Dashboard_Plugin_Menu());
+	    $front->registerPlugin(new Dashboard_Plugin_Layout());
     }
 }

@@ -28,25 +28,47 @@
 /**
  * Plugin for switching to the Dashboard layout
  *
- * Based on idea from Matthew Weier O'Phinney
- *
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
- *
  */
 class Dashboard_Plugin_Layout extends Zend_Controller_Plugin_Abstract
 {
-
 	/**
-	 * Sets layout path for the Dasbboard if needed
+	 * Sets layout and views paths for the Dasbboard if needed
 	 *
 	 * @param Zend_Controller_Request_Abstract $request
 	 * @return void
 	 */
 	public function routeShutdown(Zend_Controller_Request_Abstract $request)
 	{
-		if ('Dashboard' == $request->getModuleName()) {
-			//Zend_Layout::getMvcInstance()->setLayoutPath(APPLICATION_PATH . '/modules/Dashboard/layouts');
+		if(strtolower($request->getModuleName()) == 'dashboard') {
+			/**
+			 * @var $bootstrap Bootstrap
+			 */
+			$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+
+			/**
+			 * @var $layout Zend_Layout
+			 */
+			$layout = $bootstrap->getResource('Layout');
+			$layout->setLayoutPath(APPLICATION_PATH . '/Modules/Dashboard/layouts');
+
+			/**
+			 * @var $view Zend_View
+			 */
+			$view = $bootstrap->getResource('view');
+
+	        /**
+	        * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
+	        */
+	        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+
+	        // Set view basePath specification
+			// TODO current template based path
+	        $viewRenderer->setView($view)->setViewBasePathSpec(':moduleDir/views');
+
+			// Ensuring that error template are available
+			$view->setScriptPath(THEME_PATH . '/default/templates/modules/front/scripts');
 		}
 	}
 }

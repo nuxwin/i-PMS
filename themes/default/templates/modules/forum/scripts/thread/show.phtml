@@ -25,7 +25,7 @@
 		<td style="white-space: nowrap; text-align: center;" valign="top" width="15%">
 		<strong>
 			<span class="largetext" style="font-size:1.4em;font-family:Verdana,Arial,Sans-Serif;font-weight:normal;">
-				<a href="#"><em><?php echo ucfirst($post['username']);?></em></a>
+				<a href="show.phtml#"><em><?php echo ucfirst($post['username']);?></em></a>
 			</span>
 		</strong>
 		<!--<img src="" title="Offline" alt="Offline">-->
@@ -44,7 +44,7 @@
 					<span class="smalltext">
 						<strong>
 							<?php echo $this->translate('Post');?>:
-							<a href="<?php echo $this->url(array('tid' => $post['tid']),'forum_thread_show');?>/#pid<?php echo $post['pid'];?>"
+							<a href="<?php echo $this->url(array('tid' => $post['tid']),'forum_thread_show');?>/themes/default/templates/modules/forum/scripts/thread/show.phtml#pid<?php echo $post['pid'];?>"
 							   title="<?php echo $this->translate(sprintf('Post %s', $i));?>">#<?php echo $i;?></a>
 						</strong>
 					</span>
@@ -71,7 +71,7 @@
 			<span class="smalltext">02-15-2011 06:02 PM</span>
 		</td>
 		<td style="vertical-align:middle;text-align:right;">
-			<a href="#" title="<?php echo $this->translate('Edit this post');?>"><?php echo $this->translate('Edit');?></a>
+			<a href="show.phtml#" title="<?php echo $this->translate('Edit this post');?>"><?php echo $this->translate('Edit');?></a>
 			-
 			<a href="<?php echo $this->url(array('tid' => $this->thread['tid'], 'pid' => $post['pid']), 'forum_post_delete');?>"
 			   title="<?php echo $this->translate('Delete this post');?>"><?php echo $this->translate('Delete');?></a>

@@ -33,72 +33,70 @@
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-    /**
-     * Initialize view
-     *
-     * @return Zend_View
-     * @todo Move this in a plugin resource (view)
-     */
-    public function _initSetupView()
-    {
-        $this->bootstrap('View');
+	/**
+	 * Initialize view
+	 *
+	 * @return Zend_View
+	 * @todo Move this in a plugin resource
+	 */
+	public function _initOverrideView()
+	{
+		$this->bootstrap('View');
 
-        /**
-         * @var $view Zend_View
-         */
-        $view = $this->getResource('View');
+		/**
+		 * @var $view Zend_View
+		 */
+		$view = $this->getResource('View');
 
-        // Site title (prefix)
-        $view->headTitle($view->translate('internet Multi Server Control Panel (i-MSCP) - Project Web Site'))
-            ->setSeparator(' - ');
+		// Site title (prefix)
+		$view->headTitle($view->translate('internet Multi Server Control Panel (i-MSCP) - Project Web Site'))
+			->setSeparator(' - ');
 
-        // Meta
-        $view->headMeta()->setName('author', 'Laurent Declercq - i-MSCP Team')
-            ->setName('generator', 'i-PMS 1.0.0')
-            ->setName('language', 'en');
+		// Meta
+		$view->headMeta()->setName('author', 'Laurent Declercq - i-MSCP Team')
+			->setName('generator', 'i-PMS 1.0.0')
+			->setName('language', 'en');
 
-        // Copyright
-        $view->headLink(array('rel' => 'copyright', 'href' => 'http://www.gnu.org/licenses/gpl-2.0.html'));
+		// Copyright
+		$view->headLink(array('rel' => 'copyright', 'href' => 'http://www.gnu.org/licenses/gpl-2.0.html'));
 
-        // Favicon
-        $view->headLink(array('rel' => 'shortcut icon', 'href' => '/themes/default/favicon.ico'))
-            ->headLink(array('rel' => 'icon', 'href' => '/themes/default/favicon.ico', 'type' => 'image/x-icon'));
+		// Favicon
+		$view->headLink(array('rel' => 'shortcut icon', 'href' => '/themes/default/favicon.ico'))
+			->headLink(array('rel' => 'icon', 'href' => '/themes/default/favicon.ico', 'type' => 'image/x-icon'));
 
-        // js (fix png transparency on IE < 7)
-        $view->headScript()
-            ->appendFile('/themes/default/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
-            ->appendScript("\tDD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'lt IE 7'));
+		// js (fix png transparency on IE < 7)
+		$view->headScript()
+			->appendFile('/themes/default/js/png.js', 'text/javascript', array('conditional' => 'lt IE 7'))
+			->appendScript("\tDD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'lt IE 7'));
 
+		/**
+		 * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
+		 */
+		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 
+		// Sets view basePath specification
+		$viewRenderer->setView($view)
+			->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module');
 
-	    /**
-	     * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
-	     */
-	    $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+		return $view;
+	}
 
-	    // Set view script path specification
-	    $viewRenderer->setView($view)
-		    ->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module/views');
+	/**
+	 * Initialize the router
+	 *
+	 * @return Zend_Controller_Router_Interface
+	 * @todo move it to plugin resource
+	 */
+	public function _initRouter()
+	{
+		$this->bootstrap('frontController');
+		$front = $this->getResource('FrontController');
 
-        return $view;
-    }
+		$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
+		$router = $front->getRouter();
+		$router->addConfig($configRoutes, 'routes');
+		$router->removeDefaultRoutes();
 
-    /**
-     * Initialize the router
-     *
-     * @return Zend_Controller_Router_Interface
-     * @todo move it to plugin resource
-     */
-    public function _initRouter()
-    {
-        $this->bootstrap('frontController');
-        $front = $this->getResource('FrontController');
-
-        $configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
-        $router = $front->getRouter();
-        $router->addConfig($configRoutes, 'routes');
-        $router->removeDefaultRoutes();
-
-        return $router;
-    }
+		return $router;
+	}
 }

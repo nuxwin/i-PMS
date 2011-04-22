@@ -89,6 +89,20 @@ class HomeController extends Zend_Controller_Action
      */
     public function indexAction()
     {
+	    /**
+	     * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
+	     */
+	    /*
+		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+
+	    echo $viewRenderer->getViewBasePathSpec() . '<br />';
+	    echo $viewRenderer->getViewScriptPathSpec() . '<br />';
+	    echo '<pre>';
+	    print_r($this->view->getScriptPaths());
+	    print_r($this->view->getPluginLoader('filter'));
+	    print_r($this->view->getPluginLoader('helper'));
+	    exit;
+	    */
 
 		$model = new Blog_Model_DbTable_Posts();
         $pageablePosts = $model->getPageablePosts((int)$this->_request->getParam('page', 1), 5);
