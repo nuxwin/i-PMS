@@ -1,5 +1,85 @@
-<h1><?php echo $this->translate('Post a new reply');?></h1>
+<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
+	<?php echo $this->translate('Post a new reply');?>
+</h1>
 
-<h2><?php echo $this->translate(sprintf('Reply to thread: %s', $this->escape($this->thread['subject'])));?></h2>
+<?php if ($this->form->isErrors()):
+	$errorMessage = '';
+?>
+	<?php $formErrors = $this->form->getErrors();?>
+	<?php foreach($formErrors['replyForm'] as $element => $errors):?>
+		<?php if(!empty($errors)):?>
+			<?php foreach($errors as $error):?>
+				<?php $errorMessage .= $error . '<br />' ;?>
+				<div class="error"><?php echo $error;?></div>
+			<?php endforeach;?>
+		<?php endif;?>
+	<?php endforeach;?>
+<?php echo $this->dialogContainer(
+		'err', 'The following error was occured during form validation:<br />' . $errorMessage, array(
+		'style' => 'text-align:left',
+		'width' => 400,
+		'zIndex' => 3999,
+	'hide' => 'slide',
+		           'bgiframe' => true,
+		             'autoOpen' => true,
+		              'draggable' => true,
+		                                   'modal' => true,
+		                                   'resizable' => false,
+		                                   'title' => 'Form Error',
+		                                   'closeOnEscape' => true,
+											'buttons' => array(
+												'Ok' => new Zend_Json_Expr(
+													'function(){$j(this).dialog(\'close\');}'
+												))
+		                              ));
+            ?>
+<?php endif; ?>
 
-<?php echo $this->form;?>
+<form name="<?php echo $this->form->getName();?>" action="<?php echo $this->form->getAction();?>"
+      method="<?php echo $this->form->getMethod();?>" enctype="<?php echo $this->form->getEnctype();?>">
+<table>
+	<thead>
+		<tr class="2">
+			<td colspan="2">
+				<?php echo $this->translate('Post a new reply');?>
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="firstRow">
+			<td colspan="2" style="text-align:left;">
+				<?php echo $this->translate(sprintf('Reply to thread: %s', $this->escape($this->thread['subject'])));?>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:20%">
+				<span style="color:#000;font-weight:bold"><?php echo $this->translate('Post subject');?>:</span>
+			</td>
+			<td>
+				<?php echo $this->form->subject;?>
+			</td>
+		</tr>
+		<tr>
+			<td style="vertical-align:top">
+				<span style="color:#000;font-weight:bold"><?php echo $this->translate('Your message');?>:</span>
+			</td>
+			<td >
+				<?php echo $this->form->message;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:center;border:transparent;">
+				<?php echo $this->form->token;?>
+				<?php echo $this->form->replySubmit;?>
+				<?php echo $this->form->reset;?>
+			</td>
+		</tr>
+	</tbody>
+	<!--<tfoot>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	</tfoot>-->
+</table>
+</form>
+<?php //echo $this->form;?>

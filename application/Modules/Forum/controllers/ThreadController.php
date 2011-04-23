@@ -317,7 +317,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 		// TODO reply to a specific post
 		$form->setAction($this->urlHelper->url(array('tid' => $tid), 'forum_post_reply'));
 
-		$this->view->assign(array('thread' => $thread, 'form' => $form));
+		$this->view->assign(array('thread' => $thread->toArray(), 'form' => $form));
 	}
 
 	/**

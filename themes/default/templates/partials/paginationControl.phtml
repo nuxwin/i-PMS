@@ -1,7 +1,7 @@
 <div id="paginationInner">
     <?php if (isset($this->previous)):?>
     <p id="paginationPrevious">
-        <a href="<?php echo $this->url(array('page' => $this->previous), 'posts_list');?>" title="Previous page">
+        <a href="<?php echo $this->url(array('page' => $this->previous), 'posts');?>" title="Previous page">
             <span><?php echo $this->translate('Previous page');?></span>
         </a>
     </p>
@@ -13,7 +13,7 @@
     <p id="paginationNumbered">
         <?php foreach ($this->pagesInRange as $page):
             if ($page != $this->current):?>
-            <a href="<?php echo $this->url(array('page' => $page), 'posts_list');?>"><span><?php echo $page;?></span></a>
+            <a href="<?php echo $this->url(array('page' => $page), 'posts');?>"><span><?php echo $page;?></span></a>
             <?php else:
                 echo $page;
             endif;

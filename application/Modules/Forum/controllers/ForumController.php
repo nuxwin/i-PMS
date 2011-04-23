@@ -84,15 +84,15 @@ class Forum_ForumController extends Zend_Controller_Action {
 		$request = $this->getRequest();
 
 		$fid = intval($request->getParam('fid'));
-		$model = new Forum_Model_DbTable_Forum();
-		$forum = $model->find($fid)->current();
+		$forumModel = new Forum_Model_DbTable_Forum();
+		$forum = $forumModel->find($fid)->current();
 
 		if(!$forum) {
 			throw new Zend_Controller_Action_Exception(sprintf(
 				$this->view->translate("Forum with id '%d' was not found"), $fid), 404);
 		}
 
-		$select = $model->select()
+		$select = $forumModel->select()
 			->setIntegrityCheck(false)
 			->from('fthreads')
 			->joinLeft(array('u' => 'users'), 'u.id = fthreads.uid')
@@ -100,9 +100,7 @@ class Forum_ForumController extends Zend_Controller_Action {
 
 		$threads = $forum->findDependentRowset('Forum_Model_DbTable_Thread', null, $select);
 
-		$this->view->assign(array(
-		                         'forum' => $forum->toArray(),
-		                         'threads' => $threads->toArray()));
+		$this->view->assign(array('forum' => $forum->toArray(), 'threads' => $threads->toArray()));
 	}
 
 	/**

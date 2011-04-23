@@ -39,15 +39,33 @@ class Blog_CommentsController extends Zend_Controller_Action
 {
 
 	/**
+	 * @var Zend_Controller_Action_Helper_Url
+	 */
+	protected $urlHelper = null;
+
+	/**
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->urlHelper = $this->_helper->getHelper('Url');
+	}
+
+	/**
 	 * List all comments belong to one object
 	 *
 	 * @return void
 	 */
 	public function indexAction()
 	{
-		$parent = $this->_request->getParam('parent');
-		$comments = new Blog_Model_DbTable_Comments();
-		$comments = $comments->getComments($parent);
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
+
+		$parent = $request->getParam('parent');
+		$commentsModel = new Blog_Model_DbTable_Comments();
+		$comments = $commentsModel->getComments($parent);
 		$this->view->assign('comments', $comments);
 	}
 
@@ -58,22 +76,27 @@ class Blog_CommentsController extends Zend_Controller_Action
 	 */
 	public function addAction()
 	{
-		$parentController = $this->_request->getParam('pCtrl', null);
-		$parentId = $this->_request->getParam('pId', null);
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-		if(!is_null($parentController) && !is_null($parentId)) {
+		$parentController =$request->getParam('pCtrl', null);
+		$parentId = $request->getParam('pid', null);
+
+		if(null !== $parentController && null !== $parentId) {
 			$form = new Blog_Form_Comments();
 
-			if ($this->_request->isPost() && $form->isValid($this->_request->getParams('commentsForm'))) {
-				$model = new Blog_Model_DbTable_Comments();
-				$model->insert($form->getValues());
+			if ($request->isPost() && $form->isValid($request->getParam('commentsForm'))) {
+				$commentsModel = new Blog_Model_DbTable_Comments();
+				$commentsModel->insert($form->getValues(true));
 				$form->reset();
 			}
 
-			$form->setAction($form->getAction() . "/?pCtrl={$parentController}&pId={$parentId}");
+			$form->setAction($form->getAction() . "/?pCtrl={$parentController}&pid={$parentId}");
 			$this->view->assign('form', $form);
 		} else {
-			$this->_redirect('/');
+			$this->_redirect($this->urlHelper->url(array(), 'home'));
 		}
 	}
 
@@ -85,10 +108,15 @@ class Blog_CommentsController extends Zend_Controller_Action
 	 */
 	public function deleteAction()
 	{
-		$id = (int)$this->_request->getParam('id');
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-		$model = new Blog_Model_DbTable_Comments();
-		$model->delete($id);
+		$cid = intval($request->getParam('cid'));
+
+		$commentsModel = new Blog_Model_DbTable_Comments();
+		$commentsModel->delete($cid);
 
 		$this->_redirect('/');
 	}

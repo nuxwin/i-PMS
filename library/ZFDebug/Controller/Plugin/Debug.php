@@ -287,10 +287,10 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
                  '<p>©2008-2009 <a href="http://jokke.dk">Joakim Nygård</a> & <a href="http://www.bangal.de">Andreas Pankratz</a></p>' .
                  '<p>The project is hosted at <a href="http://code.google.com/p/zfdebug/">http://zfdebug.googlecode.com</a> and released under the BSD License<br />' .
                  'Includes images from the <a href="http://www.famfamfam.com/lab/icons/silk/">Silk Icon set</a> by Mark James</p>';
-        // $panel .= '<h4>Zend Framework '.Zend_Version::VERSION.' / PHP '.phpversion().' with extensions:</h4>';
-        // $extensions = get_loaded_extensions();
-        // natcasesort($extensions);
-        // $panel .= implode('<br>', $extensions);
+         $panel .= '<h4>Zend Framework '.Zend_Version::VERSION.' / PHP '.phpversion().' with extensions:</h4>';
+         $extensions = get_loaded_extensions();
+         natcasesort($extensions);
+         $panel .= implode('<br>', $extensions);
         return $panel;
     }
 
@@ -398,7 +398,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
 
         return ('
             <style type="text/css" media="screen">
-                #ZFDebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:5px; left:5px; color:#000; z-index: ' . $this->_options['z-index'] . ';}
+                #ZFDebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:0px; left:0px; color:#000; z-index: ' . $this->_options['z-index'] . ';}
                 #ZFDebug_debug ol {margin:10px 0px; padding:0 25px}
                 #ZFDebug_debug li {margin:0 0 10px 0;}
                 #ZFDebug_debug .clickable {cursor:pointer}
@@ -409,7 +409,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
                 .ZFDebug_panel .pre {font: 11px/1.4em Monaco, Lucida Console, monospace; margin:0 0 0 22px}
                 #ZFDebug_exception { border:1px solid #CD0A0A;display: block; }
             </style>
-            <script type="text/javascript" charset="utf-8">
+            <script type="text/javascript">
                 if (typeof jQuery == "undefined") {
                     var scriptObj = document.createElement("script");
                     scriptObj.src = "'.$this->_options['jquery_path'].'";
@@ -423,7 +423,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
                     if (ZFDebugLoad) {
                         ZFDebugLoad();
                     }
-                    jQuery.noConflict();
+                    //jQuery.noConflict();
                     ZFDebugCollapsed();
                 };
                 
@@ -449,7 +449,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
                 }
 
                 function ZFDebugSlideBar() {
-                    if (jQuery("#ZFDebug_debug").position().left > 0) {
+                    if (jQuery("#ZFDebug_debug").position().left >= 0) {
                         document.cookie = "ZFDebugCollapsed=1;expires=;path=/";
                         ZFDebugPanel();
                         jQuery("#ZFDebug_toggler").html("&#187;");
@@ -457,7 +457,7 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
                     } else {
                         document.cookie = "ZFDebugCollapsed=0;expires=;path=/";
                         jQuery("#ZFDebug_toggler").html("&#171;");
-                        return jQuery("#ZFDebug_debug").animate({left:"5px"}, "normal", "swing");
+                        return jQuery("#ZFDebug_debug").animate({left:"0px"}, "normal", "swing");
                     }
                 }
 
@@ -483,7 +483,8 @@ class ZFDebug_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
     protected function _output($html)
     {
         $response = $this->getResponse();
-        $response->setBody(preg_replace('/(<head.*>)/i', '$1' . $this->_headerOutput(), $response->getBody()));
+        //$response->setBody(preg_replace('/(<head.*>)/i', '$1' . $this->_headerOutput(), $response->getBody()));
+	    $response->setBody(preg_replace('@(</head>)@i', $this->_headerOutput() . PHP_EOL . '$1', $response->getBody()));
         $response->setBody(str_ireplace('</body>', '<div id="ZFDebug_debug">'.$html.'</div></body>', $response->getBody()));
     }
 }

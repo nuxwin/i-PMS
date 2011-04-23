@@ -1,18 +1,18 @@
 <?php foreach ($this->paginator as $post): ?>
 <div class="post">
     <h1>
-        <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>" title="Read more...">
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="Read more...">
             <span><?php echo $this->escape($post['title']); ?></span>
         </a>
     </h1>
 
     <div class="subTitle">
     	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_edit'); ?>"
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit'); ?>"
                class="editSmallIcon smallIcon"
                title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
     	    <span> - </span>
-    	    <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_delete'); ?>"
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_delete'); ?>"
                class="deleteSmallIcon smallIcon"
                title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
     	</span>
@@ -20,16 +20,17 @@
 	    <?php
         echo $this->translate('Posted on') . ' ' . date('F d, Y', strtotime($post['created_at'])) . ' ' . $this->translate('by');
             ?>
-            <a href="<?php echo $this->baseUrl() . '/users/view/id/' . $post['author_id']; ?>"
-               title="<?php echo $this->translate('View user profile'); ?>">
+            <a href="#" title="<?php echo $this->translate('View user profile'); ?>">
 		<span>
-		    <?php
-            if ($post['lastname'] !== null && $post['firstname'] !== null):
-                echo $this->escape($post['lastname'] . ' ' . $post['firstname']);
-            else:
-                echo $this->escape($post['username']);
-            endif;
-                ?>
+			<?php
+				if (null != $post['lastname'] && null != $post['firstname']) {
+					$this->escape(printf('%s %s', $post['lastname'], $post['firstname']));
+				} elseif (null != $post['username']) {
+					echo $this->escape($post['username']);
+				} else {
+					echo $this->translate('Unregistered user');
+				}
+			?>
 		</span>
             </a>
 	</span>
@@ -39,7 +40,7 @@
         <?php echo $post['body']; ?>
     </div>
     <p class="moreLink">
-        <a href="<?php echo $this->url(array('id' => $post['id']), 'posts_show'); ?>"
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>"
            title="<?php echo $this->translate('Read more...'); ?>">
             <span><?php echo $this->translate('Read more...'); ?></span>
         </a>

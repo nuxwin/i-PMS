@@ -42,7 +42,7 @@ class Blog_Form_Comments extends Zend_Form
 	public function init()
 	{
 		$this->setName('commentsForm');
-		$this->setAction('comments/add');
+		$this->setAction('comment/add');
 
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			// Name field

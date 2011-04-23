@@ -104,8 +104,13 @@ class HomeController extends Zend_Controller_Action
 	    exit;
 	    */
 
-		$model = new Blog_Model_DbTable_Posts();
-        $pageablePosts = $model->getPageablePosts((int)$this->_request->getParam('page', 1), 5);
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
+
+		$postsModel = new Blog_Model_DbTable_Posts();
+        $pageablePosts = $postsModel->getPageablePosts($request->getParam('page'), 5);
         $this->view->assign('paginator', $pageablePosts);
     }
 

@@ -1105,23 +1105,47 @@ table {
 
 	/*border:none;*/
 }
+thead a {
+	color:#ffffff;
+}
 
-th {
+thead tr td {
+	background-color:#3B5998;
+	color:#ffffff;
+	text-align:left;
+}
+
+tbody .firstRow td {
 	font-family: monospace;
 	font-size: 1.5em;
-	border: thin solid #1D2A5B;
 	border: thin solid #666;
 	padding: 5px;
 	background-color: #A0A9C0;
 	font-style: italic;
 	text-align:center;
+	vertical-align:middle;
+}
+
+tfoot {
+	background-color:#3B5998;
+	color:#ffffff;
+	text-align:left;
+}
 
 
+.theader td,
+th {
+	font-family: monospace;
+	font-size: 1.5em;
+	border: thin solid #666;
+	padding: 5px;
+	background-color: #A0A9C0;
+	font-style: italic;
+	text-align:center;
 }
 
 td {
 	font-family: sans-serif;
-	/*border: thin solid #1D2A5B;*/
 	border: thin solid #666;
 	padding: 5px;
 	text-align: left;

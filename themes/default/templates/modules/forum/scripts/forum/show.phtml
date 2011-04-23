@@ -1,34 +1,37 @@
-<h1>
+<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
 	<a href="<?php echo $this->url(array(), 'forum_index');?>"
 	   title="<?php echo $this->translate('Forums index');?>"><?php echo $this->translate('Forums');?></a>
 	-
-	<?php echo $this->escape($this->forum['name']);?>
+	<span style="color:#000000;"><?php echo $this->escape($this->forum['name']);?></span>
 </h1>
 
-<form name="bulkActionForm" action="" method="post" enctype="application/x-www-form-urlencoded">
+<form name="bulkActionForm" action="#" method="post" enctype="application/x-www-form-urlencoded">
 <table>
+	<thead>
 	<tr>
-		<th colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">
+		<td colspan="6">
 			<div style="float: right;">
 				<span class="smalltext">
 					<strong>
-						<a style="color:#ffffff;" href=""><?php echo $this->translate('Mark this forum read');?></a>
+						<a href="#"><?php echo $this->translate('Mark this forum read');?></a>
 						|
-						<a style="color:#ffffff;" href=""><?php echo $this->translate('Subscribe to this forum');?></a>
+						<a href="#"><?php echo $this->translate('Subscribe to this forum');?></a>
 					</strong>
 				</span>
 			</div>
 			<div>
 				<strong><?php echo $this->escape($this->forum['name']);?></strong>
 			</div>
-		</th>
+		</td>
 	</tr>
-	<tr>
-		<th  colspan="2" style="width:60%;text-align:left;"><?php echo $this->translate('Thread / Author');?></th>
-		<th style="width:7%;"><?php echo $this->translate('Replies');?></th>
-		<th style="width:7%;"><?php echo $this->translate('Views');?></th>
-		<th style="width:25%;"><?php echo $this->translate('Last Post');?></th>
-		<th id="th5" style="width:1%;text-align:center"></th>
+	</thead>
+	<tbody>
+	<tr class="firstRow">
+		<td colspan="2" style="width:60%;text-align:left;"><?php echo $this->translate('Thread / Author');?></td>
+		<td style="width:7%;"><?php echo $this->translate('Replies');?></td>
+		<td style="width:7%;"><?php echo $this->translate('Views');?></td>
+		<td style="width:25%;"><?php echo $this->translate('Last Post');?></td>
+		<td style="width:1%;">&nbsp;</td>
 	</tr>
 	<?php
 		if(count($this->threads)):
@@ -57,23 +60,27 @@
 			</div>
 		</td>
 		<td style="white-space:nowrap;text-align:center;">
-			<input style="vertical-align:middle;" type="checkbox" class="checkbox" name="bulkActionsForm[threads][]"
-			       value="<?php echo $thread['tid'];?>" />
+			<input style="vertical-align:middle;" type="checkbox" class="checkbox" name="bulkActionsForm[threads][]" value="<?php echo $thread['tid'];?>" />
 		</td>
 	</tr>
 	<?php endforeach;?>
-	<tr>
-		<td colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">&nbsp;</td>
-	</tr>
+	<tfoot>
+		<tr>
+			<td colspan="6">&nbsp;</td>
+		</tr>
+	</tfoot>
 	<?php else:?>
 	<tr>
 		<td colspan="5">
 			<strong><?php echo $this->translate('Sorry but there are currently no threads in this forum.');?></strong>
 		</td>
 	</tr>
+	</tbody>
+	<tfoot>
 	<tr>
-		<td colspan="6" style="text-align:left;background-color:#3B5998;color:#ffffff;">&nbsp;</td>
+		<td colspan="6"></td>
 	</tr>
+	</tfoot>
 	<?php endif;?>
 
 </table>
@@ -84,24 +91,27 @@
 </p>
 
 <div style="text-align:right;margin-top:20px;">
-	<label for="action" style="margin-right:10px;">
+	<label for="bulkActions" style="margin-right:10px;">
 		<?php echo $this->translate('Bulks Actions');?>:
 	</label>
 	<select name="bulkActionsForm[action]" id="bulkActions" >
 		<optgroup label="Moderation tools" style="padding:5px">
-			<option value="close" selected=selected><?php echo $this->translate('Close Threads');?></option>
+			<option value="close"><?php echo $this->translate('Close Threads');?></option>
 			<option value="open"><?php echo $this->translate('Open Threads');?></option>
-			<option value="delete">Delete Threads</option>
+			<option value="delete" selected="selected">Delete Threads</option>
 		</optgroup>
 	</select>
-	<input type="submit" name="bulkActionsForm[submit]" value="Execute" />&nbsp;
+	<input type="submit" name="bulkActionsForm[submit]" value="Execute" />
 	<input type="reset" value="reset" name="bulkActionsForm[reset]" />
 </div>
 </form>
 
 <?php $this->jQuery()->addOnLoad('
 
-	$("<input style=\"vertical-align:middle;\" type=\"checkbox\" name=\"bulkActionsForm[all]\" id=\"bulkActionsAll\" value=\"all\" />").appendTo($("#th5"));
+	$(".firstRow :last-child").contents().replaceWith(
+		"<input style=\"vertical-align:middle;\" type=\"checkbox\" name=\"bulkActionsForm[all]\" id=\"bulkActionsAll\" value=\"all\" />");
+
+
 	$("#bulkActions, [name^=\'bulkActionsForm[submit]\'], [name^=\'bulkActionsForm[reset]\']").attr("disabled", "disabled");
 
 	$("[name^=\'bulkActionsForm[reset]\']").change(function(){

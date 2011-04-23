@@ -45,7 +45,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	 *
 	 * @var string
 	 */
-	protected $_primary = 'id';
+	protected $_primary = 'pid';
 
 	protected $_dependentTables = array(
 		'Blog_Model_DbTable_Comments'
@@ -58,9 +58,9 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	 */
 	protected $_referenceMap = array(
 		'User' => array(
-			SELF::COLUMNS => 'author_id',
+			SELF::COLUMNS => 'uid',
 			SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
-			SELF::REF_COLUMNS => 'id',
+			SELF::REF_COLUMNS => 'uid',
 			SELF::ON_DELETE => SELF::SET_NULL
 		)
 	);
@@ -72,23 +72,23 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	 * @param int $itemsCount Item count per page
 	 * @return Zend_Paginator
 	 */
-	public function getPageablePostsList($currentPage = 1, $itemsCount = 15)
+	public function getPageablePostsList($currentPage = 1, $itemsCount = 1)
 	{
 		$subSelect = $this->getAdapter()->select()
-			->from('comments', new Zend_Db_Expr('COUNT(id)'))
-			->where('comments.post_id = posts.id');
+			->from('comments', new Zend_Db_Expr('COUNT(pid)'))
+			->where('comments.pid = posts.pid');
 
 		$select = $this->getAdapter()->select()
 			->from('posts', array(
-								 'id', 'author_id', 'title', 'teaser', 'categorie', 'created_at',
+								 'pid', 'uid', 'title', 'teaser', 'categorie', 'created_at',
 								 'comments_count' => new Zend_Db_Expr("($subSelect)")
 							))
-			->joinInner('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
-			->order('posts.id DESC');
+			->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
+			->order('posts.pid DESC');
 
 		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect($select));
-		$pageablePosts->setItemCountPerPage((int)$itemsCount);
-		$pageablePosts->setCurrentPageNumber((int)$currentPage);
+		$pageablePosts->setItemCountPerPage((int) $itemsCount);
+		$pageablePosts->setCurrentPageNumber((int) $currentPage);
 
 		return $pageablePosts;
 	}
@@ -105,13 +105,13 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
 			$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
 				->setIntegrityCheck(false)
-				->from('posts', array('id', 'title', 'teaser', 'body', 'categorie', 'created_at', 'author_id'))
-				->join('users', 'users.id = posts.author_id', array('username', 'firstname', 'lastname'))
-				->order('posts.id DESC')
+				->from('posts', array('pid', 'title', 'teaser', 'body', 'categorie', 'created_at', 'uid'))
+				->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
+				->order('posts.pid DESC')
 		));
 
-		$pageablePosts->setItemCountPerPage((int)$itemsCount);
-		$pageablePosts->setCurrentPageNumber((int)$currentPage);
+		$pageablePosts->setItemCountPerPage((int) $itemsCount);
+		$pageablePosts->setCurrentPageNumber((int) $currentPage);
 
 		return $pageablePosts;
 	}

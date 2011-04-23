@@ -74,7 +74,7 @@ class Blog_Form_Post extends Zend_Form
     public function init()
     {
         $this->setName('postForm')
-			->setAction('/posts/add')
+			->setAction('/post/add')
             ->setElementsBelongTo('postForm')
             ->setMethod('post')
             ->setEnctype('application/x-www-form-urlencoded');
@@ -106,7 +106,7 @@ class Blog_Form_Post extends Zend_Form
         $allowComments->setLabel('Open for new comments ?')
             ->setValue('1');
 
-        $id = new Zend_Form_Element_Hidden('id');
+        $id = new Zend_Form_Element_Hidden('pid');
         $id->getDecorator('Label')->setOption('tagClass','hidden');
         $id->getDecorator('HtmlTag')->setOption('class','hidden');
 

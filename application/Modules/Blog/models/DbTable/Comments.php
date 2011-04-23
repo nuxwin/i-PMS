@@ -47,7 +47,7 @@ class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend
      *
      * @var string
      */
-    protected $_primary = 'id';
+    protected $_primary = 'cid';
 
     /**
      * Table relations
@@ -57,16 +57,16 @@ class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend
     protected $_referenceMap = array(
         // If the parent post is deleted, all related comments are deleted too
         'Post' => array(
-            SELF::COLUMNS => 'post_id',
+            SELF::COLUMNS => 'pid',
             SELF::REF_TABLE_CLASS => 'Model_DbTable_Posts',
-            SELF::REF_COLUMNS => 'id',
+            SELF::REF_COLUMNS => 'pid',
             SELF::ON_DELETE => SELF::CASCADE
         ),
         // If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
         'user' => array(
-            SELF::COLUMNS => 'author_id',
+            SELF::COLUMNS => 'uid',
             SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
-            SELF::REF_COLUMNS => 'id',
+            SELF::REF_COLUMNS => 'uid',
             SELF::ON_DELETE => SELF::SET_NULL
         ),
     );
@@ -94,7 +94,7 @@ class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend
         $comments = $parent->findDependentRowset(
             $this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
                 ->setIntegrityCheck(false)
-                ->joinLeft('users', '`users`.`id` = `comments`.`author_id`', 'avatar'));
+                ->joinLeft('users', '`users`.`uid` = `comments`.`uid`', 'avatar'));
 
         return $comments;
     }

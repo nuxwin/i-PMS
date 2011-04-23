@@ -100,6 +100,49 @@ class Forum_Form_Thread extends Zend_Form
 	 */
 	protected function replyForm()
 	{
+
+		$this->setName('replyForm')
+			->setElementsBelongTo('replyForm')
+			->setMethod('post')
+			->setEnctype('application/x-www-form-urlencoded');
+
+        $element = new Zend_Form_Element_Text('subject', array('disableLoadDefaultDecorators' => true));
+        $element->addDecorator('ViewHelper')
+	        ->setAttribs(array('class' => 'input-title', 'maxlength' => 126, 'tabindex' => 1))
+	        ->addFilter('StripTags')
+	        ->addFilter('StringTrim');
+		$this->addElement($element);
+
+		$element = new Zend_Form_Element_Textarea('message', array('disableLoadDefaultDecorators' => true));
+		$element->addDecorator('ViewHelper')
+			->setRequired(true)
+			->addErrorMessage('Message cannot be empty!')
+			->addFilter('StripTags')
+			->addFilter('StringTrim')
+			->addValidator('NotEmpty');
+		$this->addElement($element);
+
+		$element = new Zend_Form_Element_Hash('token', array('disableLoadDefaultDecorators' => true));
+		$element->addDecorator('ViewHelper')
+			->addErrorMessage('Form must not be resubmitted');
+		$this->addElement($element);
+
+		$element = new Zend_Form_Element_Submit('replySubmit', array('disableLoadDefaultDecorators' => true));
+		$element->addDecorator('ViewHelper')
+			->setLabel('Post Reply');
+		$this->addElement($element);
+
+		$element = new Zend_Form_Element_Reset('reset', array('disableLoadDefaultDecorators' => true));
+		$element->addDecorator('ViewHelper')
+			->setLabel('Reset');
+		$this->addElement($element);
+
+
+        $this->clearDecorators();
+		$this->addDecorator('FormElements')
+	         ->addDecorator('Form');
+
+		/*
 		$this->setName('replyForm')
 			->setElementsBelongTo('replyForm')
 			->setMethod('post')
@@ -120,11 +163,12 @@ class Forum_Form_Thread extends Zend_Form
 			->addFilter('StringTrim')
 			->addValidator('NotEmpty');
 
-		$posthash = new Zend_Form_Element_Hash('posthash');
+		$posthash = new Zend_Form_Element_Hash('token');
 
 		$submit = new Zend_Form_Element_Submit('forumSubmit');
 		$submit->setLabel('Post Reply');
 
 		$this->addElements(array($subject, $message, $posthash, $submit));
+		 */
 	}
 }

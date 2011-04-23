@@ -33,6 +33,19 @@
  */
 class Blog_PostsController extends Zend_Controller_Action
 {
+	/**
+	 * @var Zend_Controller_Action_Helper_Url
+	 */
+	protected $urlHelper = null;
+
+	/**
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->urlHelper = $this->_helper->getHelper('Url');
+	}
+
     /**
      * List post
      *
@@ -40,12 +53,15 @@ class Blog_PostsController extends Zend_Controller_Action
      */
     public function indexAction()
     {
+	    $this->view->addScriptPath(THEME_PATH . '/default/templates/partials');
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-
-
-        $model = new Blog_Model_DbTable_Posts();
+        $postModel = new Blog_Model_DbTable_Posts();
         // Todo get max post per pages from user settings (currently hardcoded to 15)
-        $pageablePosts = $model->getPageablePostsList($this->_request->getParam('page', 1));
+        $pageablePosts = $postModel->getPageablePostsList($request->getParam('page'));
         $this->view->assign('paginator', $pageablePosts);
     }
 
@@ -56,21 +72,25 @@ class Blog_PostsController extends Zend_Controller_Action
      */
     public function showAction()
     {
-        $id = (int) $this->_getParam('id');
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-        $model = new Blog_Model_DbTable_Posts();
-        $row = $model->fetchRow($model->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+        $pid = intval($request->getParam('pid'));
+
+        $postModel = new Blog_Model_DbTable_Posts();
+        $post = $postModel->fetchRow($postModel->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
             ->setIntegrityCheck(false)
-            ->where('posts.id = ?', $id)
-            ->join('users', '`users`.`id` = `posts`.`author_id`', array('username', 'firstname', 'lastname'))
+            ->where('posts.pid = ?', $pid)
+            ->joinLeft('users', '`users`.`uid` = `posts`.`uid`', array('username', 'firstname', 'lastname'))
         );
 
-        if (!$row) {
-            $this->getResponse()->setHttpResponseCode(404);
+        if (!$post) {
             throw new Zend_Controller_Action_Exception('Post not found!', 404);
         }
 
-        $this->view->assign('post', $row);
+        $this->view->assign('post', $post->toArray());
     }
 
     /**
@@ -80,48 +100,65 @@ class Blog_PostsController extends Zend_Controller_Action
      */
     public function addAction()
     {
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
+
         $form = new Blog_Form_Post();
-        $identity = Zend_Auth::getInstance()->getIdentity()->id;
 
-        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
-            $data = $form->getValues('postForm');
-            $data['author_id'] = $identity['id'];
+	    $identity = Zend_Auth::getInstance();
+	    if($identity->hasIdentity()) {
+            $userId = Zend_Auth::getInstance()->getIdentity()->id;
+	    } else {
+		    $userId = 0; // Unregistered user
+	    }
 
-            $model = new Blog_Model_DbTable_Posts();
-			print_r($data);
-            $id = $model->insert($data);
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+            $postData = $form->getValues('postForm');
+            $postData['uid'] = $userId;
 
-            $this->_redirect("/posts/{$id}");
+            $postModel = new Blog_Model_DbTable_Posts();
+            $pid = $postModel->insert($postData);
+
+	        $this->_redirect($this->urlHelper->url(array('pid' => $pid), 'post_show'));
         }
 
         $this->view->assign('form', $form);
     }
 
     /**
-     * Update a post
+     * Edit a post
      *
      * @return void
      */
     public function editAction()
     {
-        $id = (int) $this->_request->getParam('id');
-        $model = new Blog_Model_DbTable_Posts();
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-        if (null == ($row = $model->find($id)->current())) {
-            throw new Zend_Controller_Action_Exception("Post not found!", 404);
-        } else {
-            $form = new Blog_Form_Post();
+        $pid = intval($request->getParam('pid'));
+        $postModel = new Blog_Model_DbTable_Posts();
 
-            if ($this->_request->isPost() && $form->isValid($this->_request->getPost('postForm'))) {
-                $row->setFromArray($form->getValues('postForm'))->save();
-                $this->_redirect("posts/{$id}");
-            } else {
-                $form->populate($row->toArray());
-            }
+	    $post = $postModel->find($pid)->current();
 
-            $form->setAction("/posts/{$id}/edit");
-            $this->view->assign('form', $form);
+        if (!$post) {
+            throw new Zend_Controller_Action_Exception('Post was not found!', 404);
         }
+
+        $form = new Blog_Form_Post();
+
+        if ($request->isPost() && $form->isValid($request->getPost('postForm'))) {
+	        $post->setFromArray($form->getValues(true))->save();
+	        $this->_redirect($this->urlHelper->url(array('pid' => $pid), 'post_show'));
+        } else {
+	        $form->setDefaults($post->toArray());
+        }
+
+	    $form->setAction($this->urlHelper->url(array('pid' => $pid), 'post_edit'));
+        $this->view->assign('form', $form);
     }
 
     /**
@@ -131,13 +168,19 @@ class Blog_PostsController extends Zend_Controller_Action
      */
     public function deleteAction()
     {
-        $model = new Blog_Model_DbTable_Posts();
-        $row = $model->find((int) $this->_request->getParam('id', 0))->current();
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-		if(null !== $row) {
-			$row->delete();
+	    $pid = intval($request->getParam('pid'));
+        $postModel = new Blog_Model_DbTable_Posts();
+        $post = $postModel->find($pid)->current();
+
+		if($post) {
+			$post->delete();
 		}
 
-		$this->_redirect('/');
+		$this->_redirect($this->urlHelper->url(array(), 'posts'));
     }
 }

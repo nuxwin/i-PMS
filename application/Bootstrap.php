@@ -33,7 +33,6 @@
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-
 	/**
 	 * Stores a copy of the config object in the Registry for future references
 	 * 
@@ -41,8 +40,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initConfig()
     {
-    	Zend_Registry::set('Config', new Zend_Config($this->getOptions()));
+    	Zend_Registry::set('config', new Zend_Config($this->getOptions()));
     }
+
+	/**
+	 * Stores a copy of database adapter in the Registry for future references
+	 *
+	 * @return void
+	 */
+	public function _initDatabase()
+	{
+		if($this->hasPluginResource('db')) {
+			$this->bootstrap('db');
+			Zend_Registry::set('db', $this->getResource('db'));
+		}
+	}
 
 	/**
 	 * Initialize the DEBUG mode
@@ -148,6 +160,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// Sets view basePath specification
 		$viewRenderer->setView($view)
 			->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module');
+
+		//ZendX_JQuery_View_Helper_JQuery::enableNoConflictMode();
 
 		return $view;
 	}

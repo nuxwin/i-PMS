@@ -1,14 +1,15 @@
-<?php $this->headTitle($this->translate('Post') . ': ' .$this->escape($this->post->title));?>
+<?php $this->headTitle($this->translate('Post') . ': ' .$this->escape($this->post['title']));?>
+
 <div class="post">
-    <h1><?php echo $this->escape($this->post->title);?></h1>
+    <h1><?php echo $this->escape($this->post['title']);?></h1>
     <div class="subTitle">
     	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('id' => $this->post->id), 'posts_edit');?>"
+    	    <a href="<?php echo $this->url(array('pid' => $this->post['pid']), 'post_edit');?>"
                class="editSmallIcon smallIcon"
                title="<?php echo $this->translate('Edit post');?>"
             >
             <span><?php echo $this->translate('Edit');?></span></a><span> - </span>
-    	    <a href="<?php echo $this->url(array('id' => $this->post->id), 'posts_delete');?>"
+    	    <a href="<?php echo $this->url(array('pid' => $this->post['pid']), 'post_delete');?>"
                class="deleteSmallIcon smallIcon"
                title="<?php echo $this->translate('Delete post');?>"
             >
@@ -16,16 +17,16 @@
             </a>
     	</span>
     	<span>
-			<?php printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($this->post->created_at)));?>
-            <a href="<?php echo $this->url(array('id' => $this->post->id), 'posts_show');?>"
-               title="<?php echo $this->translate('View user profile');?>"
-            >
+			<?php printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($this->post['created_at'])));?>
+            <a href="#" title="<?php echo $this->translate('View user profile');?>">
                 <span>
                 <?php
-                    if(null != $this->post->lastname && null != $this->post->firstname) {
-						$this->escape(printf('%s %s', $this->post->lastname, $this->post->firstname));
+                    if(null != $this->post['lastname'] && null != $this->post['firstname']) {
+						$this->escape(printf('%s %s', $this->post['lastname'], $this->post['firstname']));
+                    } elseif(null != $this->post['username']) {
+                        echo $this->escape($this->post['username']);
                     } else {
-                        echo $this->escape($this->post->username);
+	                    echo $this->translate('Unregistered user');
                     }
                 ?>
 		    </span>
@@ -34,13 +35,13 @@
     </div>
     <div class="postBody">
         <div class="teaser">
-            <?php echo $this->post->teaser;?>
+            <?php echo $this->escape($this->post['teaser']);?>
         </div>
-        <?php echo $this->post->body;?>
+        <?php echo $this->escape($this->post['body']);?>
     </div>
 </div>
 
 <?php
-	echo $this->action('index', 'comments', null, array('parent' => $this->post));
-	echo $this->action('add', 'comments', null, array('pCtrl' => 'posts', 'pId' => $this->post['id']));
+	//echo $this->action('index', 'comments', null, array('parent' => $this->post));
+	//echo $this->action('add', 'comments', null, array('pCtrl' => 'posts', 'pId' => $this->post['id']));
 ?>

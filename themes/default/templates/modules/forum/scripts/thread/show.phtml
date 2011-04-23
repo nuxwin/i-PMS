@@ -1,11 +1,13 @@
-<h1>
+<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
 	<a href="<?php echo $this->url(array(), 'forum_index');?>"
 	   title="<?php echo $this->translate('Forums list');?>"><?php echo $this->translate('Forums');?></a>
 	/
 	<a href="<?php echo $this->url(array('fid' =>$this->forum['fid']), 'forum_show');?>"
 	   title="<?php echo $this->escape($this->forum['name']);?>"><?php echo $this->escape($this->forum['name']);?></a>
 	/
-	<?php echo $this->escape($this->thread['subject']);?>
+	<span style="color:#000000;">
+		<?php echo $this->escape($this->thread['subject']);?>
+	</span>
 </h1>
 
 <table>
@@ -38,8 +40,8 @@
 			<?php echo $this->translate('Joined on');?>: Feb 2011
 		</span>
 		</td>
-		<td>
-			<div style="background:#f9f9f9;padding:5px;border:1px solid #666">
+		<td style="padding-top:10px;">
+			<div class="<?php echo $this->cycle(array('even', 'odd'));?>" style="padding:5px;border:1px solid #666">
 				<div style="float:right;width:auto;vertical-align:top;">
 					<span class="smalltext">
 						<strong>
@@ -50,7 +52,7 @@
 					</span>
 					<div class="clearer"></div>
 				</div>
-			<span class="smalltext"><strong><?php echo $this->escape($post['subject']);?></strong></span>
+				<span class="smalltext"><strong><?php echo $this->escape($post['subject']);?></strong></span>
 			</div>
 			<br>
 			<div style="padding:5px 0pt;">
