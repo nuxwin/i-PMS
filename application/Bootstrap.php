@@ -93,7 +93,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 		$this->bootstrap('debug');
 
-		if (DEBUG) return false;
+		if (!DEBUG) return false;
 
         // Ensure the front controller is initialized
         $this->bootstrap('FrontController');

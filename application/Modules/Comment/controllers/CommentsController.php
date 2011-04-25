@@ -91,14 +91,6 @@ class Comment_CommentsController extends Zend_Controller_Action
 		// Retrieve id of commented object
 		$pid = intval($request->getParam('pid'));
 
-		$parentModel = new $this->_parentModelClass;
-		$parentObject = $parentModel->find($pid)->current();
-
-		if (!$parentObject) {
-			throw new Zend_Controller_Action_Exception(
-				'Unable to find commented object in database', 500);
-		}
-
 		$ns = new Zend_Session_Namespace('Comment_CommentsController');
 		$ns->setExpirationHops(1);
 
@@ -120,10 +112,24 @@ class Comment_CommentsController extends Zend_Controller_Action
 		$form->setAction($toRoute);
 
 		if ($request->isPost()) {
+			$parentModel = new $this->_parentModelClass;
+			$parentObject = $parentModel->find($pid)->current();
+
+			if (!$parentObject) {
+				throw new Zend_Controller_Action_Exception(
+					'Unable to find commented object in database', 500);
+			}
+
 			if($form->isValid($request->getParam('commentForm'))) {
 				$commentsModel = new Comment_Model_DbTable_Comments();
 				$data = $form->getValues(true);
 				$data['pid'] = $pid;
+				$identity = Zend_Auth::getInstance();
+				if($identity->hasIdentity()) {
+					$data['uid'] = $identity->getIdentity()->uid;
+					$data['name'] = $identity->getIdentity()->username;
+					$data['email'] = $identity->getIdentity()->email;
+				}
 				$commentsModel->insert($data);
 			} else {
 				$ns->commentFormData = $form->getValues();
@@ -152,27 +158,34 @@ class Comment_CommentsController extends Zend_Controller_Action
 		$cid = intval($request->getParam('cid'));
 
 		$commentsModel = new Comment_Model_DbTable_Comments();
-		$commentsModel->delete($cid);
+		$commentsModel->delete(array('cid = ?' => $cid));
 
 		// TODO redirect to previous route
 		$this->_redirect('/');
 	}
 
 	/**
-	 * Retrieve parent model class from the route
+	 * Retrieve parent model classname from the route
 	 * 
 	 * @throws Zend_Controller_Action_Exception
 	 * @return string parent model classname
 	 */
 	public function preDispatch()
 	{
-		$models = $this->_request->getUserParam('models');
-		$pcontroller = $this->_request->getUserParam('pcontroller');
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = $this->getRequest();
 
-		if(array_key_exists($pcontroller, $models)) {
-			$this->_parentModelClass = $models[$pcontroller];
-		} else {
-			throw new Zend_Controller_Action_Exception('Unable to find parent model', 500);
+		if($request->isPost() && $request->getActionName() == 'add') {
+			$models = $request->getUserParam('models');
+			$pcontroller = $request->getUserParam('pcontroller');
+
+			if(array_key_exists($pcontroller, $models)) {
+				$this->_parentModelClass = $models[$pcontroller];
+			} else {
+				throw new Zend_Controller_Action_Exception('Unable to find parent model', 500);
+			}
 		}
 	}
 }

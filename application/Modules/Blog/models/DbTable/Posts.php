@@ -48,7 +48,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	protected $_primary = 'pid';
 
 	protected $_dependentTables = array(
-		'Blog_Model_DbTable_Comments'
+		'Comment_Model_DbTable_Comments'
 	);
 
 	/**
@@ -59,7 +59,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	protected $_referenceMap = array(
 		'User' => array(
 			SELF::COLUMNS => 'uid',
-			SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
+			SELF::REF_TABLE_CLASS => 'User_Model_DbTable_Users',
 			SELF::REF_COLUMNS => 'uid',
 			SELF::ON_DELETE => SELF::SET_NULL
 		)
