@@ -1,61 +1,94 @@
--- phpMyAdmin SQL Dump
--- version 3.3.8.1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Mar 21, 2011 at 11:54 PM
--- Server version: 5.1.49
--- PHP Version: 5.3.3-7+squeeze1
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `comments`
---
-
-CREATE TABLE IF NOT EXISTS `comments` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(13) unsigned NOT NULL AUTO_INCREMENT,
-  `post_id` int(13) DEFAULT NULL,
-  `body` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `author_id` int(13) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `website` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `parent_id` int(13) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` tinytext COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `comments` (
+  `cid` int(13) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(13) DEFAULT NULL,
+  `body` text COLLATE utf8_unicode_ci NOT NULL,
+  `uid` int(13) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `website` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_on` int(10) NOT NULL,
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Table structure for table `posts`
---
+CREATE TABLE IF NOT EXISTS `forums` (
+  `fid` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `order` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `count_threads` int(10) unsigned NOT NULL DEFAULT '0',
+  `count_posts` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastpost_date` int(10) NOT NULL DEFAULT '0',
+  `lastposter_username` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `lastposter_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastthread_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastthread_subject` varchar(130) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `fposts` (
+  `pid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  `reply_to` int(10) unsigned NOT NULL DEFAULT '0',
+  `fid` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(130) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_on` int(10) unsigned NOT NULL DEFAULT '0',
+  `message` text COLLATE utf8_unicode_ci NOT NULL,
+  `posthash` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`pid`),
+  KEY `tid` (`tid`),
+  KEY `fid` (`fid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `fthreads` (
+  `tid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fid` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(130) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `uid` int(10) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_on` int(10) NOT NULL DEFAULT '0',
+  `firstpost_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `lastpost_date` int(10) NOT NULL DEFAULT '0',
+  `lastposter_username` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `lastposter_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `count_views` int(100) unsigned NOT NULL DEFAULT '0',
+  `count_replies` int(100) unsigned NOT NULL DEFAULT '0',
+  `is_closed` int(1) unsigned NOT NULL DEFAULT '0',
+  `is_sticky` int(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`),
+  KEY `fid` (`fid`,`is_sticky`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `posts` (
-  `id` int(13) unsigned NOT NULL AUTO_INCREMENT,
-  `author_id` int(13) unsigned DEFAULT '0',
+  `pid` int(13) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(13) unsigned DEFAULT '0',
   `title` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `teaser` text COLLATE utf8_unicode_ci NOT NULL,
   `body` longtext COLLATE utf8_unicode_ci NOT NULL,
   `categorie` varchar(255) COLLATE utf8_unicode_ci DEFAULT '',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_on` int(10) NOT NULL,
   `allow_comments` int(1) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `session`
---
 
 CREATE TABLE IF NOT EXISTS `session` (
   `id` char(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -67,11 +100,13 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`id`,`save_path`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tokens`
---
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `tokens` (
   `user_id` int(13) unsigned NOT NULL DEFAULT '0',
@@ -81,14 +116,8 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(13) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(13) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -98,15 +127,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastname` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`uid`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `widgets`
---
 
 CREATE TABLE IF NOT EXISTS `widgets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

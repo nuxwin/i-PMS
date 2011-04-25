@@ -9,7 +9,7 @@
            title="<?php echo $this->translate('Read more...');?>"><?php echo $this->escape($post['title']);?></a>
     </h2>
     <p style="color:#666;">
-        <?php printf($this->translate('Posted on %s, by '), date('F d, Y', strtotime($post['created_at'])))?>
+        <?php printf($this->translate('Posted on %s, by '), date('F d, Y', $post['created_on']))?>
         <a style="color:#666;" href="#" title="view profile"><?php echo $post['username'];?></a>
     </p>
     <div class="postBody">

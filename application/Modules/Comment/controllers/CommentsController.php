@@ -129,6 +129,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 					$data['uid'] = $identity->getIdentity()->uid;
 					$data['name'] = $identity->getIdentity()->username;
 					$data['email'] = $identity->getIdentity()->email;
+					$data['created_on'] = time();
 				}
 				$commentsModel->insert($data);
 			} else {

@@ -17,7 +17,7 @@
             </a>
     	</span>
     	<span>
-			<?php printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($this->post['created_at'])));?>
+			<?php printf($this->translate('Posted on %s by '), date('F d, Y', $this->post['created_on']));?>
             <a href="#" title="<?php echo $this->translate('View user profile');?>">
                 <span>
                 <?php

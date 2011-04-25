@@ -117,6 +117,7 @@ class Blog_PostsController extends Zend_Controller_Action
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $postData = $form->getValues('postForm');
             $postData['uid'] = $userId;
+	        $postData['created_on'] = time();
 
             $postModel = new Blog_Model_DbTable_Posts();
             $pid = $postModel->insert($postData);

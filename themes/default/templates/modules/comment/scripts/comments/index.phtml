@@ -18,21 +18,21 @@
         <div id="comment-<?php echo $comment['cid'];?>" class="commentAuthor">
 		    <span>
 		    <?php if($comment['uid']):
-				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
+				printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
             ?>
                 <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['uid'];?>"
                    title="<?php echo $this->translate('Author profile');?>">
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php elseif($comment['website']):
-				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
+				printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
             ?>
                 <a href="<?php echo $this->escape($comment['website']);?>"
                    title="<?php echo $this->translate('Author Website');?>" target="_blank">
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php else:
-				printf($this->translate('Posted on %s by %s'), date('F d, Y', strtotime($comment['created_on'])), $this->escape($comment['name']));
+				printf($this->translate('Posted on %s by %s'), date('F d, Y', $comment['created_on']), $this->escape($comment['name']));
 
              ?>
             <?php endif;?>

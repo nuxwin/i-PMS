@@ -80,9 +80,8 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 
 		$select = $this->getAdapter()->select()
 			->from('posts', array(
-								 'pid', 'uid', 'title', 'teaser', 'categorie', 'created_at',
-								 'comments_count' => new Zend_Db_Expr("($subSelect)")
-							))
+			                     'pid', 'uid', 'title', 'teaser', 'categorie', 'created_on',
+			                     'comments_count' => new Zend_Db_Expr("($subSelect)")))
 			->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
 			->order('posts.pid DESC');
 
@@ -105,7 +104,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
 			$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
 				->setIntegrityCheck(false)
-				->from('posts', array('pid', 'title', 'teaser', 'body', 'categorie', 'created_at', 'uid'))
+				->from('posts', array('pid', 'title', 'teaser', 'body', 'categorie', 'created_on', 'uid'))
 				->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
 				->order('posts.pid DESC')
 		));
