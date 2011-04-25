@@ -26,14 +26,13 @@
  */
 
 /**
- * Comments form
+ * Comment form
  *
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
 class Comment_Form_Comment extends Zend_Form
 {
-
 	/**
 	 * Initialize comment form
 	 *
@@ -41,49 +40,44 @@ class Comment_Form_Comment extends Zend_Form
 	 */
 	public function init()
 	{
-		$this->setName('commentForm');
-		$this->setAction('comment/add')
+		$this->setName('commentForm')
 			->setElementsBelongTo('commentForm');
 
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
-			// Name field
-			$name = new Zend_Form_Element_Text('name');
-			$name->setLabel('Name')
+			$element = new Zend_Form_Element_Text('name');
+			$element->setLabel('Name')
 				->setRequired(true)
 				->addFilter('StripTags')
 				->addFilter('StringTrim');
+			$this->addElement($element);
 
-			// Email field
-			$email = new Zend_Form_Element_Text('email');
-			$email->setLabel('Email')
+			$element = new Zend_Form_Element_Text('email');
+			$element->setLabel('Email')
 				->setRequired(true)
 				->addFilter('StripTags')
 				->addFilter('StringTrim');
+			$this->addElement($element);
 
-			// Website field
-			$website = new Zend_Form_Element_Text('website');
-			$website->setLabel('WebSite')
+			$element = new Zend_Form_Element_Text('website');
+			$element->setLabel('WebSite')
 				->addFilter('StripTags')
 				->addFilter('StringTrim');
-
-			$this->addElements(array($name, $email, $website));
+			$this->addElement($element);
 		}
 
-		// Comment field
-		$comment = new Zend_Form_Element_Textarea('body');
-		$comment->setLabel('Your comment')
+		$element = new Zend_Form_Element_Textarea('body');
+		$element->setLabel('Your comment')
 			->setRequired(true)
 			->setAttrib('rows', 7)
 			->addFilter('StripTags')
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
+			->addFilter('StringTrim');
+		$this->addElement($element);
 
-		// Submit button
-		$submit = new Zend_Form_Element_Submit('submit');
-		$submit->setLabel('Add comment')->setAttribs(array('id' => 'comment-submit'));
+		$element = new Zend_Form_Element_Submit('submit');
+		$element->setLabel('Add comment')
+			->setAttribs(array('id' => 'comment-submit'));
+		$this->addElement($element);
 
-		// Add elements to the form
-		$this->addElements(array($comment, $submit));
 		$this->_setRequiredSuffix();
 	}
 
@@ -98,7 +92,7 @@ class Comment_Form_Comment extends Zend_Form
 			if ($element->isRequired()) {
 				$element->addDecorator('Label', array('tag' => 'dt',
 				                                     'escape' => false,
-				                                     'requiredSuffix' => ' <span class="required">*</span>'));
+				                                     'requiredSuffix' => ' <span>*</span>'));
 			}
 		}
 	}

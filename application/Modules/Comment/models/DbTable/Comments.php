@@ -33,7 +33,6 @@
  */
 class Comment_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 {
-
     /**
      * Database table to operate
      *
@@ -81,7 +80,7 @@ class Comment_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 	    $select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
 		    ->setIntegrityCheck(false)
 		    ->where('pid = ?', $pid, Zend_Db::INT_TYPE)
-	        ->joinLeft('users', '`users`.`uid` = `comments`.`uid`', 'avatar')
+		    ->joinLeft('users', '`users`.`uid` = `comments`.`uid`', 'avatar')
 		    ->order('pid DESC');
 
 	    return $this->fetchAll($select)->toArray();
