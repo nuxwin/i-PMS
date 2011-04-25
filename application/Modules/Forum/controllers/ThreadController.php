@@ -137,7 +137,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 
 		if(!$forum) {
 			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Unable to create new thread - Forum with id '%d' was not found"), $fid), 500);
+				$this->view->translate("Unable to create new thread - Forum with ID '%d' was not found"), $fid), 500);
 		}
 
 		$form = new Forum_Form_Thread();

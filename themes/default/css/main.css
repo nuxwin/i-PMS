@@ -329,6 +329,10 @@ ol {
     margin-right: 0;
 }
 
+#content .postBody {
+	margin-top:20px;
+}
+
 #content p {
     margin-top: 1.5em;
     overflow: hidden;

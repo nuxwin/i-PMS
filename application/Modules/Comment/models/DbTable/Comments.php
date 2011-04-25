@@ -31,8 +31,7 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend_Acl_Resource_Interface,
-	Zend_Acl_Assert_Interface
+class Comment_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 {
 
     /**
@@ -58,30 +57,18 @@ class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend
         // If the parent post is deleted, all related comments are deleted too
         'Post' => array(
             SELF::COLUMNS => 'pid',
-            SELF::REF_TABLE_CLASS => 'Model_DbTable_Posts',
-            SELF::REF_COLUMNS => 'pid',
+            SELF::REF_TABLE_CLASS => 'Blog_Model_DbTable_Posts',
+            //SELF::REF_COLUMNS => 'pid',
             SELF::ON_DELETE => SELF::CASCADE
         ),
         // If the  author account is deleted, we set all his comments ('FK') to null (user not registered)
-        'user' => array(
-            SELF::COLUMNS => 'uid',
-            SELF::REF_TABLE_CLASS => 'Model_DbTable_Users',
-            SELF::REF_COLUMNS => 'uid',
+        'User' => array(
+            SELF::COLUMNS => 'uid', // FK
+            SELF::REF_TABLE_CLASS => 'Model_DbTable_Users', // Parent table
+            //SELF::REF_COLUMNS => 'uid', // PK
             SELF::ON_DELETE => SELF::SET_NULL
         ),
     );
-
-    /**
-     * Resource owner identifier
-     * @var int
-     */
-    protected $_resourceOwnerId = null;
-
-    /**
-     * Resource string identifier
-     * @var string
-     */
-    protected $_resourceId = 'comment';
 
     /**
      * Retrieves all comments that belong to one object
@@ -89,46 +76,14 @@ class Blog_Model_DbTable_Comments extends Zend_Db_Table_Abstract implements Zend
      * @param  $parent Zend_Db_Table_Row_Abstract
      * @return Zend_Db_Table_Rowset_Abstract Query result from $dependentTable
      */
-    public function getComments(Zend_Db_Table_Row_Abstract $parent)
+    public function getComments($pid)
     {
-        $comments = $parent->findDependentRowset(
-            $this, null, $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-                ->setIntegrityCheck(false)
-                ->joinLeft('users', '`users`.`uid` = `comments`.`uid`', 'avatar'));
+	    $select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+		    ->setIntegrityCheck(false)
+		    ->where('pid = ?', $pid, Zend_Db::INT_TYPE)
+	        ->joinLeft('users', '`users`.`uid` = `comments`.`uid`', 'avatar')
+		    ->order('pid DESC');
 
-        return $comments;
+	    return $this->fetchAll($select)->toArray();
     }
-
-    /**
-     * Implements Zend_Acl_Resource_Interface
-     *
-     * @return string Resource string identifier
-     */
-    public function getResourceId()
-    {
-        return $this->_resourceId;
-    }
-
-    /**
-     * Returns true if and only if the assertion conditions are met
-     *
-     * This method is passed the ACL, Role, Resource, and privilege to which the authorization query applies. If the
-     * $role, $resource, or $privilege parameters are null, it means that the query applies to all Roles, Resources, or
-     * privileges, respectively.
-     *
-     * @param  Zend_Acl                    $acl
-     * @param  Zend_Acl_Role_Interface     $role
-     * @param  Zend_Acl_Resource_Interface $comment
-     * @param  string                      $privilege
-     * @return boolean
-     */
-    public function assert(Zend_Acl $acl, Zend_Acl_Role_Interface $user = null, Zend_Acl_Resource_Interface $comment = null, $privilege = null)
-    {
-        if ($user->id = $comment->author_id) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }

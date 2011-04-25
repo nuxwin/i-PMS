@@ -31,7 +31,7 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Blog_Form_Comments extends Zend_Form
+class Comment_Form_Comment extends Zend_Form
 {
 
 	/**
@@ -41,8 +41,9 @@ class Blog_Form_Comments extends Zend_Form
 	 */
 	public function init()
 	{
-		$this->setName('commentsForm');
-		$this->setAction('comment/add');
+		$this->setName('commentForm');
+		$this->setAction('comment/add')
+			->setElementsBelongTo('commentForm');
 
 		if (!Zend_Auth::getInstance()->hasIdentity()) {
 			// Name field
@@ -50,31 +51,28 @@ class Blog_Form_Comments extends Zend_Form
 			$name->setLabel('Name')
 				->setRequired(true)
 				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+				->addFilter('StringTrim');
 
 			// Email field
 			$email = new Zend_Form_Element_Text('email');
 			$email->setLabel('Email')
 				->setRequired(true)
 				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+				->addFilter('StringTrim');
 
 			// Website field
 			$website = new Zend_Form_Element_Text('website');
 			$website->setLabel('WebSite')
 				->addFilter('StripTags')
-				->addFilter('StringTrim')
-				->addValidator('NotEmpty');
+				->addFilter('StringTrim');
 
 			$this->addElements(array($name, $email, $website));
-			$this->_setRequiredSuffix();
 		}
 
 		// Comment field
 		$comment = new Zend_Form_Element_Textarea('body');
-		$comment->setLabel('Comment')
+		$comment->setLabel('Your comment')
+			->setRequired(true)
 			->setAttrib('rows', 7)
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
@@ -86,6 +84,7 @@ class Blog_Form_Comments extends Zend_Form
 
 		// Add elements to the form
 		$this->addElements(array($comment, $submit));
+		$this->_setRequiredSuffix();
 	}
 
 	/**
@@ -99,7 +98,7 @@ class Blog_Form_Comments extends Zend_Form
 			if ($element->isRequired()) {
 				$element->addDecorator('Label', array('tag' => 'dt',
 				                                     'escape' => false,
-				                                     'requiredSuffix' => ' <span>*</span>'));
+				                                     'requiredSuffix' => ' <span class="required">*</span>'));
 			}
 		}
 	}

@@ -141,7 +141,6 @@ class Blog_PostsController extends Zend_Controller_Action
 
         $pid = intval($request->getParam('pid'));
         $postModel = new Blog_Model_DbTable_Posts();
-
 	    $post = $postModel->find($pid)->current();
 
         if (!$post) {

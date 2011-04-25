@@ -95,7 +95,7 @@ class Forum_ForumController extends Zend_Controller_Action {
 		$select = $forumModel->select()
 			->setIntegrityCheck(false)
 			->from('fthreads')
-			->joinLeft(array('u' => 'users'), 'u.id = fthreads.uid')
+			->joinLeft(array('u' => 'users'), 'u.uid = fthreads.uid')
 			->order(array('fthreads.is_sticky DESC', 'fthreads.lastpost_date DESC'));
 
 		$threads = $forum->findDependentRowset('Forum_Model_DbTable_Thread', null, $select);

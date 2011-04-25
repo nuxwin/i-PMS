@@ -15,41 +15,38 @@
                  alt="<?php echo $this->translate('Author avatar');?>"/>
             <?php endif;?>
         </div>
-        <div id="comment-<?php echo $comment['id'];?>" class="commentAuthor">
+        <div id="comment-<?php echo $comment['cid'];?>" class="commentAuthor">
 		    <span>
-		    <?php if ($comment['author_id']):
+		    <?php if($comment['uid']):
 				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
             ?>
-                <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['author_id'];?>"
-                   title="<?php echo $this->translate('Author profile');?>"
-                >
+                <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['uid'];?>"
+                   title="<?php echo $this->translate('Author profile');?>">
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php elseif($comment['website']):
 				printf($this->translate('Posted on %s by '), date('F d, Y', strtotime($comment['created_on'])));
             ?>
                 <a href="<?php echo $this->escape($comment['website']);?>"
-                   title="<?php echo $this->translate('Author Website');?>">
+                   title="<?php echo $this->translate('Author Website');?>" target="_blank">
                     <span><?php echo $this->escape($comment['name']);?></span>
                 </a>
             <?php else:
-				printf($this->translate('Posted on %s by'), date('F d, Y', strtotime($comment['created_on'])));
-                echo $this->translate('Posted on').' '.$this->escape(date('F d, Y', strtotime($comment['created_on'])))
-                    .' '.$this->translate('by').' '.$this->escape($comment['name']);;
+				printf($this->translate('Posted on %s by %s'), date('F d, Y', strtotime($comment['created_on'])), $this->escape($comment['name']));
+
              ?>
             <?php endif;?>
             </span>
             <div class="fastLinks">
                 <a class="editSmallIcon smallIcon"
-                   href="<?php echo $this->url(array('id' => $comment['id'], 'comment_id' => $comment['id']), 'comments_edit');?>"
+                   href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_edit');?>"
                    title="<?php echo $this->translate('Edit comment');?>">
                     <span style="font-size:0.7em;"><?php echo $this->translate('Edit');?></span>
                 </a>
                 <span> - </span>
                 <a class="deleteSmallIcon smallIcon"
-                   href="<?php echo $this->url(array('id' => $comment['id'], 'comment_id' => $comment['id']), 'comments_delete');?>"
-                   title="<?php echo $this->translate('Delete comment');?>"
-                >
+                   href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_delete');?>"
+                   title="<?php echo $this->translate('Delete comment');?>">
                     <span style="font-size:0.7em;"><?php echo $this->translate('Delete');?></span>
                 </a>
             </div>
@@ -61,11 +58,8 @@
     </div>
     <?php endforeach;?>
 </div>
-<?php endif;?>
-<!--
-<?php //elseif ($this->post['allow_comments']):?>
+<?php elseif ($this->post['allow_comments']):?>
 <div class="note">
-    <span><?php //echo $this->translate('No comments found');?></span>
+    <span><?php echo $this->translate('No comments found');?></span>
 </div>
-<?php //endif;?>
--->
+<?php endif;?>

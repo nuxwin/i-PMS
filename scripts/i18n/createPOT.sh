@@ -21,7 +21,7 @@
 # @package     iPMS_Scripts
 # @subpackage  i18n
 # @copyright   2011 by i-PMS | http://i-pms.net
-# @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 ################################################################################
