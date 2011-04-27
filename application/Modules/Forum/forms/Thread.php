@@ -34,19 +34,10 @@
 class Forum_Form_Thread extends Zend_Form
 {
 	/**
-	 * Form initialization
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-	}
-
-	/**
 	 * Sets form to build
 	 *
 	 * @throws iPMS_Exception
-	 * @param  $name
+	 * @param  $name name of form to build
 	 * @return void
 	 */
 	public function setForm($name)
@@ -58,6 +49,8 @@ class Forum_Form_Thread extends Zend_Form
 		} else {
 			throw new iPMS_Exception(sprintf("Methods 'Forum_Form_Thread::%s' doesn't exists", $method));
 		}
+
+		$this->_setRequiredSuffix();
 	}
 
 	/**
@@ -68,29 +61,26 @@ class Forum_Form_Thread extends Zend_Form
 	protected function addForm()
 	{
 		$this->setName('threadForm')
-			->setElementsBelongTo('threadForm')
-			->setMethod('post')
-			->setEnctype('application/x-www-form-urlencoded');
+			->setElementsBelongTo('threadForm');
 
-		$subject = new Zend_Form_Element_Text('subject');
-		$subject->setLabel('Thread Subject')
+		$element = new Zend_Form_Element_Text('subject');
+		$element->setLabel('Thread Subject')
 			->setAttribs(array('class' => 'input-title', 'maxlength' => 130))
 			->setRequired(true)
 			->addFilter('StripTags')
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
+			->addFilter('StringTrim');
+		$this->addElement($element);
 
-		$message = new Zend_Form_Element_Textarea('message');
-		$message->setLabel('Your Message')
+		$element = new Zend_Form_Element_Textarea('body');
+		$element->setLabel('Your Message')
 			->setRequired(true)
 			->addFilter('StripTags')
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
+			->addFilter('StringTrim');
+		$this->addElement($element);
 
-		$submit = new Zend_Form_Element_Submit('forumSubmit');
-		$submit->setLabel('Submit');
-
-		$this->addElements(array($subject, $message, $submit));
+		$element = new Zend_Form_Element_Submit('forumSubmit');
+		$element->setLabel('Submit');
+		$this->addElement($element);
 	}
 
 	/**
@@ -102,9 +92,7 @@ class Forum_Form_Thread extends Zend_Form
 	{
 
 		$this->setName('replyForm')
-			->setElementsBelongTo('replyForm')
-			->setMethod('post')
-			->setEnctype('application/x-www-form-urlencoded');
+			->setElementsBelongTo('replyForm');
 
         $element = new Zend_Form_Element_Text('subject', array('disableLoadDefaultDecorators' => true));
         $element->addDecorator('ViewHelper')
@@ -113,7 +101,7 @@ class Forum_Form_Thread extends Zend_Form
 	        ->addFilter('StringTrim');
 		$this->addElement($element);
 
-		$element = new Zend_Form_Element_Textarea('message', array('disableLoadDefaultDecorators' => true));
+		$element = new Zend_Form_Element_Textarea('body', array('disableLoadDefaultDecorators' => true));
 		$element->addDecorator('ViewHelper')
 			->setRequired(true)
 			->addErrorMessage('Message cannot be empty!')
@@ -136,7 +124,6 @@ class Forum_Form_Thread extends Zend_Form
 		$element->addDecorator('ViewHelper')
 			->setLabel('Reset');
 		$this->addElement($element);
-
 
         $this->clearDecorators();
 		$this->addDecorator('FormElements')

@@ -76,8 +76,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 
 		// Getting thread information
 		if(!$thread) {
-			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Thread with id '%d' was not found", $tid)), 404);
+			throw new Zend_Controller_Action_Exception(sprintf("Thread with ID '%d' was not found", $tid), 404);
 		}
 
 		// Get the forum details from the database
@@ -137,7 +136,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 
 		if(!$forum) {
 			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Unable to create new thread - Forum with ID '%d' was not found"), $fid), 500);
+				"Unable to create new thread - Forum with ID '%d' was not found", $fid), 500);
 		}
 
 		$form = new Forum_Form_Thread();
@@ -181,7 +180,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 				                                'created_on' => $time,
 				                                'reply_to' => 0,
 				                                'subject' => $form->getValue('subject'),
-				                                'message' => $form->getValue('message')));
+				                                'body' => $form->getValue('message')));
 
 				// Now that we known the ID for this first post, update the forums_threads table.
 				$thread['firstpost_id'] = $pid;
@@ -212,9 +211,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 			$this->_redirect($this->urlHelper->url(array('tid' => $tid), 'forum_thread_show'));
 		}
 
-		$this->view->assign(array(
-		                         'forum' => $forum,
-		                         'form' => $form));
+		$this->view->assign(array('forum' => $forum->toArray(),'form' => $form));
 	}
 
 	/**
@@ -237,7 +234,7 @@ class Forum_ThreadController extends Zend_Controller_Action
 
 		if(!$thread) {
 			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Unable to reply: Parent thread with ID '%d' was not found", $tid)), 500);
+				"Unable to reply: Parent thread with ID '%d' was not found", $tid), 500);
 		}
 
 		// TODO get these data from a cache
@@ -328,7 +325,6 @@ class Forum_ThreadController extends Zend_Controller_Action
 	 */
 	public function deleteThreadAction()
 	{
-
 		echo $this->urlHelper->url(array(), 'forum_add');
 
 		//echo $this->_helper->url('delete.thread', null, null, array('tid' => '100'));
@@ -412,6 +408,22 @@ class Forum_ThreadController extends Zend_Controller_Action
 			// TODO Thread replies counter must be updated
 			// TODO User(s) posts counter must be updated
 
+		}
+	}
+
+	/**
+	 * Sets required suffix for all required elements
+	 *
+	 * @return void
+	 */
+	protected function _setRequiredSuffix()
+	{
+		foreach ($this->getElements() as $element) {
+			if ($element->isRequired()) {
+				$element->addDecorator('Label', array('tag' => 'dt',
+				                                     'escape' => false,
+				                                     'requiredSuffix' => ' <span>*</span>'));
+			}
 		}
 	}
 }

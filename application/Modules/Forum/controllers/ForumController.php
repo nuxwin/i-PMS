@@ -70,14 +70,6 @@ class Forum_ForumController extends Zend_Controller_Action {
 	 */
 	public function showAction()
 	{
-
-		if($this->_request->isPost()) {
-			echo '<pre>';
-			print_r($this->_request->getParams());
-			echo '</pre>';
-			exit;
-		}
-
 		/**
 		 * @var $request Zend_Controller_Request_Http
 		 */
@@ -88,8 +80,7 @@ class Forum_ForumController extends Zend_Controller_Action {
 		$forum = $forumModel->find($fid)->current();
 
 		if(!$forum) {
-			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Forum with id '%d' was not found"), $fid), 404);
+			throw new Zend_Controller_Action_Exception(sprintf("Forum with ID '%d' was not found", $fid), 404);
 		}
 
 		$select = $forumModel->select()
@@ -99,7 +90,6 @@ class Forum_ForumController extends Zend_Controller_Action {
 			->order(array('fthreads.is_sticky DESC', 'fthreads.lastpost_date DESC'));
 
 		$threads = $forum->findDependentRowset('Forum_Model_DbTable_Thread', null, $select);
-
 		$this->view->assign(array('forum' => $forum->toArray(), 'threads' => $threads->toArray()));
 	}
 
@@ -120,8 +110,8 @@ class Forum_ForumController extends Zend_Controller_Action {
 
 		if($request->isPost() && $form->isValid($request->getParam('forumForm'))) {
 			$model = new Forum_Model_DbTable_Forum();
-			$model->insert($form->getValues('forumForm'));
-			$this->_redirect($this->urlHelper->url(array(), 'forum_add'));
+			$fid = $model->insert($form->getValues('forumForm'));
+			$this->_redirect($this->urlHelper->url(array('fid' => $fid), 'forum_show'));
 		}
 
 		$this->view->assign('form', $form);
@@ -146,8 +136,7 @@ class Forum_ForumController extends Zend_Controller_Action {
 		$forum = $model->find($fid)->current();
 
 		if(!$forum) {
-			throw new Zend_Controller_Action_Exception(sprintf(
-				$this->view->translate("Forum with id '%d' was not found"), $fid), 404);
+			throw new Zend_Controller_Action_Exception(sprintf("Forum with ID '%d' was not found", $fid), 404);
 		}
 
 		$form = new Forum_Form_Forum();

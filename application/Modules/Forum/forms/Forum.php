@@ -33,7 +33,6 @@
  */
 class Forum_Form_Forum extends Zend_Form
 {
-
 	/**
 	 * Form initialization
 	 *
@@ -42,40 +41,54 @@ class Forum_Form_Forum extends Zend_Form
 	public function init()
 	{
 		$this->setName('forumForm')
-			->setAction('/forums/add')
-			->setElementsBelongTo('forumForm')
-			->setMethod('post')
-			->setEnctype('application/x-www-form-urlencoded');
+			->setAction('/forum/add')
+			->setElementsBelongTo('forumForm');
 
-		$name = new Zend_Form_Element_Text('name');
-		$name->setLabel('Title')
+		$element = new Zend_Form_Element_Text('name');
+		$element->setLabel('Title')
 			->setAttribs(array('class' =>'input-title', 'maxlength' => 130))
 			->setRequired(true)
 			->addFilter('StripTags')
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
+			->addFilter('StringTrim');
+		$this->addElement($element);
 
-		$description = new Zend_Form_Element_Textarea('description');
-		$description->setLabel('Description')
+		$element = new Zend_Form_Element_Textarea('description');
+		$element->setLabel('Description')
 			->setAttribs(array('class' => 'input-teaser', 'maxlength' => 255))
-			//->setRequired(true)
 			->addFilter('StripTags')
 			->addFilter('StringTrim');
-			//->addValidator('NotEmpty');
+		$this->addElement($element);
 
-
-		$order = new Zend_Form_Element_Text('order');
-		$order->setLabel('Display Order')
+		$element = new Zend_Form_Element_Text('order');
+		$element->setLabel('Display Order')
+			->setValue('1')
 			->setAttrib('maxlength', 5)
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
 			->addFilter('Int')
-			->addValidator('NotEmpty')
-			->setValue('1');
+			->addValidator('NotEmpty');
+		$this->addElement($element);
 
-		$submit = new Zend_Form_Element_Submit('forumSubmit');
-		$submit->setLabel('Submit');
+		$element = new Zend_Form_Element_Submit('forumSubmit');
+		$element->setLabel('Submit');
+		$this->addElement($element);
 
-		$this->addElements(array($name, $description, $order, $submit));
+		$this->_setRequiredSuffix();
+	}
+
+	/**
+	 * Sets required suffix for all required elements
+	 *
+	 * @return void
+	 */
+	protected function _setRequiredSuffix()
+	{
+		foreach ($this->getElements() as $element) {
+			if ($element->isRequired()) {
+				$element->addDecorator('Label', array('tag' => 'dt',
+				                                     'escape' => false,
+				                                     'requiredSuffix' => ' <span>*</span>'));
+			}
+		}
 	}
 }

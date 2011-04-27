@@ -66,61 +66,67 @@ class Blog_Form_Post extends Zend_Form
         'alt', 'target', 'href', 'src', 'rel', 'width', 'height' // Others attributes
     );
 
-    /**
-     * Form initialization
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->setName('postForm')
+	/**
+	 * Form initialization
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$this->setName('postForm')
 			->setAction('/post/add')
-            ->setElementsBelongTo('postForm')
-            ->setMethod('post')
-            ->setEnctype('application/x-www-form-urlencoded');
+			->setElementsBelongTo('postForm')
+			->setMethod('post')
+			->setEnctype('application/x-www-form-urlencoded');
 
-        $title = new Zend_Form_Element_Text('title');
-        $title->setLabel('Title')
-            ->setAttrib('class', 'input-title')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty');
+		$element = new Zend_Form_Element_Text('title');
+		$element->setLabel('Title')
+			->setAttrib('class', 'input-title')
+			->setRequired(true)
+			->addFilter('StripTags')
+			->addFilter('StringTrim')
+			->addValidator('NotEmpty');
+		$this->addElement($element);
 
-        $teaser = new Zend_Form_Element_Textarea('teaser');
-        $teaser->setLabel('Teaser')
-            ->setAttrib('class', 'input-teaser')
-            ->setRequired(true)
-            ->addFilter('StripTags', array(
-                'allowTags' => $this->_allowedXhtmlTags,
-                'allowAttribs' => $this->_allowedXhtmlAttributes))
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty');
+		$element = new Zend_Form_Element_Textarea('teaser');
+		$element->setLabel('Teaser')
+			->setAttrib('class', 'input-teaser')
+			->setRequired(true)
+			->addFilter('StripTags', array(
+			                              'allowTags' => $this->_allowedXhtmlTags,
+			                              'allowAttribs' => $this->_allowedXhtmlAttributes))
+			->addFilter('StringTrim')
+			->addValidator('NotEmpty');
+		$this->addElement($element);
 
-        $body = clone $teaser;
-        $body->setName('body')
-            ->setAttrib('class', 'input-body')
-            ->setLabel('Content');
+		$element = clone $element;
+		$element->setName('body')
+			->setAttrib('class', 'input-body')
+			->setLabel('Content');
+		$this->addElement($element);
 
-        $allowComments = new Zend_Form_Element_Checkbox('allow_comments');
-        $allowComments->setLabel('Open for new comments ?')
-            ->setValue('1');
+		$element = new Zend_Form_Element_Checkbox('allow_comments');
+		$element->setLabel('Open for new comments ?')
+			->setValue('1');
+		$this->addElement($element);
 
-        $id = new Zend_Form_Element_Hidden('pid');
-        $id->getDecorator('Label')->setOption('tagClass','hidden');
-        $id->getDecorator('HtmlTag')->setOption('class','hidden');
+		$element = new Zend_Form_Element_Hidden('pid');
+		$element->getDecorator('Label')->setOption('tagClass', 'hidden');
+		$element->getDecorator('HtmlTag')->setOption('class', 'hidden');
+		$this->addElement($element);
 
-        $category = new Zend_Form_Element_Hidden('categorie');
-        $category  ->setValue('home');
-        $category->getDecorator('Label')->setOption('tagClass','hidden');
-        $category->getDecorator('HtmlTag')->setOption('class','hidden');
+		$element = new Zend_Form_Element_Hidden('categorie');
+		$element->setValue('home');
+		$element->getDecorator('Label')->setOption('tagClass', 'hidden');
+		$element->getDecorator('HtmlTag')->setOption('class', 'hidden');
+		$this->addElement($element);
 
-        $submit = new Zend_Form_Element_Submit('postSubmit');
-        $submit ->setLabel('Submit');
+		$element = new Zend_Form_Element_Submit('postSubmit');
+		$element->setLabel('Submit');
+		$this->addElement($element);
 
-        $this->addElements(array($title, $teaser, $body, $allowComments, $id, $category, $submit));
 		$this->_setRequiredSuffix();
-    }
+	}
 
 	/**
 	 * Sets required suffix for all required elements

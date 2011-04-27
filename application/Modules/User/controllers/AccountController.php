@@ -174,7 +174,7 @@ class User_AccountController extends Zend_Controller_Action
      */
     protected function _passwordAuthentication()
     {
-        $authDbAdapter = new Zend_Auth_Adapter_DbTable(null,'users', 'username', 'password', 'MD5(?) AND active = 1');
+	    $authDbAdapter = new Zend_Auth_Adapter_DbTable(null, 'users', 'username', 'password', 'MD5(?) AND is_active = 1');
         $authDbAdapter->setIdentity($this->_identity)->setCredential($this->_credential);
         $result = $authDbAdapter->authenticate();
 
@@ -195,8 +195,23 @@ class User_AccountController extends Zend_Controller_Action
      */
     protected function _successfulAuthentication(Zend_Auth_Adapter_DbTable $adapter)
     {
-        // Protection against session's fixation attacks
-        Zend_Session::regenerateId();
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    //$request = $this->getRequest();
+
+
+	    //if($request->isPost() && null == $request->getParam('rememberMe')) {
+	    //    Zend_Session::rememberMe();
+	    /**
+	     * @var $saveHandler Zend_Session_SaveHandler_DbTable
+	     */
+	    //    $saveHandler = Zend_Session::getSaveHandler();
+	    //  $saveHandler->setLifetime('5259600', true);
+	    //} else {
+	    // Protection against session's fixation attacks
+	    Zend_Session::regenerateId();
+	    //}
 
         Zend_Auth::getInstance()->getStorage()->write($adapter->getResultRowObject(null, 'password'));
 

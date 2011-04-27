@@ -37,7 +37,6 @@
  */
 class Comment_CommentsController extends Zend_Controller_Action
 {
-
 	/**
 	 * Commented object model classname
 	 *
@@ -179,13 +178,13 @@ class Comment_CommentsController extends Zend_Controller_Action
 	    $request = $this->getRequest();
 
 		if($request->isPost() && $request->getActionName() == 'add') {
-			$models = $request->getUserParam('models');
 			$pcontroller = $request->getUserParam('pcontroller');
+			$models = $request->getUserParam('models');
 
 			if(array_key_exists($pcontroller, $models)) {
 				$this->_parentModelClass = $models[$pcontroller];
 			} else {
-				throw new Zend_Controller_Action_Exception('Unable to find parent model', 500);
+				throw new Zend_Controller_Action_Exception('Unable to find model for commented object', 500);
 			}
 		}
 	}

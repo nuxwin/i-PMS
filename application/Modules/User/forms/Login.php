@@ -33,7 +33,6 @@
  */
 class User_Form_Login extends Zend_Form
 {
-
     /**
      * Form initialization
      *
@@ -41,44 +40,44 @@ class User_Form_Login extends Zend_Form
      */
     public function init()
     {
-        $this->setName('loginForm');
-        $this->setElementsBelongTo('loginForm');
+	    $this->setName('loginForm');
+	    $this->setElementsBelongTo('loginForm');
 
-        $username = new Zend_Form_Element_Text('username');
-        $username->setLabel('Username')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty');
+	    $element = new Zend_Form_Element_Text('username');
+	    $element->setLabel('Username')
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim');
+	    $this->addElement($element);
 
-        $password = new Zend_Form_Element_Password('password');
-        $password->setLabel('Password')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty');
+	    $element = new Zend_Form_Element_Password('password');
+	    $element->setLabel('Password')
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim');
+	    $this->addElement($element);
 
-        //$rememberMe = new Zend_Form_Element_Checkbox('rememberMe');
-        //$rememberMe->setLabel('Remember me');
+	    $element = new Zend_Form_Element_Checkbox('rememberMe');
+	    $element->setLabel('Remember me');
+	    $this->addElement($element);
 
-        /**
-         * @var $request Zend_Controller_Request_Http
-         */
-        $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        $redirect = new Zend_Form_Element_Hidden('redirect');
-        $redirect->setValue($request->getParam('from', '/'))
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty');
+	    /**
+	     * @var $request Zend_Controller_Request_Http
+	     */
+	    $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        $redirect->getDecorator('HtmlTag')->setOption('class', 'hidden');
-        $redirect->getDecorator('Label')->setOption('tagClass', 'hidden');
+	    $element = new Zend_Form_Element_Hidden('redirect');
+	    $element->setValue($request->getParam('from', '/'))
+		    ->setRequired(true)
+		    ->addFilter('StripTags')
+		    ->addFilter('StringTrim');
+	    $element->getDecorator('HtmlTag')->setOption('class', 'hidden');
+	    $element->getDecorator('Label')->setOption('tagClass', 'hidden');
+	    $this->addElement($element);
 
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Connection');
-
-        $this->addElements(array($username, $password, $redirect, $submit));
+	    $element = new Zend_Form_Element_Submit('submit');
+	    $element->setLabel('Connection');
+	    $this->addElement($element);
     }
 }

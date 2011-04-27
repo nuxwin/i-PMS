@@ -74,7 +74,7 @@ class Comment_Form_Comment extends Zend_Form
 		$this->addElement($element);
 
 		$element = new Zend_Form_Element_Submit('submit');
-		$element->setLabel('Add comment')
+		$element->setLabel('Send comment')
 			->setAttribs(array('id' => 'comment-submit'));
 		$this->addElement($element);
 

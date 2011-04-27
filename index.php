@@ -25,6 +25,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+define('SERVER_NAME', $_SERVER['SERVER_NAME']);
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
 defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
