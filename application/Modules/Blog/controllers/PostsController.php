@@ -59,7 +59,7 @@ class Blog_PostsController extends Zend_Controller_Action
 	     */
 	    $request = $this->getRequest();
 
-        $postModel = new Blog_Model_DbTable_Posts();
+        $postModel = new Blog_Model_DbTable_Post();
         // Todo get max post per pages from user settings (currently hardcoded to 15)
         $pageablePosts = $postModel->getPageablePostsList($request->getParam('page'));
         $this->view->assign('paginator', $pageablePosts);
@@ -79,7 +79,7 @@ class Blog_PostsController extends Zend_Controller_Action
 
         $pid = intval($request->getParam('pid'));
 
-        $postModel = new Blog_Model_DbTable_Posts();
+        $postModel = new Blog_Model_DbTable_Post();
         $post = $postModel->fetchRow($postModel->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
             ->setIntegrityCheck(false)
             ->where('posts.pid = ?', $pid)
@@ -119,7 +119,7 @@ class Blog_PostsController extends Zend_Controller_Action
             $postData['uid'] = $userId;
 	        $postData['created_on'] = time();
 
-            $postModel = new Blog_Model_DbTable_Posts();
+            $postModel = new Blog_Model_DbTable_Post();
             $pid = $postModel->insert($postData);
 
 	        $this->_redirect($this->urlHelper->url(array('pid' => $pid), 'post_show'));
@@ -141,7 +141,7 @@ class Blog_PostsController extends Zend_Controller_Action
 	    $request = $this->getRequest();
 
         $pid = intval($request->getParam('pid'));
-        $postModel = new Blog_Model_DbTable_Posts();
+        $postModel = new Blog_Model_DbTable_Post();
 	    $post = $postModel->find($pid)->current();
 
         if (!$post) {
@@ -174,7 +174,7 @@ class Blog_PostsController extends Zend_Controller_Action
 	    $request = $this->getRequest();
 
 	    $pid = intval($request->getParam('pid'));
-        $postModel = new Blog_Model_DbTable_Posts();
+        $postModel = new Blog_Model_DbTable_Post();
         $post = $postModel->find($pid)->current();
 
 		if($post) {

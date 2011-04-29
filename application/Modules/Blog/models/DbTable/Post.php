@@ -31,10 +31,10 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
+class Blog_Model_DbTable_Post extends Zend_Db_Table_Abstract
 {
 	/**
-	 * Database table to operate
+	 * Database table to operate on
 	 *
 	 * @var string
 	 */
@@ -48,7 +48,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	protected $_primary = 'pid';
 
 	protected $_dependentTables = array(
-		'Comment_Model_DbTable_Comments'
+		'Comment_Model_DbTable_Comment'
 	);
 
 	/**
@@ -59,7 +59,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	protected $_referenceMap = array(
 		'User' => array(
 			SELF::COLUMNS => 'uid',
-			SELF::REF_TABLE_CLASS => 'User_Model_DbTable_Users',
+			SELF::REF_TABLE_CLASS => 'User_Model_DbTable_User',
 			SELF::REF_COLUMNS => 'uid',
 			SELF::ON_DELETE => SELF::SET_NULL
 		)
@@ -80,7 +80,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 
 		$select = $this->getAdapter()->select()
 			->from('posts', array(
-			                     'pid', 'uid', 'title', 'teaser', 'categorie', 'created_on',
+			                     'pid', 'uid', 'title', 'teaser', 'category', 'created_on',
 			                     'comments_count' => new Zend_Db_Expr("($subSelect)")))
 			->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
 			->order('posts.pid DESC');
@@ -104,7 +104,7 @@ class Blog_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		$pageablePosts = new Zend_Paginator(new Zend_Paginator_Adapter_DbSelect(
 			$this->select(Zend_Db_Table::SELECT_WITHOUT_FROM_PART)
 				->setIntegrityCheck(false)
-				->from('posts', array('pid', 'title', 'teaser', 'body', 'categorie', 'created_on', 'uid'))
+				->from('posts', array('pid', 'title', 'teaser', 'body', 'category', 'created_on', 'uid'))
 				->joinLeft('users', 'users.uid = posts.uid', array('username', 'firstname', 'lastname'))
 				->order('posts.pid DESC')
 		));

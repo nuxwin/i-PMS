@@ -139,7 +139,8 @@ class User_AccountController extends Zend_Controller_Action
         if ($this->isOpenIdAuthentication()) {
             return $this->_openIdAuthentication();
         } else {
-            return $this->_passwordAuthentication();
+	        $credentials = $this->getRequest()->getParam('loginForm');
+            return $this->_passwordAuthentication($credentials['username'], $credentials['password']);
         }
     }
 
@@ -172,10 +173,11 @@ class User_AccountController extends Zend_Controller_Action
      *
      * @return bool TRUE on authentication successful, FALSE otherwise
      */
-    protected function _passwordAuthentication()
+    protected function _passwordAuthentication($username, $password)
     {
-	    $authDbAdapter = new Zend_Auth_Adapter_DbTable(null, 'users', 'username', 'password', 'MD5(?) AND is_active = 1');
-        $authDbAdapter->setIdentity($this->_identity)->setCredential($this->_credential);
+	    $authDbAdapter = new Zend_Auth_Adapter_DbTable(null,
+		    'users', 'username', 'password', 'MD5(?) AND is_active = 1');
+        $authDbAdapter->setIdentity($username)->setCredential($password);
         $result = $authDbAdapter->authenticate();
 
         if (!$result->isValid()) {
@@ -237,6 +239,8 @@ class User_AccountController extends Zend_Controller_Action
     protected function _invalidCredentials(Zend_Auth_Result $authResult)
     {
         $messages = $authResult->getMessages();
+	    print_r($messages);
+	    exit;
         $this->view->errorMessage = $messages[0];
         // Log -> "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}";
         // Flash error -> invalid credential

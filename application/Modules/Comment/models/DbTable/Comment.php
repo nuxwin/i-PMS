@@ -31,7 +31,7 @@
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Comment_Model_DbTable_Comments extends Zend_Db_Table_Abstract
+class Comment_Model_DbTable_Comment extends Zend_Db_Table_Abstract
 {
     /**
      * Database table to operate

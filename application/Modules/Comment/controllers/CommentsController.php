@@ -70,7 +70,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 	    $request = $this->getRequest();
 
 		$pid = intval($request->getParam('pid'));
-		$commentsModel = new Comment_Model_DbTable_Comments();
+		$commentsModel = new Comment_Model_DbTable_Comment();
 		$comments = $commentsModel->getComments($pid);
 		$this->view->assign('comments', $comments);
 	}
@@ -120,7 +120,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 			}
 
 			if($form->isValid($request->getParam('commentForm'))) {
-				$commentsModel = new Comment_Model_DbTable_Comments();
+				$commentsModel = new Comment_Model_DbTable_Comment();
 				$data = $form->getValues(true);
 				$data['pid'] = $pid;
 				$identity = Zend_Auth::getInstance();
@@ -128,8 +128,9 @@ class Comment_CommentsController extends Zend_Controller_Action
 					$data['uid'] = $identity->getIdentity()->uid;
 					$data['name'] = $identity->getIdentity()->username;
 					$data['email'] = $identity->getIdentity()->email;
-					$data['created_on'] = time();
 				}
+
+				$data['created_on'] = time();
 				$commentsModel->insert($data);
 			} else {
 				$ns->commentFormData = $form->getValues();
@@ -157,7 +158,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 
 		$cid = intval($request->getParam('cid'));
 
-		$commentsModel = new Comment_Model_DbTable_Comments();
+		$commentsModel = new Comment_Model_DbTable_Comment();
 		$commentsModel->delete(array('cid = ?' => $cid));
 
 		// TODO redirect to previous route
