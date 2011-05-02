@@ -19,8 +19,7 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -56,12 +55,12 @@ $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', 'do
 
 
 // Create application, bootstrap, and run
-$imscp = new Zend_Application(APPLICATION_ENV, $config);
+$app = new Zend_Application(APPLICATION_ENV, $config);
 
 // Init only needed resources
-$bootstrap = $imscp->getBootstrap();
-$bootstrap->bootstrap('config') // Setting configuration object - See Bootstrap::_initConfig()
-	->bootstrap('doctrine'); // Initialize Doctrine - See iMSCP_Bootstrap_Resource_Doctrine::init()
+$app->getBootstrap()
+	->bootstrap('config') // Setting configuration
+	->bootstrap('doctrine'); // Initialize Doctrine
 
 $classLoader = new \Doctrine\Common\ClassLoader('Symfony', 'Doctrine');
 $classLoader->register();
@@ -69,5 +68,4 @@ $classLoader->register();
 require_once 'Zend/Registry.php';
 
 $helperSetToLoad = new \Symfony\Component\Console\Helper\HelperSet(array(
-    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper(
-	    Zend_Registry::get('DoctrineEntitiesManager'))));
+    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper(Zend_Registry::get('DoctrineEntitiesManager'))));

@@ -19,8 +19,7 @@
  *
  * @category    iPMS
  * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
