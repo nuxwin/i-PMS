@@ -25,6 +25,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+// Error reporting
+error_reporting(E_ALL|E_STRICT);
+
 /**
  * Check PHP version (5.3.0 or newer )
  */
@@ -32,21 +35,39 @@ if (version_compare(phpversion(), '5.3.0', '<') === true) {
 	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.0 or newer.\n");
 }
 
-define('SERVER_NAME', $_SERVER['SERVER_NAME']);
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
-defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
-
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(ROOT_PATH . '/library', get_include_path())));
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../../application'));
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . '/../..'));
 
-/** Zend_Application */
+// Ensure library/ is on include_path
+set_include_path(
+	implode(
+		PATH_SEPARATOR,
+		array(ROOT_PATH . '/library', get_include_path())));
+
 require_once 'Zend/Application.php';
 
+// Load local configuration file
+require_once 'Zend/Config/Ini.php';
+$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', 'doctrine_cli', true);
+
+
 // Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$application->bootstrap()->run();
+$imscp = new Zend_Application(APPLICATION_ENV, $config);
+
+// Init only needed resources
+$bootstrap = $imscp->getBootstrap();
+$bootstrap->bootstrap('config') // Setting configuration object - See Bootstrap::_initConfig()
+	->bootstrap('doctrine'); // Initialize Doctrine - See iMSCP_Bootstrap_Resource_Doctrine::init()
+
+$classLoader = new \Doctrine\Common\ClassLoader('Symfony', 'Doctrine');
+$classLoader->register();
+
+require_once 'Zend/Registry.php';
+
+$helperSetToLoad = new \Symfony\Component\Console\Helper\HelperSet(array(
+    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper(
+	    Zend_Registry::get('DoctrineEntitiesManager'))));

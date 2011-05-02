@@ -35,25 +35,100 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	/**
 	 * Stores a copy of the config object in the Registry for future references
-	 * 
-	 * @return void
+	 *
+	 * @return Zend_Config
 	 */
 	protected function _initConfig()
-    {
-    	Zend_Registry::set('config', new Zend_Config($this->getOptions()));
-    }
+	{
+		$config = new Zend_Config($this->getOptions());
+		Zend_Registry::set('config', $config);
+
+		return $config;
+	}
 
 	/**
-	 * Stores a copy of database adapter in the Registry for future references
+	 * initializes the database connection and registers it in registry for further usage
 	 *
-	 * @return void
+	 * @return null|Zend_Db_Adapter_Abstract
 	 */
 	public function _initDatabase()
 	{
-		if($this->hasPluginResource('db')) {
+		if ($this->hasPluginResource('db')) {
 			$this->bootstrap('db');
-			Zend_Registry::set('db', $this->getResource('db'));
+			/**
+			 * @var $db Zend_Db_Adapter_Abstract
+			 */
+			$db = $this->getResource('db');
+			Zend_Registry::set('db', $db);
+
+			return $db;
 		}
+
+		return null;
+	}
+
+	/**
+	 * Initializes and returns Doctrine ORM entity manager
+	 *
+	 * @return \Doctrine\ORM\EntityManager
+	 * @todo Resource configurator like http://framework.zend.com/wiki/x/0IAbAQ
+	 */
+	protected function _initDoctrine()
+	{
+		// doctrine loader
+		require_once (APPLICATION_PATH .
+		              DIRECTORY_SEPARATOR . '..' .
+		              DIRECTORY_SEPARATOR . 'library' .
+		              DIRECTORY_SEPARATOR . 'Doctrine' .
+		              DIRECTORY_SEPARATOR . 'Common' .
+		              DIRECTORY_SEPARATOR . 'ClassLoader.php');
+
+		$doctrineAutoloader = new \Doctrine\Common\ClassLoader('Doctrine', APPLICATION_PATH .
+		                                                                   DIRECTORY_SEPARATOR . '..' .
+		                                                                   DIRECTORY_SEPARATOR . 'library');
+		// Registers doctrine autoloader on the SPL autoload stack
+		$doctrineAutoloader->register();
+
+		$cache = new Doctrine\Common\Cache\ArrayCache;
+
+		# configure doctrine
+		$doctrineConfig = new Doctrine\ORM\Configuration;
+		$doctrineConfig->setMetadataCacheImpl($cache);
+
+		$this->bootstrap('FrontController');
+		$frontController = $this->getResource('FrontController');
+
+		// Add a new default annotation driver with a correctly configured annotation reader.
+		$modules = $frontController->getControllerDirectory();
+		$modelsPaths = array();
+		foreach (array_keys($modules) as $module) {
+			$modelsPaths[] = APPLICATION_PATH . '/Modules' . '/' . $module . '/' . 'models';
+		}
+		$driverImpl = $doctrineConfig->newDefaultAnnotationDriver($modelsPaths);
+
+		// Sets the cache driver implementation used for metadata caching
+		$doctrineConfig->setMetadataDriverImpl($driverImpl);
+		// Sets the cache driver implementation used for the query cache (SQL cache)
+		$doctrineConfig->setQueryCacheImpl($cache);
+		// Sets the directory where Doctrine generates any necessary proxy class files
+		$doctrineConfig->setProxyDir(APPLICATION_PATH);
+
+		// Sets the namespace where proxy classes reside.
+		$doctrineConfig->setProxyNamespace('Proxies');
+
+		//Sets a boolean flag that indicates whether proxy classes should always be regenerated
+		// during each script execution.
+		$doctrineConfig->setAutoGenerateProxyClasses(true);
+
+		$mainConfig = $this->getResource('config');
+
+		$entitiesManager = Doctrine\ORM\EntityManager::create(
+			$mainConfig->doctrine->connection->toArray(), $doctrineConfig);
+
+		// Registers doctrine entities manager in registry for further usage
+		Zend_Registry::set('DoctrineEntitiesManager', $entitiesManager);
+
+		return $entitiesManager;
 	}
 
 	/**
@@ -67,22 +142,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 * @return void
 	 */
- 	protected function _initDebug()
-    {
-	    if(!defined('DEBUG')) {
-	        if($this->getEnvironment() === 'development') {
-		        define('DEBUG', true);
-	        } else {
-		        define('DEBUG', false);
-	        }
-	    }
+	protected function _initDebug()
+	{
+		if (!defined('DEBUG')) {
+			if ($this->getEnvironment() === 'development') {
+				define('DEBUG', true);
+			} else {
+				define('DEBUG', false);
+			}
+		}
 
-    	$logger = new Zend_Log();
+		$logger = new Zend_Log();
 		$writer = new Zend_Log_Writer_Firebug();
 		$logger->addWriter($writer);
 
 		Zend_Registry::set('logger', $logger);
-    }
+	}
 
 	/**
 	 * Initializses ZFDebug if DEBUG mode is ON
@@ -95,26 +170,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		if (!DEBUG) return false;
 
-        // Ensure the front controller is initialized
-        $this->bootstrap('FrontController');
+		// Ensure the front controller is initialized
+		$this->bootstrap('FrontController');
 
 		// Ensure database is initialized for auto discovery
-		if($this->hasPluginResource('db')) {
+		if ($this->hasPluginResource('db')) {
 			$this->bootstrap('db');
 		}
 
-        // Retrieve the front controller from the bootstrap registry
-        $front = $this->getResource('FrontController');
+		// Retrieve the front controller from the bootstrap registry
+		$front = $this->getResource('FrontController');
 
-        if ($this->hasOption('zfdebug'))
-        {
-            // Create ZFDebug instance
-            $zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
+		if ($this->hasOption('zfdebug')) {
+			// Create ZFDebug instance
+			$zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
 
-            // Register ZFDebug with the front controller
-            $front->registerPlugin($zfdebug);
-        }
-    }
+			// Register ZFDebug with the front controller
+			$front->registerPlugin($zfdebug);
+		}
+	}
 
 	/**
 	 * Initialize view

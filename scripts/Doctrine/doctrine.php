@@ -25,28 +25,27 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/**
- * Check PHP version (5.3.0 or newer )
- */
-if (version_compare(phpversion(), '5.3.0', '<') === true) {
-	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.0 or newer.\n");
+$configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
+
+if (file_exists($configFile)) {
+    if ( ! is_readable($configFile)) {
+        trigger_error('Configuration file [' . $configFile . '] does not have read permission.', E_USER_ERROR);
+    }
+
+    require $configFile;
+} else {
+	trigger_error(
+		'Configuration file [' . $configFile . '] was not found.', E_USER_ERROR
+	);
 }
 
-define('SERVER_NAME', $_SERVER['SERVER_NAME']);
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
-defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
+$helperSet = null;
+foreach ($GLOBALS as $helperSetCandidate) {
+	if ($helperSetCandidate instanceof \Symfony\Component\Console\Helper\HelperSet) {
+		$helperSet = $helperSetCandidate;
+		break;
+	}
+}
 
-// Define application environment
-defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(ROOT_PATH . '/library', get_include_path())));
-
-/** Zend_Application */
-require_once 'Zend/Application.php';
-
-// Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$application->bootstrap()->run();
+// Run console
+\Doctrine\ORM\Tools\Console\ConsoleRunner::run($helperSet);
