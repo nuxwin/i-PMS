@@ -63,8 +63,8 @@ class User_AccountController extends Zend_Controller_Action
             $form = new User_Form_Login();
 
             if ($this->_request->isPost() && $form->isValid($this->_request->getPost('loginForm', array()))) {
-                $this->_identity = $form->getValue('username');
-                $this->_credential = $form->getValue('password');
+               // $this->_identity = $form->getValue('username');
+                //$this->_credential = $form->getValue('password');
 
                 if ($this->_authenticateUser()) {
                     $this->_redirect($form->getValue('redirect'));
@@ -184,6 +184,7 @@ class User_AccountController extends Zend_Controller_Action
             $this->_invalidCredentials($result);
             return false;
         } else {
+	        $result->getIdentity()->id;
             $this->_successfulAuthentication($authDbAdapter);
             return true;
         }

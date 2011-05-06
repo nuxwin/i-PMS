@@ -102,7 +102,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$modules = $frontController->getControllerDirectory();
 		$modelsPaths = array();
 		foreach (array_keys($modules) as $module) {
-			$modelsPaths[] = APPLICATION_PATH . '/Modules' . '/' . $module . '/' . 'models';
+			$modelsPaths[] = APPLICATION_PATH . '/modules' . '/' . $module . '/' . 'models';
 		}
 		$driverImpl = $doctrineConfig->newDefaultAnnotationDriver($modelsPaths);
 

@@ -38,8 +38,6 @@ class HomeController extends Zend_Controller_Action
      */
     public function init()
     {
-
-
         //$options =  new Zend_Config_Xml(APPLICATION_PATH . '/Widgets/Login/description.xml');
 
         //echo '<pre>';
@@ -90,26 +88,11 @@ class HomeController extends Zend_Controller_Action
     public function indexAction()
     {
 	    /**
-	     * @var $viewRenderer Zend_Controller_Action_Helper_ViewRenderer
-	     */
-	    /*
-		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
-
-	    echo $viewRenderer->getViewBasePathSpec() . '<br />';
-	    echo $viewRenderer->getViewScriptPathSpec() . '<br />';
-	    echo '<pre>';
-	    print_r($this->view->getScriptPaths());
-	    print_r($this->view->getPluginLoader('filter'));
-	    print_r($this->view->getPluginLoader('helper'));
-	    exit;
-	    */
-
-	    /**
 	     * @var $request Zend_Controller_Request_Http
 	     */
 	    $request = $this->getRequest();
 
-		$postsModel = new Blog_Model_DbTable_Posts();
+		$postsModel = new Blog_Model_DbTable_Post();
         $pageablePosts = $postsModel->getPageablePosts($request->getParam('page'), 5);
         $this->view->assign('paginator', $pageablePosts);
     }

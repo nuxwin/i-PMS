@@ -51,7 +51,7 @@ class Dashboard_Plugin_Layout extends Zend_Controller_Plugin_Abstract
 			 * @var $layout Zend_Layout
 			 */
 			$layout = $bootstrap->getResource('Layout');
-			$layout->setLayoutPath(APPLICATION_PATH . '/Modules/Dashboard/layouts');
+			$layout->setLayoutPath(APPLICATION_PATH . '/modules/dashboard/layouts');
 
 			/**
 			 * @var $view Zend_View

@@ -92,7 +92,7 @@ class Plugin_PermissionsCheck extends Zend_Controller_Plugin_Abstract
      */
     public function setDefaultRole($defaultRole)
     {
-        $this->_defaultRole = (string)$role;
+        $this->_defaultRole = (string) $defaultRole;
     }
 
 }
