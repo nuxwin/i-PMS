@@ -60,8 +60,8 @@ THEMES_DIRECTORY="../../themes"
 --keyword="setLabel" \
 --keyword="translate" \
 --keyword="plural:1,2" \
-${APPLICATION_DIRECTORY}/Modules/*/*/*.php \
-${APPLICATION_DIRECTORY}/Modules/*/models/DbTable/*.php \
+${APPLICATION_DIRECTORY}/modules/*/*/*.php \
+${APPLICATION_DIRECTORY}/modules/*/models/DbTable/*.php \
 ${THEMES_DIRECTORY}/*/templates/*/*.phtml \
 ${THEMES_DIRECTORY}/*/templates/modules/*/scripts/*/*.phtml \
 --from-code=utf-8 \
