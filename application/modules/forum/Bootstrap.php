@@ -25,7 +25,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-
 /**
  * Bootstrap class for Dashboard module
  *
@@ -34,4 +33,17 @@
  */
 class Forum_Bootstrap extends Zend_Application_Module_Bootstrap
 {
+	/**
+	 * Init routes
+	 *
+	 * @return void
+	 */
+	public function _initRoutes()
+	{
+		/**
+		 * @var $router Zend_Controller_Router_Rewrite
+		 */
+		$router = $this->getApplication()->getResource('Router');
+		$router->addConfig(new Zend_Config_Ini(__DIR__ . '/configs/routes.ini'));
+	}
 }

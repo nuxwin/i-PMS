@@ -262,9 +262,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('frontController');
 		$front = $this->getResource('FrontController');
 
-		$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
+		//$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
 		$router = $front->getRouter();
-		$router->addConfig($configRoutes, 'routes');
+		//$router->addConfig($configRoutes, 'routes');
 		$router->removeDefaultRoutes();
 
 		return $router;

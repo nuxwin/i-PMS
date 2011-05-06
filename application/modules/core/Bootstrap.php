@@ -26,12 +26,12 @@
  */
 
 /**
- * Blog module bootstrap class
+ * Core module bootstrap class
  *
- * @author Laurent Declecq <l.declercq@nuxwin.com>
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
-class Blog_Bootstrap extends Zend_Application_Module_Bootstrap
+class Core_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 	/**
 	 * Init routes

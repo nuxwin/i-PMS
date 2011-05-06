@@ -26,26 +26,40 @@
  */
 
 /**
- * Bootstrap class for Dashboard module
+ * Dashboard module bootstrap class
  *
  * @author  Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
  */
 class Dashboard_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-    /**
-     * Initialize plugins
-     *
-     * @return void
-     */
-    protected function _initPlugins()
-    {
-        $this->bootstrap('FrontController');
+	/**
+	 * Init routes
+	 *
+	 * @return void
+	 */
+	public function _initRoutes()
+	{
+		/**
+		 * @var $router Zend_Controller_Router_Rewrite
+		 */
+		$router = $this->getApplication()->getResource('Router');
+		$router->addConfig(new Zend_Config_Ini(__DIR__ . '/configs/routes.ini'));
+	}
 
-        /**
-         * @var $front Zend_Controller_Front
-         */
-        $front = $this->getResource('FrontController');
-	    $front->registerPlugin(new Dashboard_Plugin_Layout());
-    }
+	/**
+	 * Initialize plugins
+	 *
+	 * @return void
+	 */
+	protected function _initPlugins()
+	{
+		$this->bootstrap('FrontController');
+
+		/**
+		 * @var $front Zend_Controller_Front
+		 */
+		$front = $this->getResource('FrontController');
+		$front->registerPlugin(new Dashboard_Plugin_Layout());
+	}
 }

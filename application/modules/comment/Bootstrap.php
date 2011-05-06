@@ -26,6 +26,24 @@
  */
 
 /**
- * Bootstrap for Comment module
+ * Comment module bootstrap class
+ *
+ * @author Laurent Declecq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
-class Comment_Bootstrap extends Zend_Application_Module_Bootstrap {}
+class Comment_Bootstrap extends Zend_Application_Module_Bootstrap
+{
+	/**
+	 * Init routes
+	 *
+	 * @return void
+	 */
+	public function _initRoutes()
+	{
+		/**
+		 * @var $router Zend_Controller_Router_Rewrite
+		 */
+		$router = $this->getApplication()->getResource('Router');
+		$router->addConfig(new Zend_Config_Ini(__DIR__ . '/configs/routes.ini'));
+	}
+}
