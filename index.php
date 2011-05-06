@@ -32,7 +32,7 @@ if (version_compare(phpversion(), '5.3.0', '<') === true) {
 	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.0 or newer.\n");
 }
 
-define('SERVER_NAME', $_SERVER['SERVER_NAME']);
+defined('SERVER_NAME') || define('SERVER_NAME', $_SERVER['SERVER_NAME']);
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
 defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
@@ -48,5 +48,5 @@ set_include_path(implode(PATH_SEPARATOR, array(ROOT_PATH . '/library', get_inclu
 require_once 'Zend/Application.php';
 
 // Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$application->bootstrap()->run();
+$app = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
+$app->bootstrap()->run();

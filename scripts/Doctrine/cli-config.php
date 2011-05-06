@@ -38,14 +38,12 @@ if (version_compare(phpversion(), '5.3.0', '<') === true) {
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../../application'));
+defined('APPLICATION_PATH') || define(
+	'APPLICATION_PATH', realpath(dirname(__FILE__) . '/../../application'));
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . '/../..'));
 
 // Ensure library/ is on include_path
-set_include_path(
-	implode(
-		PATH_SEPARATOR,
-		array(ROOT_PATH . '/library', get_include_path())));
+set_include_path(implode( PATH_SEPARATOR, array(ROOT_PATH . '/library', get_include_path())));
 
 require_once 'Zend/Application.php';
 

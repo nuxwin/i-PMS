@@ -76,49 +76,60 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initDoctrine()
 	{
 		// doctrine loader
-		require_once (APPLICATION_PATH .
-		              DIRECTORY_SEPARATOR . '..' .
-		              DIRECTORY_SEPARATOR . 'library' .
-		              DIRECTORY_SEPARATOR . 'Doctrine' .
-		              DIRECTORY_SEPARATOR . 'Common' .
-		              DIRECTORY_SEPARATOR . 'ClassLoader.php');
+		require_once (ROOT_PATH . '/library/Doctrine/Common/ClassLoader.php');
 
-		$doctrineAutoloader = new \Doctrine\Common\ClassLoader('Doctrine', APPLICATION_PATH .
-		                                                                   DIRECTORY_SEPARATOR . '..' .
-		                                                                   DIRECTORY_SEPARATOR . 'library');
+		$doctrineAutoloader = new \Doctrine\Common\ClassLoader('Doctrine', ROOT_PATH . '/library');
+
 		// Registers doctrine autoloader on the SPL autoload stack
 		$doctrineAutoloader->register();
 
-		$cache = new Doctrine\Common\Cache\ArrayCache;
-
 		# configure doctrine
 		$doctrineConfig = new Doctrine\ORM\Configuration;
+
+		// cache configuration - begin
+
+		// Todo change this in production environment
+		$cache = new Doctrine\Common\Cache\ArrayCache;
+		$cache->setNamespace('iPMS');
+
+		// Add Metadata cache to the doctrine configuration object
 		$doctrineConfig->setMetadataCacheImpl($cache);
+
+		// Add Query cache to the doctrine configuration object
+		$doctrineConfig->setQueryCacheImpl($cache);
+
+		// cache configuration - ending
 
 		$this->bootstrap('FrontController');
 		$frontController = $this->getResource('FrontController');
 
-		// Add a new default annotation driver with a correctly configured annotation reader.
+		// Fetch all modèls paths
 		$modules = $frontController->getControllerDirectory();
 		$modelsPaths = array();
 		foreach (array_keys($modules) as $module) {
-			$modelsPaths[] = APPLICATION_PATH . '/modules' . '/' . $module . '/' . 'models';
+			$modelsPaths[] = APPLICATION_PATH . '/modules/' . $module . '/models';
 		}
-		$driverImpl = $doctrineConfig->newDefaultAnnotationDriver($modelsPaths);
 
-		// Sets the cache driver implementation used for metadata caching
-		$doctrineConfig->setMetadataDriverImpl($driverImpl);
+		// Add annotation driver  implementation to the doctrine configuration object
+		$doctrineConfig->setMetadataDriverImpl($doctrineConfig->newDefaultAnnotationDriver($modelsPaths));
+
 		// Sets the cache driver implementation used for the query cache (SQL cache)
 		$doctrineConfig->setQueryCacheImpl($cache);
+
 		// Sets the directory where Doctrine generates any necessary proxy class files
-		$doctrineConfig->setProxyDir(APPLICATION_PATH);
+		$doctrineConfig->setProxyDir(ROOT_PATH . '/data/proxies');
 
 		// Sets the namespace where proxy classes reside.
-		$doctrineConfig->setProxyNamespace('Proxies');
+		// $doctrineConfig->setProxyNamespace('Proxies');
+		$doctrineConfig->setProxyNamespace('Proxy');
 
-		//Sets a boolean flag that indicates whether proxy classes should always be regenerated
+		// TODO allow to retrieve entities by using alias name in DQL and some other thing (eg. Blog_Model_Post become Post)
+		$doctrineConfig->setEntityNamespaces(array('Blog_Model_Post' => 'Post'));
+
+		// Sets a boolean flag that indicates whether proxy classes should always be regenerated
 		// during each script execution.
-		$doctrineConfig->setAutoGenerateProxyClasses(true);
+		// Todo ensure that is defaulted TRUE
+		//$doctrineConfig->setAutoGenerateProxyClasses(true);
 
 		$mainConfig = $this->getResource('config');
 
