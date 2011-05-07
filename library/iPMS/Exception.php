@@ -37,7 +37,5 @@ require_once 'Zend/Exception.php';
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iPMS_Exception extends Zend_Exception
-{
+class iPMS_Exception extends Zend_Exception {}
 
-}
