@@ -44,8 +44,8 @@
 </div>
 
 <?php
-	echo $this->action('index', 'comments', 'Comment', array('pid' => $this->post['pid']));
+	echo $this->action('index', 'comments', 'comment', array('pid' => $this->post['pid']));
 	if($this->post['allow_comments']) {
-		echo $this->action('add', 'comments', 'Comment');
+		echo $this->action('add', 'comments', 'comment');
 	}
 ?>
