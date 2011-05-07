@@ -1,25 +1,20 @@
 <?php foreach ($this->paginator as $post): ?>
-<div class="post">
-    <h1>
+<div id="post-<?php echo $post['pid'];?>" class="post post-<?php echo $post['pid'];?>">
+    <h1 class="entryTitle">
         <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="Read more...">
-            <span><?php echo $this->escape($post['title']); ?></span>
-        </a>
+            <span><?php echo $this->escape($post['title']); ?></span></a>
     </h1>
 
-    <div class="subTitle">
+    <div class="entryMeta">
     	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit'); ?>"
-               class="editSmallIcon smallIcon"
-               title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit'); ?>" class="editSmallIcon smallIcon" title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
     	    <span> - </span>
-    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_delete'); ?>"
-               class="deleteSmallIcon smallIcon"
-               title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_delete'); ?>" class="deleteSmallIcon smallIcon" title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
     	</span>
     	<span>
 	    <?php
-        echo $this->translate('Posted on') . ' ' . date('F d, Y', $post['created_on']) . ' ' . $this->translate('by');
-            ?>
+            echo $this->translate('Posted on') . ' ' . date('F d, Y', $post['created_on']) . ' ' . $this->translate('by');
+		?>
             <a href="#" title="<?php echo $this->translate('View user profile'); ?>">
 		<span>
 			<?php
@@ -35,15 +30,15 @@
             </a>
 	</span>
     </div>
-    <div class="postBody">
-        <div class="teaser" style="margin-top:16px;"><?php echo $post['teaser']; ?></div>
-        <?php echo $post['body']; ?>
+    <div class="entryDescription">
+	    <?php echo $post['teaser']; ?>
     </div>
+	<div class="entryContent">
+		<?php echo $post['body']; ?>
+	</div>
     <p class="moreLink">
-        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>"
-           title="<?php echo $this->translate('Read more...'); ?>">
-            <span><?php echo $this->translate('Read more...'); ?></span>
-        </a>
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="<?php echo $this->translate('Read more...'); ?>">
+            <span><?php echo $this->translate('Read more...'); ?></span></a>
     </p>
 </div>
 <?php endforeach; ?>

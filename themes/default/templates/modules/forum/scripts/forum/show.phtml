@@ -1,8 +1,7 @@
-<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
-	<a href="<?php echo $this->url(array(), 'forum_index');?>"
-	   title="<?php echo $this->translate('Forums index');?>"><?php echo $this->translate('Forums');?></a>
-	-
-	<span style="color:#000000;"><?php echo $this->escape($this->forum['name']);?></span>
+<h1>
+	<a href="<?php echo $this->url(array(), 'forum_index');?>" title="<?php echo $this->translate('Forums index');?>"><?php echo $this->translate('Forums');?></a>
+	<span>-</span>
+	<span><?php echo $this->escape($this->forum['name']);?></span>
 </h1>
 
 <form name="bulkActionForm" action="#" method="post" enctype="application/x-www-form-urlencoded">
@@ -10,7 +9,7 @@
 	<thead>
 	<tr>
 		<td colspan="6">
-			<div style="float: right;">
+			<div>
 				<span class="smalltext">
 					<strong>
 						<a href="#"><?php echo $this->translate('Mark this forum read');?></a>
@@ -27,7 +26,7 @@
 	</thead>
 	<tbody>
 	<tr class="firstRow">
-		<td colspan="2" style="width:60%;text-align:left;"><?php echo $this->translate('Thread / Author');?></td>
+		<td colspan="2" style="width:60%;"><?php echo $this->translate('Thread / Author');?></td>
 		<td style="width:7%;"><?php echo $this->translate('Replies');?></td>
 		<td style="width:7%;"><?php echo $this->translate('Views');?></td>
 		<td style="width:25%;"><?php echo $this->translate('Last Post');?></td>
@@ -42,19 +41,17 @@
 			<img src="/themes/default/images/imscp32x32.png" style="vertical-align:middle;" alt="status" />
 		</td>
 		<td>
-			<a href="<?php echo $this->url(array('tid' => $thread['tid']), 'forum_thread_show');?>"
-				title="<?php echo $this->translate('Show thread');?>"><strong><?php echo $this->escape($thread['subject']);?></strong></a>
+			<a href="<?php echo $this->url(array('tid' => $thread['tid']), 'forum_thread_show');?>" title="<?php echo $this->translate('Show thread');?>"><strong><?php echo $this->escape($thread['subject']);?></strong></a>
 			<br />
 			<?php echo $thread['username'];?>
 		</td>
 		<td style="text-align:center;"><?php echo $thread['count_replies'];?></td>
 		<td style="text-align:center;"><?php echo $thread['count_views'];?></td>
 		<td style="text-align:right;">
-			<div style="font-size:0.8em;">
+			<div>
 				<?php echo date('d-m-Y g:i A', $thread['lastpost_date']);?>
 				<div class="meta">
-					<a href="<?php echo $this->url(array('tid' => $this->forum['lastthread_id'], 'action' => 'lastpost'), 'forum_thread_show');?>"
-				   title="<?php echo $this->translate('Jump to last post in thread');?>"><?php echo $this->translate('Last Post');?>:</a>
+					<a href="<?php echo $this->url(array('tid' => $this->forum['lastthread_id'], 'action' => 'lastpost'), 'forum_thread_show');?>" title="<?php echo $this->translate('Jump to last post in thread');?>"><?php echo $this->translate('Last Post');?>:</a>
 					<?php echo $thread['lastposter_username'];?>
 				</div>
 			</div>
@@ -85,15 +82,12 @@
 
 </table>
 
-<p style="text-align:right">
-	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forum_thread_add');?>"
-	   title="New thread"><strong><?php echo $this->translate('New thread');?></strong></a>
+<p>
+	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forum_thread_add');?>" title="New thread"><strong><?php echo $this->translate('New thread');?></strong></a>
 </p>
 
-<div style="text-align:right;margin-top:20px;">
-	<label for="bulkActions" style="margin-right:10px;">
-		<?php echo $this->translate('Bulks Actions');?>:
-	</label>
+<div>
+	<label for="bulkActions"><?php echo $this->translate('Bulks Actions');?>:</label>
 	<select name="bulkActionsForm[action]" id="bulkActions" >
 		<optgroup label="Moderation tools" style="padding:5px">
 			<option value="close"><?php echo $this->translate('Close Threads');?></option>

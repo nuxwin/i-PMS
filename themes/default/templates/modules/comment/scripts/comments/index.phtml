@@ -1,65 +1,41 @@
-<br />
 <?php if (count($this->comments)):?>
 <div id="comments">
-    <div id="commentsHeading">
-        <h2><?php echo $this->translate('Comments');?></h2>
-    </div>
-    <?php foreach($this->comments as $comment):?>
-    <div class="comment">
-        <div class="commentAvatar">
-            <?php if ($comment['avatar']):?>
-            <img src="themes/default/images/avatars/<?php echo $comment['avatar'];?>"
-                 alt="<?php echo $this->translate('Author avatar');?>"/>
-            <?php else:?>
-            <img src="/themes/default/images/avatars/anonymous.png"
-                 alt="<?php echo $this->translate('Author avatar');?>"/>
-            <?php endif;?>
-        </div>
-        <div id="comment-<?php echo $comment['cid'];?>" class="commentAuthor">
-		    <span>
-		    <?php if($comment['uid']):
-				printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
-            ?>
-                <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['uid'];?>"
-                   title="<?php echo $this->translate('Author profile');?>">
-                    <span><?php echo $this->escape($comment['name']);?></span>
-                </a>
-            <?php elseif($comment['website']):
-				printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
-            ?>
-                <a href="<?php echo $this->escape($comment['website']);?>"
-                   title="<?php echo $this->translate('Author Website');?>" target="_blank">
-                    <span><?php echo $this->escape($comment['name']);?></span>
-                </a>
-            <?php else:
-				printf($this->translate('Posted on %s by %s'), date('F d, Y', $comment['created_on']), $this->escape($comment['name']));
-
-             ?>
-            <?php endif;?>
-            </span>
-            <div class="fastLinks">
-                <a class="editSmallIcon smallIcon"
-                   href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_edit');?>"
-                   title="<?php echo $this->translate('Edit comment');?>">
-                    <span style="font-size:0.7em;"><?php echo $this->translate('Edit');?></span>
-                </a>
-                <span> - </span>
-                <a class="deleteSmallIcon smallIcon"
-                   href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_delete');?>"
-                   title="<?php echo $this->translate('Delete comment');?>">
-                    <span style="font-size:0.7em;"><?php echo $this->translate('Delete');?></span>
-                </a>
-            </div>
-        </div>
-        <div class="commentBody">
-            <?php echo $this->escape($comment['body']);?>
-            <div class="clearer"></div>
-        </div>
-    </div>
-    <?php endforeach;?>
-</div>
-<?php elseif ($this->post['allow_comments']):?>
-<div class="note">
-    <span><?php echo $this->translate('No comments found');?></span>
+	<?php foreach($this->comments as $comment):?>
+	<h3 class="commentTitle"></h3>
+	<ol class="commentList">
+		<li id="comment-<?php echo $comment['cid'];?>" class="comment">
+			<div id="comment-<?php echo $comment['cid'];?>">
+				<div class="comment-author vcard">
+					<img alt="" src="http://0.gravatar.com/avatar/3361ffe35af2b9095ccdb5b4e56d61f3?s=40"  class='avatar avatar-40 photo avatar-default' height='40' width='40' />
+				</div>
+				<div class="comment-meta commentmetadata">
+		            <?php if($comment['uid']):
+						printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
+					?>
+                    <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['uid'];?>" title="<?php echo $this->translate('Author profile');?>">
+                        <span><?php echo $this->escape($comment['name']);?></span></a>
+                    <?php elseif($comment['website']):
+						printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
+					?>
+                    <a href="<?php echo $this->escape($comment['website']);?>" title="<?php echo $this->translate('Author Website');?>" target="_blank">
+                        <span><?php echo $this->escape($comment['name']);?></span></a>
+                    <?php else:
+						printf($this->translate('Posted on %s by %s'), date('F d, Y', $comment['created_on']), $this->escape($comment['name']));?>
+                    <?php endif;?>
+                    <div class="fastLinks">
+                        <a class="editSmallIcon smallIcon" href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_edit');?>" title="<?php echo $this->translate('Edit comment');?>">
+                        <span style="font-size:0.7em;"><?php echo $this->translate('Edit');?></span></a>
+                        <span> - </span>
+                        <a class="deleteSmallIcon smallIcon" href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_delete');?>" title="<?php echo $this->translate('Delete comment');?>">
+                        <span style="font-size:0.7em;"><?php echo $this->translate('Delete');?></span></a>
+                    </div>
+				</div>
+				<div class="commentBody">
+					<?php echo $this->escape($comment['body']);?>
+				</div>
+			</div>
+		</li>
+	</ol>
+	<?php endforeach;?>
 </div>
 <?php endif;?>

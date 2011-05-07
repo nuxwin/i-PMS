@@ -1,6 +1,4 @@
-<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
-	<?php echo $this->translate('Post a new reply');?>
-</h1>
+<h1><?php echo $this->translate('Post a new reply');?></h1>
 
 <?php if ($this->form->isErrors()):
 	$errorMessage = '';
@@ -35,8 +33,7 @@
             ?>
 <?php endif; ?>
 
-<form name="<?php echo $this->form->getName();?>" action="<?php echo $this->form->getAction();?>"
-      method="<?php echo $this->form->getMethod();?>" enctype="<?php echo $this->form->getEnctype();?>">
+<form name="<?php echo $this->form->getName();?>" action="<?php echo $this->form->getAction();?>" method="<?php echo $this->form->getMethod();?>" enctype="<?php echo $this->form->getEnctype();?>">
 <table>
 	<thead>
 		<tr class="2">
@@ -47,7 +44,7 @@
 	</thead>
 	<tbody>
 		<tr class="firstRow">
-			<td colspan="2" style="text-align:left;">
+			<td colspan="2">
 				<?php echo $this->translate(sprintf('Reply to thread: %s', $this->escape($this->thread['subject'])));?>
 			</td>
 		</tr>
@@ -60,15 +57,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="vertical-align:top">
-				<span style="color:#000;font-weight:bold"><?php echo $this->translate('Your message');?>:</span>
+			<td>
+				<span><?php echo $this->translate('Your message');?>:</span>
 			</td>
 			<td >
 				<?php echo $this->form->message;?>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" style="text-align:center;border:transparent;">
+			<td colspan="2">
 				<?php echo $this->form->token;?>
 				<?php echo $this->form->replySubmit;?>
 				<?php echo $this->form->reset;?>

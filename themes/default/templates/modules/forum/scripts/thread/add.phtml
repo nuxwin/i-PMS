@@ -1,13 +1,8 @@
-<h1 style="text-transform:none;font-size:1.5em;margin-top:20px;">
-	<a href="<?php echo $this->url(array(), 'forum_index');?>"
-	   title="<?php echo $this->translate('Forums list');?>"><?php echo $this->translate('Forums');?></a>
-	-
-	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forum_show');?>"
-	   title="<?php echo $this->escape($this->forum['name']);?>"><?php echo $this->escape($this->forum['name']);?></a>
-	-
-	<span style="color:#000000;"><?php echo $this->translate('New Thread');?></span>
-
+<h1>
+	<a href="<?php echo $this->url(array(), 'forum_index');?>" title="<?php echo $this->translate('Forums list');?>"><?php echo $this->translate('Forums');?></a>
+	<span>-</span>
+	<a href="<?php echo $this->url(array('fid' => $this->forum['fid']), 'forum_show');?>" title="<?php echo $this->escape($this->forum['name']);?>"><?php echo $this->escape($this->forum['name']);?></a>
+	<span>-</span>
+	<span><?php echo $this->translate('New Thread');?></span>
 </h1>
-<div>
-	<?php echo $this->form;?>
-</div>
+<?php echo $this->form;?>
