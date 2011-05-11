@@ -1,6 +1,31 @@
 <?php
-
-
+/**
+ * i-PMS - internet Project Management System
+ * Copyright (C) 2011 by Laurent Declercq
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @package     iPMS
+ * @subpackage  Comment
+ * @category    Model
+ * @copyright   2011 by Laurent Declercq
+ * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @version     0.0.1
+ * @link        http://www.i-pms.net i-PMS Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
 
 /**
  * Comments
@@ -69,4 +94,154 @@ class Comment_Model_Comment
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $user;
+
+    /**
+     * Get id
+     *
+     * @return integer $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set content
+     *
+     * @param text $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * Get content
+     *
+     * @return text $content
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string $email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set website
+     *
+     * @param string $website
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+    }
+
+    /**
+     * Get website
+     *
+     * @return string $website
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set createdOn
+     *
+     * @param integer $createdOn
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+    }
+
+    /**
+     * Get createdOn
+     *
+     * @return integer $createdOn
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * Set post
+     *
+     * @param Blog_Model_Post $post
+     */
+    public function setPost(\Blog_Model_Post $post)
+    {
+        $this->post = $post;
+    }
+
+    /**
+     * Get post
+     *
+     * @return Blog_Model_Post $post
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User_Model_User $user
+     */
+    public function setUser(\User_Model_User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User_Model_User $user
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
