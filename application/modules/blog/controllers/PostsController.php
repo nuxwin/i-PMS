@@ -44,6 +44,7 @@ class Blog_PostsController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->urlHelper = $this->_helper->getHelper('Url');
+		$this->view->addHelperPath(APPLICATION_PATH . '/modules/blog/views/helpers', 'Blog_View_Helper_');
 	}
 
     /**
@@ -90,7 +91,9 @@ class Blog_PostsController extends Zend_Controller_Action
             throw new Zend_Controller_Action_Exception('Post not found!', 404);
         }
 
-        $this->view->assign('post', $post->toArray());
+
+	    $this->view->posts(array($post->toArray()));
+        //$this->view->assign('post', $post->toArray());
     }
 
     /**

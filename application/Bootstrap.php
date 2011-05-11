@@ -17,7 +17,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
+ * @package     iPMS
+ * @category    Bootstrap
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
@@ -28,8 +29,10 @@
 /**
  * Main bootsrap class
  *
- * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @package     iPMS
+ * @category    Bootstrap
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
@@ -40,10 +43,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initConfig()
 	{
-		$config = new Zend_Config($this->getOptions());
-		Zend_Registry::set('config', $config);
+		$cfg = new Zend_Config($this->getOptions());
+		Zend_Registry::set('config', $cfg);
 
-		return $config;
+		return $cfg;
 	}
 
 	/**
@@ -51,7 +54,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 * @return null|Zend_Db_Adapter_Abstract
 	 */
-	public function _initDatabase()
+	protected function _initDatabase()
 	{
 		if ($this->hasPluginResource('db')) {
 			$this->bootstrap('db');
@@ -78,13 +81,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// doctrine loader
 		require_once (ROOT_PATH . '/library/Doctrine/Common/ClassLoader.php');
 
-		$doctrineAutoloader = new \Doctrine\Common\ClassLoader('Doctrine', ROOT_PATH . '/library');
+		$autoloader = new \Doctrine\Common\ClassLoader('Doctrine', ROOT_PATH . '/library');
 
 		// Registers doctrine autoloader on the SPL autoload stack
-		$doctrineAutoloader->register();
+		$autoloader->register();
 
-		# configure doctrine
-		$doctrineConfig = new Doctrine\ORM\Configuration;
+		$dCfg = new Doctrine\ORM\Configuration;
 
 		// cache configuration - begin
 
@@ -93,53 +95,54 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$cache->setNamespace('iPMS');
 
 		// Add Metadata cache to the doctrine configuration object
-		$doctrineConfig->setMetadataCacheImpl($cache);
+		$dCfg->setMetadataCacheImpl($cache);
 
 		// Add Query cache to the doctrine configuration object
-		$doctrineConfig->setQueryCacheImpl($cache);
+		$dCfg->setQueryCacheImpl($cache);
 
 		// cache configuration - ending
 
 		$this->bootstrap('FrontController');
-		$frontController = $this->getResource('FrontController');
+		$fc = $this->getResource('FrontController');
 
-		// Fetch all modèls paths
-		$modules = $frontController->getControllerDirectory();
-		$modelsPaths = array();
-		foreach (array_keys($modules) as $module) {
-			$modelsPaths[] = APPLICATION_PATH . '/modules/' . $module . '/models';
+		// Fetch all models paths
+		$mods = $fc->getControllerDirectory();
+		$mPaths = array();
+		foreach (array_keys($mods) as $mod) {
+			if(is_dir((APPLICATION_PATH . '/modules/' . $mod . '/models'))) {
+				$mPaths[] = APPLICATION_PATH . '/modules/' . $mod . '/models';
+			}
 		}
 
-		// Add annotation driver  implementation to the doctrine configuration object
-		$doctrineConfig->setMetadataDriverImpl($doctrineConfig->newDefaultAnnotationDriver($modelsPaths));
+		// Add annotation driver implementation to the doctrine configuration object
+		$dCfg->setMetadataDriverImpl($dCfg->newDefaultAnnotationDriver($mPaths));
 
 		// Sets the cache driver implementation used for the query cache (SQL cache)
-		$doctrineConfig->setQueryCacheImpl($cache);
+		$dCfg->setQueryCacheImpl($cache);
 
 		// Sets the directory where Doctrine generates any necessary proxy class files
-		$doctrineConfig->setProxyDir(ROOT_PATH . '/data/proxies');
+		$dCfg->setProxyDir(ROOT_PATH . '/data/proxies');
 
 		// Sets the namespace where proxy classes reside.
-		// $doctrineConfig->setProxyNamespace('Proxies');
-		$doctrineConfig->setProxyNamespace('Proxy');
+		// $dCfg->setProxyNamespace('Proxies');
+		$dCfg->setProxyNamespace('Proxy');
 
-		// TODO allow to retrieve entities by using alias name in DQL and some other thing (eg. Blog_Model_Post become Post)
-		$doctrineConfig->setEntityNamespaces(array('Blog_Model_Post' => 'Post'));
+		// TODO allow to retrieve entities by using alias name (eg. Blog_Model_Post become Post)
+		//$dCfg->setEntityNamespaces(array('Blog_Model_Post' => 'Post'));
 
 		// Sets a boolean flag that indicates whether proxy classes should always be regenerated
 		// during each script execution.
 		// Todo ensure that is defaulted TRUE
-		//$doctrineConfig->setAutoGenerateProxyClasses(true);
+		//$dCfg->setAutoGenerateProxyClasses(true);
 
-		$mainConfig = $this->getResource('config');
+		$mCfg = $this->getResource('config');
 
-		$entitiesManager = Doctrine\ORM\EntityManager::create(
-			$mainConfig->doctrine->connection->toArray(), $doctrineConfig);
+		$dem = Doctrine\ORM\EntityManager::create($mCfg->doctrine->connection->toArray(), $dCfg);
 
 		// Registers doctrine entities manager in registry for further usage
-		Zend_Registry::set('DoctrineEntitiesManager', $entitiesManager);
+		Zend_Registry::set('d.e.m', $dem);
 
-		return $entitiesManager;
+		return $dem;
 	}
 
 	/**
@@ -163,11 +166,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			}
 		}
 
-		$logger = new Zend_Log();
-		$writer = new Zend_Log_Writer_Firebug();
-		$logger->addWriter($writer);
+		if($this->hasPluginResource('Log')) {
+			$this->bootstrap('Log');
+			$log = $this->getResource('Log');
+		} else {
+			$log = new Zend_Log();
+		}
 
-		Zend_Registry::set('logger', $logger);
+		$log->addWriter(new Zend_Log_Writer_Firebug());
+
+		Zend_Registry::set('logger', $log);
 	}
 
 	/**
@@ -181,7 +189,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		if (!DEBUG) return false;
 
-		// Ensure the front controller is initialized
 		$this->bootstrap('FrontController');
 
 		// Ensure database is initialized for auto discovery
@@ -190,14 +197,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		}
 
 		// Retrieve the front controller from the bootstrap registry
-		$front = $this->getResource('FrontController');
+		$fc = $this->getResource('FrontController');
 
 		if ($this->hasOption('zfdebug')) {
 			// Create ZFDebug instance
 			$zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
 
 			// Register ZFDebug with the front controller
-			$front->registerPlugin($zfdebug);
+			$fc->registerPlugin($zfdebug);
 		}
 	}
 
@@ -207,7 +214,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * @return Zend_View
 	 * @todo Move this in a plugin resource
 	 */
-	public function _initOverrideView()
+	protected function _initOverrideView()
 	{
 		$this->bootstrap('View');
 
@@ -257,16 +264,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * @return Zend_Controller_Router_Interface
 	 * @todo move it to plugin resource
 	 */
-	public function _initRouter()
+	protected function _initRouter()
 	{
 		$this->bootstrap('frontController');
-		$front = $this->getResource('FrontController');
+		$fc = $this->getResource('FrontController');
 
-		//$configRoutes = new Zend_Config_Ini(APPLICATION_PATH . '/configs/routes.ini', 'routes');
-		$router = $front->getRouter();
-		//$router->addConfig($configRoutes, 'routes');
-		$router->removeDefaultRoutes();
+		$rt = $fc->getRouter();
+		$rt->removeDefaultRoutes();
 
-		return $router;
+		return $rt;
 	}
 }

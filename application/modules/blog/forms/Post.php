@@ -81,7 +81,7 @@ class Blog_Form_Post extends Zend_Form
 
 		$element = new Zend_Form_Element_Text('title');
 		$element->setLabel('Title')
-			->setAttrib('class', 'input-title')
+			->setAttrib('class', 'inputTitle')
 			->setRequired(true)
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
@@ -90,19 +90,28 @@ class Blog_Form_Post extends Zend_Form
 
 		$element = new Zend_Form_Element_Textarea('teaser');
 		$element->setLabel('Teaser')
-			->setAttrib('class', 'input-teaser')
+			->setAttrib('class', 'inputSummary')
+			->setAttrib('rows', '5')
 			->setRequired(true)
 			->addFilter('StripTags', array(
 			                              'allowTags' => $this->_allowedXhtmlTags,
 			                              'allowAttribs' => $this->_allowedXhtmlAttributes))
-			->addFilter('StringTrim')
-			->addValidator('NotEmpty');
+			->addFilter('StringTrim');
 		$this->addElement($element);
 
 		$element = clone $element;
-		$element->setName('body')
+
+		$element = new Zend_Form_Element_Textarea('body');
+		$element
+			->setLabel('Content')
 			->setAttrib('class', 'input-body')
-			->setLabel('Content');
+			->setAttrib('rows', '25')
+			->setRequired(true)
+			->addFilter('StripTags', array(
+			                              'allowTags' => $this->_allowedXhtmlTags,
+			                              'allowAttribs' => $this->_allowedXhtmlAttributes))
+			->addFilter('StringTrim');
+
 		$this->addElement($element);
 
 		$element = new Zend_Form_Element_Checkbox('allow_comments');
@@ -139,7 +148,7 @@ class Blog_Form_Post extends Zend_Form
 			if ($element->isRequired()) {
 				$element->addDecorator('Label', array('tag' => 'dt',
 				                                     'escape' => false,
-				                                     'requiredSuffix' => ' <span>*</span>'));
+				                                     'requiredPrefix' => ' <span>*</span> '));
 			}
 		}
 	}

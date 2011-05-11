@@ -28,14 +28,14 @@
 /**
  * Check PHP version (5.3.0 or newer )
  */
-if (version_compare(phpversion(), '5.3.0', '<') === true) {
-	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.0 or newer.\n");
+if (version_compare(phpversion(), '5.3.3', '<') === true) {
+	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.3 or newer.\n");
 }
 
 defined('SERVER_NAME') || define('SERVER_NAME', $_SERVER['SERVER_NAME']);
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__)));
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
-defined('THEME_PATH') || define('THEME_PATH', realpath(dirname(__FILE__) . '/themes'));
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', ROOT_PATH . '/application');
+defined('THEME_PATH') || define('THEME_PATH', ROOT_PATH . '/themes');
 
 // Define application environment
 defined('APPLICATION_ENV')

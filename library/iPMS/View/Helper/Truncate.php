@@ -40,7 +40,7 @@ class iPMS_View_Helper_Truncate extends Zend_View_Helper_Abstract
 {
 
     /**
-     * Truncate string
+     * Helper entry point - Truncate string
      *
      * @param   string $str string to be truncated
      * @param   int $maxLength max string length

@@ -3,10 +3,12 @@
 <head>
 <base href="http://<?php echo $_SERVER['SERVER_NAME'] . $this->baseUrl();?>/" />
 <?php
-    echo $this->headTitle('Error'), PHP_EOL .
-        $this->headMeta(), PHP_EOL .
-        $this->headLink()->appendStylesheet('/themes/default/css/main.css'), PHP_EOL .
-		$this->headLink()->appendStylesheet('/themes/default/css/color.css'), PHP_EOL .
+    echo $this->headTitle(), PHP_EOL .
+        $this->headMeta(), PHP_EOL;
+        $this->headLink()->appendStylesheet('/themes/default/css/main.css')
+			->appendStylesheet('/themes/default/css/form.css')
+			->appendStylesheet('/themes/default/css/color.css');
+	echo $this->headLink() , PHP_EOL .
         $this->headScript(), PHP_EOL .
         $this->jQuery(), PHP_EOL;
 ?>
@@ -14,48 +16,42 @@
 <body>
 <div id="wrapperOuter">
     <div id="wrapperInner">
-
         <div id="header">
-	        <div id="siteTitle">
-		        <a href="<?php echo $this->url(array(), 'home');?>" title="i-PMS"><span>i-PMS</span></a>
-	        </div>
-
-            <div id="navigation">
+			<<?php echo $heading_tag = (false) ? 'h1' : 'div';?> id="siteTitle">
+				<span><a href="<?php echo $this->url(array(), 'home');?>" title="i-PMS" rel="home">i-PMS</a></span>
+			</<?php echo $heading_tag; ?>>
+           <div id="navigation">
                 <ul>
                     <li class="active"><a href="/"><span>Home</span></a></li>
-                    <!--<li><a href="#"><span>Bug Tracker</span></a></li>
+                    <li><a href="#"><span>Issues Tracker</span></a></li>
                     <li><a href="#"><span>Timeline</span></a></li>
                     <li><a href="#"><span>Forum</span></a></li>
                     <li><a href="#"><span>Download</span></a></li>
                     <li><a href="#"><span>3rd Packages</span></a></li>
                     <li><a href="#"><span>Documentation</span></a></li>
-                    <li><a href="#"><span>Contact</span></a></li>-->
+                    <!--<li><a href="#"><span>Contact</span></a></li>-->
                 </ul>
             </div>
+
+
 	        <div id="siteDescription">Another control panel for virtual hosting management...</div>
         </div>
 
 		<div id="location">
 			<div id="breadcrumbs">
 				<span><?php echo $this->translate('You are here');?>:</span>
-				<a href="<?php echo $this->url(array(), 'home');?>" title="<?php echo $this->translate('Home page');?>"><span><?php echo $this->translate('Home');?></span></a>
+				<a href="<?php echo $this->url(array(), 'home');?>" title="<?php echo $this->translate('Home page');?>"><?php echo $this->translate('Home');?></a>
 			</div>
 			<div id="loginContainer">
-			<?php if ($this->user()->isLogged()):?>
-				<a class="userSmallIcon smallIcon"  href="<?php echo $this->baseUrl().'/users/show/id/'.$this->user()->id;?>" title="<?php echo $this->translate('Show profile');?>">
-					<span><?php echo $this->escape($this->user()); ?></span>
-				</a>
-				<span>-</span>
-				<a class="logoutSmallIcon smallIcon" href="<?php echo $this->url(array(), 'logout');?>" title="<?php echo $this->translate('Logout'); ?>">
-					<span><?php echo $this->translate('Logout');?></span>
-				</a>
-			<?php else:?>
-				<a href="<?php echo $this->url(array(), 'login');?>?from=<?php echo $this->url();?>" title="<?php echo $this->translate('Login');?>"><span><?php echo $this->translate('Login');?></span></a>
-				<span>|</span>
-				<a href="#" title="<?php echo $this->translate('Lost Password');?>">
-					<span><?php echo $this->translate('Lost Password');?></span>
-				</a>
-			<?php endif;?>
+<?php if($this->user()->isLogged()):?>
+				<a class="userSmallIcon smallIcon"  href="<?php echo $this->baseUrl().'/users/show/id/'.$this->user()->id;?>" title="<?php echo $this->translate('Show profile');?>"><?php echo $this->escape($this->user()); ?></a>
+				<span class="metaSep">-</span>
+				<a class="logoutSmallIcon smallIcon" href="<?php echo $this->url(array(), 'logout');?>" title="<?php echo $this->translate('Logout');?>"><?php echo $this->translate('Logout');?></a>
+<?php else:?>
+				<a href="<?php echo $this->url(array(), 'login');?>?from=<?php echo $this->url();?>" title="<?php echo $this->translate('Login');?>"><?php echo $this->translate('Login');?></a>
+				<span class="metaSep">|</span>
+				<a href="#" title="<?php echo $this->translate('Lost Password');?>"><?php echo $this->translate('Lost Password');?></a>
+<?php endif;?>
 			</div>
 		</div>
         <div id="page">
@@ -63,6 +59,12 @@
                 <?php echo $this->layout()->content;?>
             </div>
             <div id="sidebar">
+	            <div class="widget" style="font-size:13px;line-height:1.5em;color:#666;font-weight:bold;height:114px;position:relative;padding:10px;margin-bottom:10px;background-color:rgb(160, 169, 192);border:1px solid;rgb(29, 42, 91);border-radius:4px;">
+		            <a href="https://github.com/nuxwin/i-PMS" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0; " src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+		            <div style="margin-top:60px;">
+						This project is hosted <br />on GitHub social coding network.
+			        </div>
+	            </div>
                 <?php //echo $this->Widgets('sidebar', array('Login', 'RecentComments'));?>
                 <?php //echo $this->Widgets()->sidebar('sidebar', array('Login'));?>
             </div>
@@ -70,8 +72,10 @@
         </div>
     </div>
 </div>
+
 <div id="footer">
-    <!--<img id="footerImageLeft" src="/themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework" />-->
+    <img src="/themes/default/images/powered_zend_framework.png" alt="Powered by Zend Framework" />
+	<!--
     <ul>
         <li class="first"><a href="#"><span>About</span></a></li>
         <li><a href="#"><span>Contact</span></a></li>
@@ -79,7 +83,10 @@
         <li><a href="#"><span>Terms</span></a></li>
         <li><a href="#"><span>Privacy</span></a></li>
     </ul>
+
+	<div id="siteInfo">Powered by i-PMS 0.0.1</div>
     <p>&copy; 2010 - 2011 i-MSCP Team. All Rights Reserved. - Site by Laurent Declercq</p>
+    -->
 </div>
 </body>
 </html>

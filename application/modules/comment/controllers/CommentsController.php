@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iPMS
- * @package     iPMS_Controllers
+ * @package     iPMS_Comment
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
@@ -30,8 +30,7 @@
  * Comments controller
  *
  * @category    iPMS
- * @package     iPMS_Controllers
- * @subpackage  comments
+ * @package     iPMS_Comment
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
@@ -55,6 +54,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->urlHelper = $this->_helper->getHelper('Url');
+		$this->view->addHelperPath(APPLICATION_PATH . '/modules/comment/views/helpers', 'Comment_View_Helper_');
 	}
 
 	/**
@@ -69,10 +69,19 @@ class Comment_CommentsController extends Zend_Controller_Action
 	     */
 	    $request = $this->getRequest();
 
-		$pid = intval($request->getParam('pid'));
+		$parent = $request->getParam('parent');
+
+		//echo '<pre>';
+		//print_r($parent);
+		//exit;
+
+		$pid = intval((string)$parent);
 		$commentsModel = new Comment_Model_DbTable_Comment();
 		$comments = $commentsModel->getComments($pid);
-		$this->view->assign('comments', $comments);
+		$this->view->comments($comments);
+
+		//$this->view->assign(array('comments' => $comments, 'parent' => $parent));
+		$this->view->assign('parent', $parent);
 	}
 
 	/**

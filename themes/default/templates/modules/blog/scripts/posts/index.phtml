@@ -1,41 +1,50 @@
-<h1><?php echo $this->translate('Posts');?></h1>
-
-<?php if (count($this->paginator)):
-    foreach ($this->paginator as $post):
+<h1 class="pageTitle"><?php echo $this->translate('Posts Archives');?></h1>
+<?php
+	if (count($this->paginator)):
+        foreach ($this->paginator as $post):
 ?>
 <div id="post-<?php echo $post['pid'];?>" class="post post-<?php echo $post['pid'];?>">
     <h2 class="entryTitle">
-        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show');?>"
-           title="<?php echo $this->translate('Read more...');?>"><?php echo $this->escape($post['title']);?></a>
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show');?>" title="<?php echo $this->translate('Read more...');?>"><?php echo $this->escape($post['title']);?></a>
     </h2>
-    <p class="entryMeta">
-        <?php printf($this->translate('Posted on %s, by '), date('F d, Y', $post['created_on']))?>
-        <a href="#" title="view profile"><?php echo $post['username'];?></a>
-    </p>
-    <div class="entryDescription">
+    <div class="entryMeta">
+        <?php printf($this->translate('Posted on %s, by '), date('F d, Y', $post['created_on']))?> <a href="#" title="view profile"><?php echo $this->escape($post['username']);?></a>
+    </div>
+	<div class="entrySummary">
 		<?php echo $post['teaser'];?>
-    </div>
-    <div class="entryUtility">
-		<span><?php echo $this->translate('Posted in');?></span>
-		<a href="<?php echo $this->baseUrl() . '/categories/view/' . $post['category'];?>" title="<?php echo $this->translate('View categorie');?>"><?php echo ucfirst($post['category']);?></a>
-		<span>|</span>
-		<a href="#" title="Comments"><?php printf('%s Comments', $post['comments_count']);?></a>
-		<span>|</span>
-		<a href="#" title="Edit post"><?php echo $this->translate('Edit');?></a>
-		<a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show');?>" title="<?php echo $this->translate('Read more...');?>"><?php echo $this->translate('Read more...');?></a>
-        <div class="clearer"></div>
-    </div>
+	</div>
+	<div class="entryUtility">
+		<span class="catLinks">
+			<span class="entry-utility-prep entry-utility-prep-cat-links">
+				<?php echo $this->translate('Posted in');?> <a href="<?php echo $this->baseUrl() . '/category/' . $post['category'];?>" title="<?php echo $this->translate('View categorie');?>"><?php echo ucfirst($post['category']);?></a>
+			</span>
+<?php if(count($post['comments_count'])):?>
+			<span class="metaSep">|</span>
+			<span class="commentsLink"><a href="#" title="Comments"><?php printf('%s Comments', $post['comments_count']);?></a></span>
+<?php endif;?>
+<?php if($this->user()->hasPermission('Edit', 'post', $post['pid'])):?>
+			<span class="metaSep">|</span>
+			<span class="editLink">
+				<a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit');?>" title="<?php echo $this->translate('Edit post');?>"><?php echo $this->translate('Edit');?></a>
+			</span>
+<?php endif;?>
+			<span class="metaSep">|</span>
+			<span class="showLink">
+				<a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show');?>" title="<?php echo $this->translate('Read more...');?>"><?php echo $this->translate('Read more...');?></a>
+			</span>
+		</span>
+	</div>
 </div>
-<br />
-<?php endforeach;
- if(count($this->paginator) > 1):
-?>
+<?php endforeach;?>
+<?php if(count($this->paginator) > 1):?>
 <div id="paginationOuter">
-    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginationControl.phtml');?>
+	<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginationControl.phtml');?>
 </div>
-<?php endif;
-else:?>
+<?php
+	endif;
+	else:
+?>
 <div class="note">
-	<?php echo $this->translate('Sorry but there are currently no posts');?>
+	<?php echo $this->translate('Sorry but there are currently no post archived');?>
 </div>
 <?php endif;?>

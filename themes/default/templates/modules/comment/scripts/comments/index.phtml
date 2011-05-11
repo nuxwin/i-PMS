@@ -1,37 +1,23 @@
-<?php if (count($this->comments)):?>
+<?php if($this->comments()->hasComments()):?>
 <div id="comments">
-	<?php foreach($this->comments as $comment):?>
-	<h3 class="commentTitle"></h3>
+	<h3 class="commentsTitle"><?php echo $this->translate('%d answers to:');?> <?php echo $this->parent->getTitle();?></h3>
+	<?php foreach($this->comments() as $comment):?>
 	<ol class="commentList">
-		<li id="comment-<?php echo $comment['cid'];?>" class="comment">
-			<div id="comment-<?php echo $comment['cid'];?>">
-				<div class="comment-author vcard">
-					<img alt="" src="http://0.gravatar.com/avatar/3361ffe35af2b9095ccdb5b4e56d61f3?s=40"  class='avatar avatar-40 photo avatar-default' height='40' width='40' />
+		<li class="comment <?php echo $this->cycle(array('even','odd'))->next();?>" id="liComment-<?php echo $comment;?>">
+			<div id="comment-<?php echo $comment;?>">
+				<div class="commentAuthor vcard">
+					<img alt="" src="<?php echo $comment->getAvatar();?>" class='avatar avatar-40 photo avatar-default' height='40' width='40' />
+					<cite class="fn">
+						<?php echo $comment->getAuthorLink();?>
+					</cite> <span class="says"><?php echo $this->translate('says');?>&nbsp;:</span>
 				</div>
-				<div class="comment-meta commentmetadata">
-		            <?php if($comment['uid']):
-						printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
-					?>
-                    <a href="<?php echo $this->baseUrl().'/users/view/id/'.$comment['uid'];?>" title="<?php echo $this->translate('Author profile');?>">
-                        <span><?php echo $this->escape($comment['name']);?></span></a>
-                    <?php elseif($comment['website']):
-						printf($this->translate('Posted on %s by '), date('F d, Y', $comment['created_on']));
-					?>
-                    <a href="<?php echo $this->escape($comment['website']);?>" title="<?php echo $this->translate('Author Website');?>" target="_blank">
-                        <span><?php echo $this->escape($comment['name']);?></span></a>
-                    <?php else:
-						printf($this->translate('Posted on %s by %s'), date('F d, Y', $comment['created_on']), $this->escape($comment['name']));?>
-                    <?php endif;?>
-                    <div class="fastLinks">
-                        <a class="editSmallIcon smallIcon" href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_edit');?>" title="<?php echo $this->translate('Edit comment');?>">
-                        <span style="font-size:0.7em;"><?php echo $this->translate('Edit');?></span></a>
-                        <span> - </span>
-                        <a class="deleteSmallIcon smallIcon" href="<?php echo $this->url(array('cid' => $comment['cid']), 'comment_delete');?>" title="<?php echo $this->translate('Delete comment');?>">
-                        <span style="font-size:0.7em;"><?php echo $this->translate('Delete');?></span></a>
-                    </div>
-				</div>
+				<?php if(!$comment->isApproved()):?>
+				<em class="commentAwaitingModeration"><?php echo $this->translate('your comment is awaiting moderation');?></em>
+				<br>
+				<?php endif;?>
+				<div class="commentMeta commentMetadata"><?php echo $comment->getDate();?></div>
 				<div class="commentBody">
-					<?php echo $this->escape($comment['body']);?>
+					<p><?php echo $this->escape($comment->getText());?></p>
 				</div>
 			</div>
 		</li>

@@ -1,45 +1,28 @@
-<?php $this->headTitle($this->translate('Post') . ': ' .$this->escape($this->post['title']));?>
+<?php $this->headTitle($this->posts()->getTitle());?>
 
-<div id="post-<?php echo $this->post['pid'];?>" class="post post-<?php echo $this->post['pid'];?>">
-    <h1 class="entryTitle"><?php echo $this->escape($this->post['title']);?></h1>
-    <div class="entryMeta">
-    	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('pid' => $this->post['pid']), 'post_edit');?>" class="editSmallIcon smallIcon" title="<?php echo $this->translate('Edit post');?>">
-                <span><?php echo $this->translate('Edit');?></span></a>
-		    <span> - </span>
-    	    <a href="<?php echo $this->url(array('pid' => $this->post['pid']), 'post_delete');?>" class="deleteSmallIcon smallIcon" title="<?php echo $this->translate('Delete post');?>">
-                <span><?php echo $this->translate('Delete');?></span></a>
-    	</span>
-    	<span>
-			<?php printf($this->translate('Posted on %s by '), date('F d, Y', $this->post['created_on']));?>
-            <a href="#" title="<?php echo $this->translate('View user profile');?>">
-                <span>
-                <?php
-                    if(null != $this->post['lastname'] && null != $this->post['firstname']) {
-						$this->escape(printf('%s %s', $this->post['lastname'], $this->post['firstname']));
-                    } elseif(null != $this->post['username']) {
-                        echo $this->escape($this->post['username']);
-                    } else {
-	                    echo $this->translate('Unregistered user');
-                    }
-                ?>
-		        </span>
-            </a>
-		</span>
-    </div>
-    <div>
-        <div class="entryDescription">
-            <?php echo $this->escape($this->post['teaser']);?>
-        </div>
-	    <div class="entryContent">
-            <?php echo $this->post['body'];?>
+		<div id="post-<?php echo $this->posts();?>" class="post-<?php echo $this->posts();?> post">
+			<h1 class="entryTitle"><?php echo $this->posts()->getTitle();?></h1>
+
+			<div class="entryMeta">
+				<?php echo $this->posts()->postedOn();?>
+			</div>
+
+			<div class="entrySummary">
+				<?php echo $this->posts()->getSummary();?>
+			</div>
+
+			<div class="entryContent">
+				<?php echo $this->posts()->getContent();?>
+			</div>
+
+			<div class="entryUtility">
+				<?php echo $this->translate(sprintf('This entry was published in %s with tag(s) %s', $this->posts()->getCategoryLink(), $this->posts()->getTagsLinks()));?>
+			</div>
 		</div>
-    </div>
-</div>
 
 <?php
-	echo $this->action('index', 'comments', 'comment', array('pid' => $this->post['pid']));
-	if($this->post['allow_comments']) {
+	echo $this->action('index', 'comments', 'comment', array('parent' => $this->posts()->getPost()));
+	if($this->posts()->commentsOpen()) {
 		echo $this->action('add', 'comments', 'comment');
 	}
 ?>

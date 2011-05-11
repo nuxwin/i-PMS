@@ -36,7 +36,6 @@
  */
 class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
 {
-
     /**
      * Identity
      *
@@ -58,7 +57,7 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
     }
 
     /**
-     * Return user helper
+     * Helper entry point
      *
      * @return iPMS_View_Helper_UserIdentity
      */
@@ -115,4 +114,14 @@ class iPMS_View_Helper_User extends Zend_View_Helper_Abstract
         return 'guest';
     }
 
+	/**
+	 * @param  $resource
+	 * @param  $privilege
+	 * @param null $id
+	 * @return void
+	 */
+	public function hasPermission($resource, $privilege)
+	{
+		return true;
+	}
 }

@@ -17,25 +17,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
+ * @package     iPMS
+ * @category    Tools
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-$configFile = getcwd() . DIRECTORY_SEPARATOR . 'cli-config.php';
+$configFile = getcwd() . '/' . 'cli-config.php';
 
-if (file_exists($configFile)) {
-    if ( ! is_readable($configFile)) {
-        trigger_error('Configuration file [' . $configFile . '] does not have read permission.', E_USER_ERROR);
-    }
-
+if (is_readable($configFile)) {
     require $configFile;
 } else {
-	trigger_error(
-		'Configuration file [' . $configFile . '] was not found.', E_USER_ERROR
-	);
+	trigger_error('Configuration file [' . $configFile . '] was not found or is not readable.', E_USER_ERROR);
 }
 
 $helperSet = null;

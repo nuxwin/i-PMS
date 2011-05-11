@@ -1,22 +1,18 @@
 <?php foreach ($this->paginator as $post): ?>
 <div id="post-<?php echo $post['pid'];?>" class="post post-<?php echo $post['pid'];?>">
-    <h1 class="entryTitle">
-        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="Read more...">
+    <h2 class="entryTitle">
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="<?php echo $this->translate('Read more...');?>">
             <span><?php echo $this->escape($post['title']); ?></span></a>
-    </h1>
-
+    </h2>
     <div class="entryMeta">
     	<span class="fastLinks">
-    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit'); ?>" class="editSmallIcon smallIcon" title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
-    	    <span> - </span>
-    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_delete'); ?>" class="deleteSmallIcon smallIcon" title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_edit');?>" class="editSmallIcon smallIcon" title="<?php echo $this->translate('Edit post'); ?>"><span><?php echo $this->translate('Edit'); ?></span></a>
+    	    <span class="metaSep">-</span>
+    	    <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_delete');?>" class="deleteSmallIcon smallIcon" title="<?php echo $this->translate('Delete post'); ?>"><span><?php echo $this->translate('Delete'); ?></span></a>
     	</span>
     	<span>
-	    <?php
-            echo $this->translate('Posted on') . ' ' . date('F d, Y', $post['created_on']) . ' ' . $this->translate('by');
-		?>
+	        <?php echo $this->translate('Posted on') . ' ' . date('F d, Y', $post['created_on']) . ' ' . $this->translate('by');?>
             <a href="#" title="<?php echo $this->translate('View user profile'); ?>">
-		<span>
 			<?php
 				if (null != $post['lastname'] && null != $post['firstname']) {
 					$this->escape(printf('%s %s', $post['lastname'], $post['firstname']));
@@ -26,25 +22,23 @@
 					echo $this->translate('Unregistered user');
 				}
 			?>
-		</span>
             </a>
 	</span>
     </div>
-    <div class="entryDescription">
-	    <?php echo $post['teaser']; ?>
+    <div class="entrySummary">
+	    <?php echo $post['teaser'];?>
     </div>
 	<div class="entryContent">
-		<?php echo $post['body']; ?>
+		<?php echo $post['body'];?>
 	</div>
     <p class="moreLink">
-        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show'); ?>" title="<?php echo $this->translate('Read more...'); ?>">
-            <span><?php echo $this->translate('Read more...'); ?></span></a>
+        <a href="<?php echo $this->url(array('pid' => $post['pid']), 'post_show');?>" title="<?php echo $this->translate('Read more...'); ?>">
+            <span><?php echo $this->translate('Read more...');?></span></a>
     </p>
 </div>
-<?php endforeach; ?>
-
-<?php if (count($this->paginator) > 1): ?>
+<?php endforeach;?>
+<?php if (count($this->paginator) > 1):?>
 <div id="paginationOuter">
-    <?php echo $this->paginationControl($this->paginator, 'Sliding', '/partials/paginationControl.phtml'); ?>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', '/partials/paginationControl.phtml');?>
 </div>
-<?php endif; ?>
+<?php endif;?>
