@@ -33,8 +33,8 @@
  * @package     iPMS
  * @subpackage  Taxonomy
  * @category    Bootstrap
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class Taxonomy_Bootstrap extends Zend_Application_Module_Bootstrap
 {

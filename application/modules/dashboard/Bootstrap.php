@@ -17,7 +17,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
+ * @package     iPMS
+ * @subpackage  Dashboard
+ * @category    Bootstrap
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
@@ -28,8 +30,11 @@
 /**
  * Dashboard module bootstrap class
  *
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @package     iPMS
+ * @subpackage  Dashboard
+ * @category    Bootstrap
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class Dashboard_Bootstrap extends Zend_Application_Module_Bootstrap
 {
