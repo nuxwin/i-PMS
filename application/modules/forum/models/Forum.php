@@ -28,7 +28,7 @@
  */
 
 /**
- * Forums
+ * Forum_Model_Forum
  *
  * @Table(name="forums")
  * @Entity
@@ -38,7 +38,7 @@ class Forum_Model_Forum
     /**
      * @var smallint $id
      *
-     * @Column(name="id", type="smallint", nullable=false)
+     * @Column(name="id", type="smallint", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -47,67 +47,72 @@ class Forum_Model_Forum
     /**
      * @var string $name
      *
-     * @Column(name="name", type="string", length=120, nullable=false)
+     * @Column(name="name", type="string", length=120, precision=0, scale=0, nullable=false, unique=false)
      */
     private $name;
 
     /**
      * @var string $description
      *
-     * @Column(name="description", type="string", length=255, nullable=true)
+     * @Column(name="description", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
      */
     private $description;
 
     /**
      * @var smallint $order
      *
-     * @Column(name="`order`", type="smallint", nullable=true)
+     * @Column(name="order", type="smallint", precision=0, scale=0, nullable=true, unique=false)
      */
     private $order;
 
     /**
      * @var bigint $countThreads
      *
-     * @Column(name="count_threads", type="bigint", nullable=false)
+     * @Column(name="count_threads", type="bigint", precision=0, scale=0, nullable=false, unique=false)
      */
     private $countThreads;
 
     /**
      * @var bigint $countPosts
      *
-     * @Column(name="count_posts", type="bigint", nullable=false)
+     * @Column(name="count_posts", type="bigint", precision=0, scale=0, nullable=false, unique=false)
      */
     private $countPosts;
 
     /**
-     * @var integer $lastPostDate
+     * @var datetime $lastPostDate
      *
-     * @Column(name="last_post_date", type="integer", nullable=true)
+     * @Column(name="last_post_date", type="datetime", precision=0, scale=0, nullable=true, unique=false)
      */
     private $lastPostDate;
+
+    /**
+     * @var string $lastThreadSubject
+     *
+     * @Column(name="last_thread_subject", type="string", length=120, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $lastThreadSubject;
 
     /**
      * @var User_Model_User
      *
      * @ManyToOne(targetEntity="User_Model_User")
-     * @JoinColumn(name="last_poster_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JoinColumns({
+     *   @JoinColumn(name="last_poster_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
      */
-    private $lastPosterId;
+    private $lastPoster;
 
     /**
      * @var Forum_Model_Fthread
      *
      * @ManyToOne(targetEntity="Forum_Model_Fthread")
-     * @JoinColumn(name="last_thread_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JoinColumns({
+     *   @JoinColumn(name="last_thread_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
      */
-    private $lastThreadId;
+    private $lastThread;
 
-    /**
-     * @var string $lastThreadSubject
-     *
-     * @Column(name="last_thread_subject", type="string", length=120, nullable=true)
-     */
-    private $lastThreadSubject;
 
     /**
      * Get id
@@ -222,7 +227,7 @@ class Forum_Model_Forum
     /**
      * Set lastPostDate
      *
-     * @param integer $lastPostDate
+     * @param datetime $lastPostDate
      */
     public function setLastPostDate($lastPostDate)
     {
@@ -232,7 +237,7 @@ class Forum_Model_Forum
     /**
      * Get lastPostDate
      *
-     * @return integer $lastPostDate
+     * @return datetime $lastPostDate
      */
     public function getLastPostDate()
     {
@@ -260,42 +265,42 @@ class Forum_Model_Forum
     }
 
     /**
-     * Set lastPosterId
+     * Set lastPoster
      *
-     * @param User_Model_User $lastPosterId
+     * @param User_Model_User $lastPoster
      */
-    public function setLastPosterId(\User_Model_User $lastPosterId)
+    public function setLastPoster(\User_Model_User $lastPoster)
     {
-        $this->lastPosterId = $lastPosterId;
+        $this->lastPoster = $lastPoster;
     }
 
     /**
-     * Get lastPosterId
+     * Get lastPoster
      *
-     * @return User_Model_User $lastPosterId
+     * @return User_Model_User $lastPoster
      */
-    public function getLastPosterId()
+    public function getLastPoster()
     {
-        return $this->lastPosterId;
+        return $this->lastPoster;
     }
 
     /**
-     * Set lastThreadId
+     * Set lastThread
      *
-     * @param Forum_Model_Fthread $lastThreadId
+     * @param Forum_Model_Fthread $lastThread
      */
-    public function setLastThreadId(\Forum_Model_Fthread $lastThreadId)
+    public function setLastThread(\Forum_Model_Fthread $lastThread)
     {
-        $this->lastThreadId = $lastThreadId;
+        $this->lastThread = $lastThread;
     }
 
     /**
-     * Get lastThreadId
+     * Get lastThread
      *
-     * @return Forum_Model_Fthread $lastThreadId
+     * @return Forum_Model_Fthread $lastThread
      */
-    public function getLastThreadId()
+    public function getLastThread()
     {
-        return $this->lastThreadId;
+        return $this->lastThread;
     }
 }

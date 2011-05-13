@@ -28,7 +28,7 @@
  */
 
 /**
- * Comments
+ * Comment_Model_Comment
  *
  * @Table(name="comments")
  * @Entity
@@ -38,7 +38,7 @@ class Comment_Model_Comment
     /**
      * @var integer $id
      *
-     * @Column(name="id", type="integer", nullable=false)
+     * @Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -47,35 +47,35 @@ class Comment_Model_Comment
     /**
      * @var text $content
      *
-     * @Column(name="content", type="text", nullable=false)
+     * @Column(name="content", type="text", precision=0, scale=0, nullable=false, unique=false)
      */
     private $content;
 
     /**
      * @var string $name
      *
-     * @Column(name="name", type="string", length=120, nullable=false)
+     * @Column(name="name", type="string", length=120, precision=0, scale=0, nullable=false, unique=false)
      */
     private $name;
 
     /**
      * @var string $email
      *
-     * @Column(name="email", type="string", length=255, nullable=false)
+     * @Column(name="email", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $email;
 
     /**
      * @var string $website
      *
-     * @Column(name="website", type="string", length=255, nullable=true)
+     * @Column(name="website", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
      */
     private $website;
 
     /**
-     * @var integer $createdOn
+     * @var datetime $createdOn
      *
-     * @Column(name="created_on", type="integer", nullable=false)
+     * @Column(name="created_on", type="datetime", precision=0, scale=0, nullable=false, unique=false)
      */
     private $createdOn;
 
@@ -83,17 +83,22 @@ class Comment_Model_Comment
      * @var Blog_Model_Post
      *
      * @ManyToOne(targetEntity="Blog_Model_Post")
-     * @JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumns({
+     *   @JoinColumn(name="post_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
      */
     private $post;
 
     /**
-     * @var Users
+     * @var User_Model_User
      *
      * @ManyToOne(targetEntity="User_Model_User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JoinColumns({
+     *   @JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
      */
     private $user;
+
 
     /**
      * Get id
@@ -188,7 +193,7 @@ class Comment_Model_Comment
     /**
      * Set createdOn
      *
-     * @param integer $createdOn
+     * @param datetime $createdOn
      */
     public function setCreatedOn($createdOn)
     {
@@ -198,7 +203,7 @@ class Comment_Model_Comment
     /**
      * Get createdOn
      *
-     * @return integer $createdOn
+     * @return datetime $createdOn
      */
     public function getCreatedOn()
     {

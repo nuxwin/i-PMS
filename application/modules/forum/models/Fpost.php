@@ -28,7 +28,7 @@
  */
 
 /**
- * Fposts
+ * Forum_Model_Fpost
  *
  * @Table(name="fposts")
  * @Entity
@@ -38,7 +38,7 @@ class Forum_Model_Fpost
     /**
      * @var integer $id
      *
-     * @Column(name="id", type="integer", nullable=false)
+     * @Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -47,35 +47,35 @@ class Forum_Model_Fpost
     /**
      * @var integer $replyTo
      *
-     * @Column(name="reply_to", type="integer", nullable=false)
+     * @Column(name="reply_to", type="integer", precision=0, scale=0, nullable=false, unique=false)
      */
     private $replyTo;
 
     /**
      * @var string $subject
      *
-     * @Column(name="subject", type="string", length=120, nullable=false)
+     * @Column(name="subject", type="string", length=120, precision=0, scale=0, nullable=false, unique=false)
      */
     private $subject;
 
     /**
-     * @var integer $createdOn
+     * @var datetime $createdOn
      *
-     * @Column(name="created_on", type="integer", nullable=false)
+     * @Column(name="created_on", type="datetime", precision=0, scale=0, nullable=false, unique=false)
      */
     private $createdOn;
 
     /**
      * @var text $message
      *
-     * @Column(name="message", type="text", nullable=false)
+     * @Column(name="message", type="text", precision=0, scale=0, nullable=false, unique=false)
      */
     private $message;
 
     /**
      * @var string $postHash
      *
-     * @Column(name="post_hash", type="string", length=32, nullable=false)
+     * @Column(name="post_hash", type="string", length=32, precision=0, scale=0, nullable=false, unique=false)
      */
     private $postHash;
 
@@ -83,7 +83,9 @@ class Forum_Model_Fpost
      * @var User_Model_User
      *
      * @ManyToOne(targetEntity="User_Model_User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JoinColumns({
+     *   @JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
      */
     private $user;
 
@@ -91,7 +93,9 @@ class Forum_Model_Fpost
      * @var Forum_Model_Forum
      *
      * @ManyToOne(targetEntity="Forum_Model_Forum")
-     * @JoinColumn(name="forum_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumns({
+     *   @JoinColumn(name="forum_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
      */
     private $forum;
 
@@ -99,9 +103,12 @@ class Forum_Model_Fpost
      * @var Forum_Model_Fthread
      *
      * @ManyToOne(targetEntity="Forum_Model_Fthread")
-     * @JoinColumn(name="thread_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumns({
+     *   @JoinColumn(name="thread_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
      */
     private $thread;
+
 
     /**
      * Get id
@@ -156,7 +163,7 @@ class Forum_Model_Fpost
     /**
      * Set createdOn
      *
-     * @param integer $createdOn
+     * @param datetime $createdOn
      */
     public function setCreatedOn($createdOn)
     {
@@ -166,7 +173,7 @@ class Forum_Model_Fpost
     /**
      * Get createdOn
      *
-     * @return integer $createdOn
+     * @return datetime $createdOn
      */
     public function getCreatedOn()
     {

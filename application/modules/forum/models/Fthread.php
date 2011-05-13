@@ -28,7 +28,7 @@
  */
 
 /**
- * Fthreads
+ * Forum_Model_Fthread
  *
  * @Table(name="fthreads")
  * @Entity
@@ -38,7 +38,7 @@ class Forum_Model_Fthread
     /**
      * @var integer $id
      *
-     * @Column(name="id", type="integer", nullable=false)
+     * @Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -47,73 +47,79 @@ class Forum_Model_Fthread
     /**
      * @var string $subject
      *
-     * @Column(name="subject", type="string", length=130, nullable=false)
+     * @Column(name="subject", type="string", length=130, precision=0, scale=0, nullable=false, unique=false)
      */
     private $subject;
 
     /**
-     * @var integer $createdOn
+     * @var datetime $createdOn
      *
-     * @Column(name="created_on", type="integer", nullable=false)
+     * @Column(name="created_on", type="datetime", precision=0, scale=0, nullable=false, unique=false)
      */
     private $createdOn;
 
     /**
-     * @var Forum_Model_Fpost
+     * @var datetime $lastPostDate
      *
-     * @ManyToOne(targetEntity="Forum_Model_Fpost")
-     * @JoinColumn(name="first_post_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $firstPostId;
-
-    /**
-     * @var integer $lastPostDate
-     *
-     * @Column(name="last_post_date", type="integer", nullable=false)
+     * @Column(name="last_post_date", type="datetime", precision=0, scale=0, nullable=false, unique=false)
      */
     private $lastPostDate;
 
     /**
-     * @var User_Model_User
-     *
-     * @ManyToOne(targetEntity="User_Model_User")
-     * @JoinColumn(name="last_poster_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $lastPosterId;
-
-    /**
      * @var bigint $countViews
      *
-     * @Column(name="count_views", type="bigint", nullable=true)
+     * @Column(name="count_views", type="bigint", precision=0, scale=0, nullable=true, unique=false)
      */
     private $countViews;
 
     /**
      * @var bigint $countReplies
      *
-     * @Column(name="count_replies", type="bigint", nullable=true)
+     * @Column(name="count_replies", type="bigint", precision=0, scale=0, nullable=true, unique=false)
      */
     private $countReplies;
 
     /**
      * @var boolean $isClosed
      *
-     * @Column(name="is_closed", type="boolean", nullable=true)
+     * @Column(name="is_closed", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $isClosed;
 
     /**
      * @var boolean $isSticky
      *
-     * @Column(name="is_sticky", type="boolean", nullable=true)
+     * @Column(name="is_sticky", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $isSticky;
+
+    /**
+     * @var Forum_Model_Fpost
+     *
+     * @ManyToOne(targetEntity="Forum_Model_Fpost")
+     * @JoinColumns({
+     *   @JoinColumn(name="first_post_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
+     */
+    private $firstPost;
+
+    /**
+     * @var User_Model_User
+     *
+     * @ManyToOne(targetEntity="User_Model_User")
+     * @JoinColumns({
+     *   @JoinColumn(name="last_poster_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
+     */
+    private $lastPoster;
 
     /**
      * @var Forum_Model_Forum
      *
      * @ManyToOne(targetEntity="Forum_Model_Forum")
-     * @JoinColumn(name="forum_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumns({
+     *   @JoinColumn(name="forum_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
      */
     private $forum;
 
@@ -121,9 +127,12 @@ class Forum_Model_Fthread
      * @var User_Model_User
      *
      * @ManyToOne(targetEntity="User_Model_User")
-     * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @JoinColumns({
+     *   @JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
      */
     private $user;
+
 
     /**
      * Get id
@@ -158,7 +167,7 @@ class Forum_Model_Fthread
     /**
      * Set createdOn
      *
-     * @param integer $createdOn
+     * @param datetime $createdOn
      */
     public function setCreatedOn($createdOn)
     {
@@ -168,7 +177,7 @@ class Forum_Model_Fthread
     /**
      * Get createdOn
      *
-     * @return integer $createdOn
+     * @return datetime $createdOn
      */
     public function getCreatedOn()
     {
@@ -178,7 +187,7 @@ class Forum_Model_Fthread
     /**
      * Set lastPostDate
      *
-     * @param integer $lastPostDate
+     * @param datetime $lastPostDate
      */
     public function setLastPostDate($lastPostDate)
     {
@@ -188,7 +197,7 @@ class Forum_Model_Fthread
     /**
      * Get lastPostDate
      *
-     * @return integer $lastPostDate
+     * @return datetime $lastPostDate
      */
     public function getLastPostDate()
     {
@@ -276,43 +285,43 @@ class Forum_Model_Fthread
     }
 
     /**
-     * Set firstPostId
+     * Set firstPost
      *
-     * @param Forum_Model_Fpost $firstPostId
+     * @param Forum_Model_Fpost $firstPost
      */
-    public function setFirstPostId(\Forum_Model_Fpost $firstPostId)
+    public function setFirstPost(\Forum_Model_Fpost $firstPost)
     {
-        $this->firstPostId = $firstPostId;
+        $this->firstPost = $firstPost;
     }
 
     /**
-     * Get firstPostId
+     * Get firstPost
      *
-     * @return Forum_Model_Fpost $firstPostId
+     * @return Forum_Model_Fpost $firstPost
      */
-    public function getFirstPostId()
+    public function getFirstPost()
     {
-        return $this->firstPostId;
+        return $this->firstPost;
     }
 
     /**
-     * Set lastPosterId
+     * Set lastPoster
      *
-     * @param User_Model_User $lastPosterId
+     * @param User_Model_User $lastPoster
      */
-    public function setLastPosterId(\User_Model_User $lastPosterId)
+    public function setLastPoster(\User_Model_User $lastPoster)
     {
-        $this->lastPosterId = $lastPosterId;
+        $this->lastPoster = $lastPoster;
     }
 
     /**
-     * Get lastPosterId
+     * Get lastPoster
      *
-     * @return User_Model_User $lastPosterId
+     * @return User_Model_User $lastPoster
      */
-    public function getLastPosterId()
+    public function getLastPoster()
     {
-        return $this->lastPosterId;
+        return $this->lastPoster;
     }
 
     /**

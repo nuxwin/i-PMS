@@ -28,7 +28,7 @@
  */
 
 /**
- * Users
+ * User_Model_User
  *
  * @Table(name="users")
  * @Entity
@@ -38,7 +38,7 @@ class User_Model_User
     /**
      * @var integer $id
      *
-     * @Column(name="id", type="integer", nullable=false)
+     * @Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -47,65 +47,66 @@ class User_Model_User
     /**
      * @var string $username
      *
-     * @Column(name="username", type="string", length=32, nullable=false)
+     * @Column(name="username", type="string", length=32, precision=0, scale=0, nullable=false, unique=false)
      */
     private $username;
 
     /**
      * @var string $password
      *
-     * @Column(name="password", type="string", length=32, nullable=false)
+     * @Column(name="password", type="string", length=32, precision=0, scale=0, nullable=false, unique=false)
      */
     private $password;
 
     /**
      * @var string $role
      *
-     * @Column(name="role", type="string", length=15, nullable=false)
+     * @Column(name="role", type="string", length=15, precision=0, scale=0, nullable=false, unique=false)
      */
     private $role;
 
     /**
      * @var boolean $isActive
      *
-     * @Column(name="is_active", type="boolean", nullable=true)
+     * @Column(name="is_active", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $isActive;
 
     /**
-     * @var integer $lastLoginOn
+     * @var datetime $lastLoginOn
      *
-     * @Column(name="last_login_on", type="integer", nullable=true)
+     * @Column(name="last_login_on", type="datetime", precision=0, scale=0, nullable=true, unique=false)
      */
     private $lastLoginOn;
 
     /**
      * @var string $firstname
      *
-     * @Column(name="firstname", type="string", length=50, nullable=true)
+     * @Column(name="firstname", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
      */
     private $firstname;
 
     /**
      * @var string $lastname
      *
-     * @Column(name="lastname", type="string", length=50, nullable=true)
+     * @Column(name="lastname", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
      */
     private $lastname;
 
     /**
      * @var string $email
      *
-     * @Column(name="email", type="string", length=255, nullable=false)
+     * @Column(name="email", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $email;
 
     /**
      * @var string $avatar
      *
-     * @Column(name="avatar", type="string", length=255, nullable=true)
+     * @Column(name="avatar", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
      */
     private $avatar;
+
 
     /**
      * Get id
@@ -200,7 +201,7 @@ class User_Model_User
     /**
      * Set lastLoginOn
      *
-     * @param integer $lastLoginOn
+     * @param datetime $lastLoginOn
      */
     public function setLastLoginOn($lastLoginOn)
     {
@@ -210,7 +211,7 @@ class User_Model_User
     /**
      * Get lastLoginOn
      *
-     * @return integer $lastLoginOn
+     * @return datetime $lastLoginOn
      */
     public function getLastLoginOn()
     {

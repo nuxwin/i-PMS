@@ -29,7 +29,7 @@
 
 
 /**
- * Widgets
+ * Widget_Model_Widget
  *
  * @Table(name="widgets")
  * @Entity
@@ -39,7 +39,7 @@ class Widget_Model_Widget
     /**
      * @var integer $id
      *
-     * @Column(name="id", type="integer", nullable=false)
+     * @Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -48,16 +48,17 @@ class Widget_Model_Widget
     /**
      * @var text $options
      *
-     * @Column(name="options", type="text", nullable=false)
+     * @Column(name="options", type="text", precision=0, scale=0, nullable=false, unique=false)
      */
     private $options;
 
     /**
      * @var boolean $isActive
      *
-     * @Column(name="is_active", type="boolean", nullable=true)
+     * @Column(name="is_active", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $isActive;
+
 
     /**
      * Get id
