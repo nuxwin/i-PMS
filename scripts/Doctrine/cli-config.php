@@ -47,18 +47,15 @@ set_include_path(implode( PATH_SEPARATOR, array(ROOT_PATH . '/library', get_incl
 
 require_once 'Zend/Application.php';
 
-// Load local configuration file
-require_once 'Zend/Config/Ini.php';
-$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', 'doctrine_cli', true);
-
-
 // Create application, bootstrap, and run
-$app = new Zend_Application(APPLICATION_ENV, $config);
+$app = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
 
 // Init only needed resources
-$app->getBootstrap()
-	->bootstrap('config') // Setting configuration
-	->bootstrap('doctrine'); // Initialize Doctrine
+$app->getBootstrap()->bootstrap(array(
+                                     'config',  // Setting configuration
+                                     'cli',     // Specific initialization for cli mode
+                                     'doctrine' // Initialize Doctrine ORM
+                                ));
 
 $classLoader = new \Doctrine\Common\ClassLoader('Symfony', 'Doctrine');
 $classLoader->register();

@@ -50,11 +50,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
+	 * Execute some specific initialization for CLI mode
+	 *
+	 * @return void
+	 */
+	public function _initCli()
+	{
+		if(php_sapi_name() == 'cli') {
+			new Zend_Application_Module_Autoloader(array(
+				'namespace' => 'Core',
+				'basePath' => APPLICATION_PATH . '/modules/core'));
+			
+		}
+	}
+
+	/**
 	 * initializes the database connection and registers it in registry for further usage
 	 *
 	 * @return null|Zend_Db_Adapter_Abstract
 	 */
-	protected function _initDatabase()
+	protected function __initDatabase()
 	{
 		if ($this->hasPluginResource('db')) {
 			$this->bootstrap('db');
@@ -123,21 +138,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// Sets the directory where Doctrine generates any necessary proxy class files
 		$dCfg->setProxyDir(ROOT_PATH . '/data/proxies');
 
-		// Sets the namespace where proxy classes reside.
-		// $dCfg->setProxyNamespace('Proxies');
-		$dCfg->setProxyNamespace('Proxy');
+		// Sets the namespace where proxy classes reside
+		$dCfg->setProxyNamespace('Doctrine_Proxies');
 
-		// TODO allow to retrieve entities by using alias name (eg. Blog_Model_Post become Post)
-		//$dCfg->setEntityNamespaces(array('Blog_Model_Post' => 'Post'));
-
-		// Sets a boolean flag that indicates whether proxy classes should always be regenerated
-		// during each script execution.
-		// Todo ensure that is defaulted TRUE
-		//$dCfg->setAutoGenerateProxyClasses(true);
+		// Tell whether or not proxy classes must be re-generated on each request
+		$dCfg->setAutoGenerateProxyClasses(false);
 
 		$mCfg = $this->getResource('config');
 
-		$dem = Doctrine\ORM\EntityManager::create($mCfg->doctrine->connection->toArray(), $dCfg);
+		// Setup charset and collation options of MySQL Client
+		$evm = new Doctrine\Common\EventManager();
+		$evm->addEventSubscriber(new Doctrine\DBAL\Event\Listeners\MysqlSessionInit('utf8', 'utf8_general_ci'));
+
+		$dem = Doctrine\ORM\EntityManager::create($mCfg->doctrine->connection->toArray(), $dCfg, $evm);
 
 		// Registers doctrine entities manager in registry for further usage
 		Zend_Registry::set('d.e.m', $dem);
