@@ -33,8 +33,7 @@
  * @Table(name="comments")
  * @Entity
  */
-class Comment_Model_Comment
-{
+class Comment_Model_Comment extends Core_Model_Abstract{
     /**
      * @var integer $id
      *
@@ -79,10 +78,19 @@ class Comment_Model_Comment
      */
     private $createdOn;
 
+	/**
+	 * @var int
+	 *
+	 * @column(name="is_approved", type="boolean", precision=0, scale=0, nullable=false, unique=false);
+	 */
+	private $isApproved;
+
     /**
+     * Bidirectional association - Many comments have one post (OWNING SIDE)
+     * 
      * @var Blog_Model_Post
      *
-     * @ManyToOne(targetEntity="Blog_Model_Post")
+     * @ManyToOne(targetEntity="Blog_Model_Post", inversedBy="comments")
      * @JoinColumns({
      *   @JoinColumn(name="post_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
@@ -98,7 +106,6 @@ class Comment_Model_Comment
      * })
      */
     private $user;
-
 
     /**
      * Get id
@@ -147,6 +154,9 @@ class Comment_Model_Comment
      */
     public function getName()
     {
+	    if(null !== $this->user) {
+		    return $this->user->getUsername();
+	    }
         return $this->name;
     }
 
@@ -209,6 +219,25 @@ class Comment_Model_Comment
     {
         return $this->createdOn;
     }
+
+	/**
+	 * Tell whether or not the comment is approved
+	 *
+	 * @return bool
+	 */
+	public function getIsApproved()
+	{
+		return (bool) $this->isApproved;
+	}
+
+	/**
+	 * @param  int $isApproved
+	 * @return void
+	 */
+	public function setIsApproved($isApproved)
+	{
+		$this->isApproved = (int) $isApproved;
+	}
 
     /**
      * Set post

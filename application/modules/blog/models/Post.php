@@ -33,8 +33,7 @@
  * @Table(name="posts")
  * @Entity
  */
-class Blog_Model_Post
-{
+class Blog_Model_Post extends Core_Model_Abstract {
     /**
      * @var integer $id
      *
@@ -89,6 +88,19 @@ class Blog_Model_Post
      */
     private $user;
 
+	/**
+	 * Bidirectional asociation - One post have many comments (Inverse side)
+	 *
+	 * @var \Doctrine\Common\Collections\ArrayCollection
+	 *
+	 * @OneToMany(targetEntity="Comment_Model_Comment", mappedBy="post")
+	 */
+	private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -217,6 +229,29 @@ class Blog_Model_Post
      */
     public function getUser()
     {
+	    if(null === $this->user) {
+	        $this->user = new User_Model_User();
+        }
         return $this->user;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param Comment_Model_Comment $comments
+     */
+    public function addComments(\Comment_Model_Comment $comments)
+    {
+        $this->comments[] = $comments;
+    }
+
+    /**
+     * Get comments
+     *
+     * @return Doctrine\Common\Collections\Collection $comments
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

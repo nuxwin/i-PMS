@@ -49,7 +49,7 @@ class User_Model_User
      *
      * @Column(name="username", type="string", length=32, precision=0, scale=0, nullable=false, unique=false)
      */
-    private $username;
+    private $username = 'Unregistered User';
 
     /**
      * @var string $password
@@ -63,7 +63,7 @@ class User_Model_User
      *
      * @Column(name="role", type="string", length=15, precision=0, scale=0, nullable=false, unique=false)
      */
-    private $role;
+    private $role = 'guest';
 
     /**
      * @var boolean $isActive
@@ -107,7 +107,6 @@ class User_Model_User
      */
     private $avatar;
 
-
     /**
      * Get id
      *
@@ -137,6 +136,20 @@ class User_Model_User
     {
         return $this->username;
     }
+
+	/**
+	 * Get nicename
+	 *
+	 * @return string
+	 */
+	public function getNicename()
+	{
+		if(null !== $this->firstname && null !== $this->lastname) {
+			return sprintf('%s %s', $this->firstname, $this->lastname);
+
+		}
+		return $this->username;
+	}
 
     /**
      * Set password
