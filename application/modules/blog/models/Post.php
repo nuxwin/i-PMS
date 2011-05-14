@@ -89,7 +89,7 @@ class Blog_Model_Post extends Core_Model_Abstract {
     private $user;
 
 	/**
-	 * Bidirectional asociation - One post have many comments (Inverse side)
+	 * Bidirectional association - One post have many comments (Inverse side)
 	 *
 	 * @var \Doctrine\Common\Collections\ArrayCollection
 	 *
