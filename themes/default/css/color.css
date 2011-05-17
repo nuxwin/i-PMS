@@ -1,0 +1,71 @@
+body {
+    color: rgb(51, 51, 51);
+	background:rgb(249, 249, 249);
+}
+
+/* =Header
+-------------------------------------------------------------- */
+#header {
+	background-color: rgb(59, 89, 152);
+}
+
+#siteTitle {
+	background-image: url(../images/imscp_logo.png);
+}
+
+#siteDescription {
+	color: rgb(255, 255, 255);
+}
+
+/* =Navigation
+-------------------------------------------------------------- */
+#navigation a {
+    background-color: rgb(29, 42, 91);
+    color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+}
+
+#navigation .active a, #navigation a:hover {
+    background-color: rgb(160, 169, 192);
+}
+
+/* =Location
+-------------------------------------------------------------- */
+#location {
+    background-color: rgb(160, 169, 192);
+    border-color: rgb(29, 42, 91);
+}
+
+#location a {
+    color: rgb(29, 42, 91);
+}
+
+/* =Comments
+-------------------------------------------------------------- */
+
+/* =Widget Areas
+-------------------------------------------------------------- */
+
+/* =Footer
+-------------------------------------------------------------- */
+#footer {
+    background-color: rgb(29, 42, 91);
+}
+
+#footer, #footer a {
+    border-color: rgb(203, 209, 224);
+    color: rgb(203, 209, 224);
+}
+
+/* =Global Elements
+-------------------------------------------------------------- */
+a:link {
+	color: rgb(29, 42, 91);;
+}
+a:visited {
+	color: rgb(29, 42, 91);;
+}
+a:active,
+a:hover {
+	color: rgb(29, 42, 91);;
+}

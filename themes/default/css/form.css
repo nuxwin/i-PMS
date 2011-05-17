@@ -1,0 +1,32 @@
+/***********************************************************************************************************************
+* Form css
+*/
+
+dl.zend_form {}
+
+.zend_form dt {
+	font-weight:bold;
+	color:#666;
+	width:100%;
+	/*border:1px solid red;*/
+	margin-bottom:10px;
+}
+
+.zend_form dd {
+	width:100%;
+	/*border:1px solid red;*/
+	margin-bottom:10px;
+}
+
+textarea, input[type=text] {
+	width:100%;
+	padding:5px;
+	border-radius:4px;
+	resize:none;
+	border:1px solid #dedede;
+}
+
+span.required, .required span {
+	color:#dc143c;
+	font-weight:bold;
+}
