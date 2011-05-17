@@ -27,16 +27,20 @@
  */
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
- * Base class for IPMS controllers with DependencyInjection
+ * Base class for iPMS controllers with dependency injection
+ *
+ * This class extends Zend_Controller_Action to implements the ContainerAwareInterface interface and some other related
+ * methods
  *
  * @package     iPMS
  * @category    Controllers
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-abstract class iPMS_Controller_Action extends Zend_Controller_Action implements iPMS_Controller_DependencyInjection
+abstract class iPMS_Controller_Action extends Zend_Controller_Action implements ContainerAwareInterface
 {
 	/**
 	 * @var Symfony\Component\DependencyInjection\ContainerInterface
@@ -44,9 +48,10 @@ abstract class iPMS_Controller_Action extends Zend_Controller_Action implements 
 	protected $_container;
 
 	/**
-	 * Sets the Container associated with this Controller - Implements the iPMS_Controller_DependencyInjection interface
+	 * Sets the Container associated with this Controller
 	 *
-	 * @param ContainerInterface $container A ContainerInterface instance
+	 * @param null|Symfony\Component\DependencyInjection\ContainerInterface $container
+	 * @return void
 	 */
 	public function setContainer(ContainerInterface $container = null)
 	{
@@ -54,7 +59,7 @@ abstract class iPMS_Controller_Action extends Zend_Controller_Action implements 
 	}
 
 	/**
-	 * Returns true if the service id is defined - Implements the iPMS_Controller_DependencyInjection interface
+	 * Returns true if the service id is defined
 	 *
 	 * @param  string  $id The service id
 	 * @return Boolean true if the service id is defined, false otherwise
@@ -65,7 +70,7 @@ abstract class iPMS_Controller_Action extends Zend_Controller_Action implements 
 	}
 
 	/**
-	 * Gets a service by id - Implements the iPMS_Controller_DependencyInjection interface
+	 * Gets a service by id
 	 *
 	 * @param  string $id The service id
 	 * @return object The service
