@@ -30,10 +30,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
- * Base class for iPMS controllers with dependency injection
+ * Base class for iPMS controllers that are aware off Dependency Injection Container
  *
- * This class extends Zend_Controller_Action to implements the ContainerAwareInterface interface and some other related
- * methods
+ * This class extends Zend_Controller_Action to implements the Symfony DI ContainerAwareInterface interface and some
+ * other related methods.
  *
  * @package     iPMS
  * @category    Controllers
