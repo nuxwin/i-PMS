@@ -32,7 +32,7 @@ error_reporting(E_ALL|E_STRICT);
  * Check PHP version (5.3.0 or newer )
  */
 if (version_compare(phpversion(), '5.3.2', '<') === true) {
-	die('Error: Your PHP version is ' . phpversion() . ". i-PMS requires PHP 5.3.0 or newer.\n");
+	die('Error: Your PHP version is ' . phpversion() . ". i-PMS requires PHP 5.3.2 or newer.\n");
 }
 
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . '/../..'));
