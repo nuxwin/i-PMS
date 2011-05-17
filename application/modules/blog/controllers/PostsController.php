@@ -49,7 +49,7 @@ class Blog_PostsController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->urlHelper = $this->_helper->getHelper('Url');
-		$this->view->addHelperPath(APPLICATION_PATH . '/modules/blog/views/helpers', 'Blog_View_Helper_');
+		//$this->view->addHelperPath(APPLICATION_PATH . '/modules/blog/views/helpers', 'Blog_View_Helper_');
 	}
 
     /**
