@@ -50,11 +50,17 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
 	 *
 	 * @return object
 	 */
+
+	/**
+	 * Returns service container
+	 * 
+	 * @return \iPMS\DependencyInjection\ContainerBuilder
+	 */
 	public function getContainer()
 	{
 		if (null === $this->_container) {
 			$this->setContainer(new serviceContainer());
 		}
-		return parent::getContainer();
+		return $this->_container;
 	}
 }

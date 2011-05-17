@@ -77,6 +77,9 @@ abstract class iPMS_Controller_Action extends Zend_Controller_Action implements 
 	 */
 	public function get($id)
 	{
-		return $this->_container->get($id);
+		// @TODO just for testing purpose
+		return $this->getInvokeArg('bootstrap')->getContainer()->get($id);
+
+		//return $this->_container->get($id);
 	}
 }

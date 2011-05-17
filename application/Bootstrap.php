@@ -19,12 +19,16 @@
  *
  * @package     iPMS
  * @category    Bootstrap
- * @copyright   2011 by Laurent Declercq
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Main bootsrap class
@@ -34,132 +38,111 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 {
 	/**
-	 * Stores a copy of the config object in the Registry for future references
+	 * Execute some specific initialization tasks for CLI environment
+	 *
+	 * @return void
+	 */
+	protected function _initCli()
+	{
+		if (php_sapi_name() == 'cli') {
+			new Zend_Application_Module_Autoloader(array(
+			                                            'namespace' => 'Core',
+			                                            'basePath' => APPLICATION_PATH . '/modules/core'));
+		}
+	}
+
+	/**
+	 * Stores all config parameters in the service container as parameters
 	 *
 	 * @return Zend_Config
 	 */
 	protected function _initConfig()
 	{
-		$cfg = new Zend_Config($this->getOptions());
-		Zend_Registry::set('config', $cfg);
-
-		return $cfg;
+		return $this->getOptions();
 	}
 
 	/**
-	 * Execute some specific initialization for CLI mode
+	 * Initialize service container with a bunch of services
 	 *
 	 * @return void
 	 */
-	public function _initCli()
+	protected function _initServiceContainer()
 	{
-		if(php_sapi_name() == 'cli') {
-			new Zend_Application_Module_Autoloader(array(
-				'namespace' => 'Core',
-				'basePath' => APPLICATION_PATH . '/modules/core'));
-			
-		}
-	}
+		// Retrieve the service container
+		$serviceContainer = $this->getContainer();
 
-	/**
-	 * initializes the database connection and registers it in registry for further usage
-	 *
-	 * @return null|Zend_Db_Adapter_Abstract
-	 */
-	protected function __initDatabase()
-	{
-		if ($this->hasPluginResource('db')) {
-			$this->bootstrap('db');
-			/**
-			 * @var $db Zend_Db_Adapter_Abstract
-			 */
-			$db = $this->getResource('db');
-			Zend_Registry::set('db', $db);
+		// Here, we create and register a new service called 'pdo.connection' in our service container. We create this
+		// service by using the Zend_Db component but we only retrieves from it the PDO object. By doing this, we can
+		// still use the Zend_Db configuration options style in our application.ini file. Also, it allow us to not use
+		// a specific event manager to configure the client charset for communication with the Database server.
+		// The ''pdo.connection' service will be injected in the 'doctrine' service when needed.
+		$serviceContainer->set('pdo.connection', $this->getPluginResource('db')->getDbAdapter()->getConnection());
 
-			return $db;
-		}
+		// Ensuring that the 'cache' resource was bootstrapped
+		$this->bootstrap('cache');
 
-		return null;
-	}
-
-	/**
-	 * Initializes and returns Doctrine ORM entity manager
-	 *
-	 * @return \Doctrine\ORM\EntityManager
-	 * @todo Resource configurator like http://framework.zend.com/wiki/x/0IAbAQ
-	 */
-	protected function _initDoctrine()
-	{
-		// doctrine loader
-		require_once (ROOT_PATH . '/library/Doctrine/Common/ClassLoader.php');
-
-		$autoloader = new \Doctrine\Common\ClassLoader('Doctrine', ROOT_PATH . '/library');
-
-		// Registers doctrine autoloader on the SPL autoload stack
-		$autoloader->register();
-
-		$dCfg = new Doctrine\ORM\Configuration;
-
-		// cache configuration - begin
-
-		// Todo change this in production environment
-		$cache = new Doctrine\Common\Cache\ArrayCache;
-		$cache->setNamespace('iPMS');
-
-		// Add Metadata cache to the doctrine configuration object
-		$dCfg->setMetadataCacheImpl($cache);
-
-		// Add Query cache to the doctrine configuration object
-		$dCfg->setQueryCacheImpl($cache);
-
-		// cache configuration - ending
+		// We register a 'cache' service  that will be injected in some others services (eg. service used by Doctrine)
+		$serviceContainer->set('cache', $this->getResource('cache'));
 
 		$this->bootstrap('FrontController');
-		$fc = $this->getResource('FrontController');
+		$frontController = $this->getResource('FrontController');
 
-		// Fetch all models paths
-		$mods = $fc->getControllerDirectory();
-		$mPaths = array();
-		foreach (array_keys($mods) as $mod) {
-			if(is_dir((APPLICATION_PATH . '/modules/' . $mod . '/models'))) {
-				$mPaths[] = APPLICATION_PATH . '/modules/' . $mod . '/models';
-			}
-		}
+		$containerFiles = array(APPLICATION_PATH . '/configs');
 
-		// Add annotation driver implementation to the doctrine configuration object
-		$dCfg->setMetadataDriverImpl($dCfg->newDefaultAnnotationDriver($mPaths));
+		//foreach ($frontController->getControllerDirectory() as $module => $containerDirectory) {
+		//	if ($containerFile = realpath($containerDirectory . "/../resources/configs")) {
+		//		$containerFiles[] = $containerFile;
+		//	}
+		//}
 
-		// Sets the cache driver implementation used for the query cache (SQL cache)
-		$dCfg->setQueryCacheImpl($cache);
+		$fileLocator = new FileLocator($containerFiles);
+		$loader = new XmlFileLoader($serviceContainer, $fileLocator);
+		$loader->load('MainContainer.xml');
 
-		// Sets the directory where Doctrine generates any necessary proxy class files
-		$dCfg->setProxyDir(ROOT_PATH . '/data/proxies');
-
-		// Sets the namespace where proxy classes reside
-		$dCfg->setProxyNamespace('Doctrine_Proxies');
-
-		// Tell whether or not proxy classes must be re-generated on each request
-		$dCfg->setAutoGenerateProxyClasses(false);
-
-		$mCfg = $this->getResource('config');
-
-		// Setup charset and collation options of MySQL Client
-		$evm = new Doctrine\Common\EventManager();
-		$evm->addEventSubscriber(new Doctrine\DBAL\Event\Listeners\MysqlSessionInit('utf8', 'utf8_general_ci'));
-
-		$dem = Doctrine\ORM\EntityManager::create($mCfg->doctrine->connection->toArray(), $dCfg, $evm);
-
-		// Registers doctrine entities manager in registry for further usage
-		Zend_Registry::set('d.e.m', $dem);
-
-		return $dem;
+		//$dumper = new Symfony\Component\DependencyInjection\Dumper\PhpDumper($serviceContainer);
+		//echo $dumper->dump(array('class' => 'iPMS_ServiceContainer'));
 	}
 
 	/**
-	 * Initialize the DEBUG mode
+	 * Initialize cache implementation used in all application
+	 *
+	 * @return Doctrine\Common\Cache\ApcCache|Doctrine\Common\Cache\ArrayCache
+	 * @todo Allow to use other cache implementation
+	 */
+	protected function _initCache()
+	{
+		if (extension_loaded('apc') && ini_get('apc.enabled')) {
+			$cache = new \Doctrine\Common\Cache\ApcCache();
+		} else {
+			$cache = new \Doctrine\Common\Cache\ArrayCache();
+		}
+
+		$cache->setNamespace('iPMS');
+
+		return $cache;
+	}
+
+	/**
+	 * Initialize debug mode according current environment
+	 *
+	 * @return void
+	 */
+	public function _initDebug()
+	{
+		if (!defined('DEBUG')) {
+			if ($this->getEnvironment() === 'development') {
+				define('DEBUG', true);
+			} else {
+				define('DEBUG', false);
+			}
+		}
+	}
+
+	/**
+	 * Initialize the looger and register it in service container
 	 *
 	 * Initialize the DEBUG constant to TRUE or FALSE based on current environment.
 	 * Also store a copy of Zend_Logger in the Registry for future references.
@@ -169,60 +152,58 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 * @return void
 	 */
-	protected function _initDebug()
+	protected function _initLogger()
 	{
-		if (!defined('DEBUG')) {
-			if ($this->getEnvironment() === 'development') {
-				define('DEBUG', true);
-			} else {
-				define('DEBUG', false);
-			}
-		}
+		$this->bootstrap('Debug');
 
-		if($this->hasPluginResource('Log')) {
+		if ($this->hasPluginResource('Log')) {
 			$this->bootstrap('Log');
-			$log = $this->getResource('Log');
+			$logger = $this->getResource('Log');
 		} else {
-			$log = new Zend_Log();
+			$logger = new Zend_Log();
 		}
 
-		$log->addWriter(new Zend_Log_Writer_Firebug());
+		$logger->addWriter(new Zend_Log_Writer_Firebug());
 
-		Zend_Registry::set('logger', $log);
+		return $logger;
 	}
 
 	/**
-	 * Initializses ZFDebug if DEBUG mode is ON
+	 * Initializses ZFDebug if DEBUG mode is ON and register it in service container
 	 *
-	 * @return bool
+	 * @return null|ZFDebug_Controller_Plugin_Debug
 	 */
 	protected function _initZFDebug()
 	{
 		$this->bootstrap('debug');
 
-		if (!DEBUG) return false;
+		$autoloader = $this->_application->getAutoloader()->registerNamespace('ZFDebug_');
 
 		$this->bootstrap('FrontController');
 
 		// Ensure database is initialized for auto discovery
-		if ($this->hasPluginResource('db')) {
-			$this->bootstrap('db');
-		}
+		//if ($this->hasPluginResource('db')) {
+		//	$this->bootstrap('db');
+		//}
 
-		// Retrieve the front controller from the bootstrap registry
-		$fc = $this->getResource('FrontController');
+		// Retrieve the front controller from the resource (service) container
+		$frontController = $this->getResource('FrontController');
 
 		if ($this->hasOption('zfdebug')) {
 			// Create ZFDebug instance
 			$zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
 
 			// Register ZFDebug with the front controller
-			$fc->registerPlugin($zfdebug);
+			$frontController->registerPlugin($zfdebug);
+
+			return $zfdebug;
 		}
+
+		return null;
 	}
 
 	/**
-	 * Initialize view
+	 * Initialize view and register it in the service container
 	 *
 	 * @return Zend_View
 	 * @todo Move this in a plugin resource
@@ -272,7 +253,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Initialize the router
+	 * Initialize the router and register it in the service container
 	 *
 	 * @return Zend_Controller_Router_Interface
 	 * @todo move it to plugin resource
@@ -280,11 +261,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initRouter()
 	{
 		$this->bootstrap('frontController');
-		$fc = $this->getResource('FrontController');
+		$frontController = $this->getResource('FrontController');
 
-		$rt = $fc->getRouter();
-		$rt->removeDefaultRoutes();
+		$router = $frontController->getRouter();
+		$router->removeDefaultRoutes();
 
-		return $rt;
+		return $router;
 	}
 }

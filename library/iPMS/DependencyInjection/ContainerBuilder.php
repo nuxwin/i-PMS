@@ -41,23 +41,11 @@ use \Symfony\Component\DependencyInjection\ContainerBuilder as BaseContainerBuil
  *
  * @package     iPMS
  * @category    DependencyInjection
- * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
 class ContainerBuilder extends BaseContainerBuilder
 {
-	/**
-	 * Returns true if the given service is defined
-	 *
-	 * @param  string $id The service identifier
-	 * @return Boolean true if the service is defined, false otherwise
-	 */
-	public function __isset($id)
-	{
-		return $this->has($id);
-	}
-
 	/**
 	 * Gets the service associated with the given identifier
 	 *
@@ -70,7 +58,7 @@ class ContainerBuilder extends BaseContainerBuilder
 	}
 
 	/**
-	 * Sets a service
+	 * Sets a service or parameter
 	 *
 	 * @param string $id The service identifier
 	 * @param object $service The service instance
@@ -78,6 +66,22 @@ class ContainerBuilder extends BaseContainerBuilder
 	 */
 	public function __set($id, $service)
 	{
-		$this->set($id, $service);
+		// @TODO To be checked - It's really a good way to do like this ?
+		if(is_object($service)) {
+			$this->set($id, $service);
+		} else  {
+			$this->setParameter($id, $service);
+		}
+	}
+
+	/**
+	 * Returns true if the given service is defined
+	 *
+	 * @param  string $id The service identifier
+	 * @return Boolean true if the service is defined, false otherwise
+	 */
+	public function __isset($id)
+	{
+		return $this->has($id);
 	}
 }
