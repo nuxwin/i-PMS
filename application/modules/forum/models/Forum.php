@@ -19,9 +19,9 @@
  *
  * @package     iPMS
  * @subpackage  Forum
- * @category    Model
- * @copyright   2011 by Laurent Declercq
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @category    Models
+ * @copyright   2011 by Laurent Declercq (nuxwin)
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -30,6 +30,11 @@
 /**
  * Forum_Model_Forum
  *
+ * @package     iPMS
+ * @subpackage  Forum
+ * @category    Models
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @Table(name="forums")
  * @Entity
  */

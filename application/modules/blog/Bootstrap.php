@@ -20,7 +20,7 @@
  * @package     iPMS
  * @subpackage  Blog
  * @category    Bootstrap
- * @copyright   2011 by Laurent Declercq
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -33,7 +33,7 @@
  * @package     iPMS
  * @subpackage  Blog
  * @category    Bootstrap
- * @author      Laurent Declecq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
 class Blog_Bootstrap extends Zend_Application_Module_Bootstrap

@@ -17,9 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iPMS
- * @copyright	2011 by Laurent Declercq
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @package     iPMS
+ * @subpackage  Front
+ * @category    Controllers
+ * @copyright   2011 by Laurent Declercq (nuxwin)
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link		http://www.i-pms.net i-PMS Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -28,8 +30,11 @@
 /**
  * Error controller
  *
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @package     iPMS
+ * @subpackage  Front
+ * @category    Controllers
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class ErrorController extends Zend_Controller_Action
 {

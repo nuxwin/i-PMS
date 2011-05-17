@@ -19,8 +19,8 @@
  *
  * @package     iPMS
  * @subpackage  Core
- * @category    Model
- * @copyright   2011 by Laurent Declercq
+ * @category    Models
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -28,11 +28,11 @@
  */
 
 /**
- * Base class for persistable doctrine models
+ * Base class for doctrine models
  *
  * @package     iPMS
  * @subpackage  Core
- * @category    Model
+ * @category    Models
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */

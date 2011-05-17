@@ -19,8 +19,8 @@
  *
  * @package     iPMS
  * @subpackage  Core
- * @category    Model
- * @copyright   2011 by Laurent Declercq
+ * @category    Models
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -32,4 +32,13 @@
  */
 require_once 'iPMS/Exception.php';
 
+/**
+ * Model exception class
+ *
+ * @package     iPMS
+ * @subpackage  Core
+ * @category    Models
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
+ */
 class Core_Model_Exception extends iPMS_Exception {}

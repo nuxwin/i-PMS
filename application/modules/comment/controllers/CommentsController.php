@@ -17,9 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
- * @package     iPMS_Comment
- * @copyright   2011 by Laurent Declercq
+ * @package     iPMS
+ * @subpackage  Comment
+ * @category    Controllers
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -29,8 +30,9 @@
 /**
  * Comments controller
  *
- * @category    iPMS
- * @package     iPMS_Comment
+ * @package     iPMS
+ * @subpackage  Comment
+ * @category    Controllers
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
@@ -54,7 +56,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->urlHelper = $this->_helper->getHelper('Url');
-		$this->view->addHelperPath(APPLICATION_PATH . '/modules/comment/views/helpers', 'Comment_View_Helper_');
+		//$this->view->addHelperPath(APPLICATION_PATH . '/modules/comment/views/helpers', 'Comment_View_Helper_');
 	}
 
 	/**
@@ -68,19 +70,7 @@ class Comment_CommentsController extends Zend_Controller_Action
 	     * @var $request Zend_Controller_Request_Http
 	     */
 	    $request = $this->getRequest();
-
 		$parent = $request->getParam('parent');
-
-		//echo '<pre>';
-		//print_r($parent);
-		//exit;
-
-		$pid = intval((string)$parent);
-		$commentsModel = new Comment_Model_DbTable_Comment();
-		$comments = $commentsModel->getComments($pid);
-		$this->view->comments($comments);
-
-		//$this->view->assign(array('comments' => $comments, 'parent' => $parent));
 		$this->view->assign('parent', $parent);
 	}
 
@@ -167,11 +157,20 @@ class Comment_CommentsController extends Zend_Controller_Action
 
 		$cid = intval($request->getParam('cid'));
 
-		$commentsModel = new Comment_Model_DbTable_Comment();
-		$commentsModel->delete(array('cid = ?' => $cid));
+	    /**
+	     * @var $em Doctrine\ORM\EntityManager
+	     */
+	    $em = Zend_Registry::get('d.e.m');
+
+		$query = $em->createQuery("DELETE Comment_Model_Comment c WHERE c.id = $cid");
+
+
+
+		//$commentsModel = new Comment_Model_DbTable_Comment();
+		//$commentsModel->delete(array('cid = ?' => $cid));
 
 		// TODO redirect to previous route
-		$this->_redirect('/');
+		//$this->_redirect('/');
 	}
 
 	/**

@@ -1,28 +1,46 @@
-<?php $this->headTitle($this->posts()->getTitle());?>
+<?php $this->headTitle($this->post->getTitle());?>
 
-		<div id="post-<?php echo $this->posts();?>" class="post-<?php echo $this->posts();?> post">
-			<h1 class="entryTitle"><?php echo $this->posts()->getTitle();?></h1>
+		<div id="post-<?php echo $this->post->getId();?>" class="post-<?php echo $this->post->getId();?> post">
+			<h1 class="entryTitle"><?php echo $this->post->getTitle();?></h1>
 
 			<div class="entryMeta">
-				<?php echo $this->posts()->postedOn();?>
+				<?php
+					echo sprintf('<span class="%1$s">' . $this->translate('Posted on') .
+		               '</span> %2$s <span class="metaSep">by</span> %3$s',
+		               'metaPrep metaPrepAuthor',
+		               sprintf('<a href="%1$s" title="%2$s" rel="bookmark"><span class="entryDate">%3$s</span></a>',
+		                       '#permalink', // TODO permalink
+		                       $this->post->getCreatedOn()->format('h:s'),
+		                       $this->post->getCreatedOn()->format('d-m-y')
+		               ),
+		               sprintf('<span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s">%3$s</a></span>',
+		                       'author/ID',
+		                       sprintf('View all posts by %s', $this->post->getUser()->getNicename()),
+		                       $this->post->getUser()->getNicename()
+		               )
+		       );
+				?>
 			</div>
 
 			<div class="entrySummary">
-				<?php echo $this->posts()->getSummary();?>
+				<?php echo $this->post->getSummary();?>
 			</div>
 
 			<div class="entryContent">
-				<?php echo $this->posts()->getContent();?>
+				<?php echo $this->post->getContent();?>
 			</div>
 
 			<div class="entryUtility">
-				<?php echo $this->translate(sprintf('This entry was published in %s with tag(s) %s', $this->posts()->getCategoryLink(), $this->posts()->getTagsLinks()));?>
+				<?php //echo $this->translate(sprintf('This entry was published in %s with tag(s) %s', $this->posts()->getCategoryLink(), $this->posts()->getTagsLinks()));?>
 			</div>
 		</div>
 
 <?php
-	echo $this->action('index', 'comments', 'comment', array('parent' => $this->posts()->getPost()));
-	if($this->posts()->commentsOpen()) {
+
+	echo $this->action('index', 'comments', 'comment', array('parent' => $this->post));
+	if($this->post->getAllowComments()) {
 		echo $this->action('add', 'comments', 'comment');
 	}
+
+
 ?>

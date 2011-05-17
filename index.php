@@ -17,10 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
+ * @package     iPMS
+ * @category    Bootstrap
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
  * @link        http://www.i-pms.net i-PMS Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -28,8 +28,8 @@
 /**
  * Check PHP version (5.3.0 or newer )
  */
-if (version_compare(phpversion(), '5.3.3', '<') === true) {
-	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.3 or newer.\n");
+if (version_compare(phpversion(), '5.3.2', '<') === true) {
+	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
 defined('SERVER_NAME') || define('SERVER_NAME', $_SERVER['SERVER_NAME']);

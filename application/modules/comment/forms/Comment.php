@@ -17,8 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
- * @copyright   2011 by Laurent Declercq
+ * @package     iPMS
+ * @subpackage  Comment
+ * @category    Forms
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -28,8 +30,11 @@
 /**
  * Comment form
  *
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @package     iPMS
+ * @subpackage  Comment
+ * @category    Forms
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class Comment_Form_Comment extends Zend_Form
 {

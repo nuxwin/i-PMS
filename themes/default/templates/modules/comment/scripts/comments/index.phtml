@@ -1,23 +1,27 @@
-<?php if($this->comments()->hasComments()):?>
+<?php if($this->parent->getComments()):?>
 <div id="comments">
-	<h3 class="commentsTitle"><?php echo $this->translate('%d answers to:');?> <?php echo $this->parent->getTitle();?></h3>
-	<?php foreach($this->comments() as $comment):?>
+	<h3 class="commentsTitle"><?php echo $this->translate(sprintf('%d answer(s) to: %s', count($this->parent->getComments()), $this->parent->getTitle()));?></h3>
+	<?php foreach($this->parent->getComments() as $comment):?>
 	<ol class="commentList">
-		<li class="comment <?php echo $this->cycle(array('even','odd'))->next();?>" id="liComment-<?php echo $comment;?>">
-			<div id="comment-<?php echo $comment;?>">
+		<li class="comment <?php echo $this->cycle(array('even','odd'))->next();?>" id="liComment-<?php echo $comment->getId();?>">
+			<div id="comment-<?php echo $comment->getId();?>">
 				<div class="commentAuthor vcard">
-					<img alt="" src="<?php echo $comment->getAvatar();?>" class='avatar avatar-40 photo avatar-default' height='40' width='40' />
+					<?php
+						echo $this->gravatar($comment->getEmail(), array('img_size' => 40), array(
+							'class' => 'avatar avatar-40 photo avatar-default', 'width' => 40, 'height' => 40));
+					?>
 					<cite class="fn">
-						<?php echo $comment->getAuthorLink();?>
+						Laurent Declercq
+						<?php //echo $comment->getAuthorLink();?>
 					</cite> <span class="says"><?php echo $this->translate('says');?>&nbsp;:</span>
 				</div>
-				<?php if(!$comment->isApproved()):?>
+				<?php if(!$comment->getIsApproved()):?>
 				<em class="commentAwaitingModeration"><?php echo $this->translate('your comment is awaiting moderation');?></em>
 				<br>
 				<?php endif;?>
-				<div class="commentMeta commentMetadata"><?php echo $comment->getDate();?></div>
+				<div class="commentMeta commentMetadata"><?php echo $comment->getCreatedOn()->format('d-m-y H:m:i');?></div>
 				<div class="commentBody">
-					<p><?php echo $this->escape($comment->getText());?></p>
+					<p><?php echo $this->escape($comment->getContent());?></p>
 				</div>
 			</div>
 		</li>

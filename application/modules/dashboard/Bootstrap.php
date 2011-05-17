@@ -20,7 +20,7 @@
  * @package     iPMS
  * @subpackage  Dashboard
  * @category    Bootstrap
- * @copyright   2011 by Laurent Declercq
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site

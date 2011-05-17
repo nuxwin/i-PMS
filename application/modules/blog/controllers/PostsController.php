@@ -17,8 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iPMS
- * @copyright   2011 by Laurent Declercq
+ * @package     iPMS
+ * @subpackage  Blog
+ * @category    Controllers
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -28,8 +30,11 @@
 /**
  * Posts controller
  *
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @package     iPMS
+ * @subpackage  Blog
+ * @category    Controllers
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  */
 class Blog_PostsController extends Zend_Controller_Action
 {
@@ -80,20 +85,21 @@ class Blog_PostsController extends Zend_Controller_Action
 
         $pid = intval($request->getParam('pid'));
 
-        $postModel = new Blog_Model_DbTable_Post();
-        $post = $postModel->fetchRow($postModel->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-            ->setIntegrityCheck(false)
-            ->where('posts.pid = ?', $pid)
-            ->joinLeft('users', '`users`.`uid` = `posts`.`uid`', array('username', 'firstname', 'lastname'))
-        );
+	    /**
+	     * @var $em Doctrine\ORM\EntityManager
+	     */
+	    $em = Zend_Registry::get('d.e.m');
+
+	    /**
+	     * @var $post Blog_Model_Post
+	     */
+	    $post = $em->find('Blog_Model_Post', 1);
 
         if (!$post) {
             throw new Zend_Controller_Action_Exception('Post not found!', 404);
         }
 
-
-	    $this->view->posts(array($post->toArray()));
-        //$this->view->assign('post', $post->toArray());
+	    $this->view->assign('post', $post);
     }
 
     /**

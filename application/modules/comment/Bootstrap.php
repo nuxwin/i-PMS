@@ -19,8 +19,8 @@
  *
  * @package     iPMS
  * @subpackage  Comment
- * @category    bootstrap
- * @copyright   2011 by Laurent Declercq
+ * @category    Bootstrap
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -31,9 +31,9 @@
  * Comment module bootstrap class
  *
  * @package     iPMS
- * @subpackage  comment
- * @category    bootstrap
- * @author      Laurent Declecq <l.declercq@nuxwin.com>
+ * @subpackage  Comment
+ * @category    Bootstrap
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
 class Comment_Bootstrap extends Zend_Application_Module_Bootstrap

@@ -19,8 +19,8 @@
  *
  * @package     iPMS
  * @subpackage  Blog
- * @category    Model
- * @copyright   2011 by Laurent Declercq
+ * @category    Models
+ * @copyright   2011 by Laurent Declercq (nuxwin)
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
  * @version     0.0.1
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -30,6 +30,11 @@
 /**
  * Blog_Model_Post
  *
+ * @package     iPMS
+ * @subpackage  Blog
+ * @category    Models
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     0.0.1
  * @Table(name="posts")
  * @Entity
  */
