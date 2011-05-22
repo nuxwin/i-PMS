@@ -36,7 +36,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class Blog_PostsController extends Zend_Controller_Action
+class Blog_PostsController extends iPMS_Controller_Action
 {
 	/**
 	 * @var Zend_Controller_Action_Helper_Url
@@ -78,26 +78,9 @@ class Blog_PostsController extends Zend_Controller_Action
      */
     public function showAction()
     {
-	    /**
-	     * @var $request Zend_Controller_Request_Http
-	     */
-	    $request = $this->getRequest();
-
-        $pid = intval($request->getParam('pid'));
-
-	    /**
-	     * @var $em Doctrine\ORM\EntityManager
-	     */
-	    $em = Zend_Registry::get('d.e.m');
-
-	    /**
-	     * @var $post Blog_Model_Post
-	     */
-	    $post = $em->find('Blog_Model_Post', 1);
-
-        if (!$post) {
-            throw new Zend_Controller_Action_Exception('Post not found!', 404);
-        }
+	    if(!($post = $this->get('doctrine')->find('Blog_Model_Post', intval($this->_request->getParam('pid'))))) {
+		    throw new Zend_Controller_Action_Exception('Post not found!', 404);
+	    }
 
 	    $this->view->assign('post', $post);
     }

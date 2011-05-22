@@ -38,7 +38,7 @@
  * @Table(name="users")
  * @Entity
  */
-class User_Model_User
+class User_Model_User extends Core_Model_Abstract
 {
     /**
      * @var integer $id
