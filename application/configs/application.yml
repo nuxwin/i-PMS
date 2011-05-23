@@ -67,9 +67,9 @@ production:
             # jQuery support
             # see at http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
             Jquery:
-                version: 1.5.2
+                version: 1.6.1
                 uiEnable: true
-                uiVersion: 1.8.12
+                uiVersion: 1.8.13
                 styleSheet: themes/default/css/jQuery/jQuery-ui.css
 
             # database settings (to be moved in php file for security reasons)
@@ -148,4 +148,4 @@ development:
                     -
                 #Database: [ ]
                 #Html:
-            jquery_path: http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js
+            jquery_path: http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js
