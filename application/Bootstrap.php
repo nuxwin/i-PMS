@@ -26,9 +26,8 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
+use \Doctrine\Common\Cache\ApcCache,
+    \Doctrine\Common\Cache\ArrayCache;
 
 /**
  * Main bootsrap class
@@ -55,74 +54,13 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Stores all config parameters in the service container as parameters
+	 * Stores all config parameters in the dependency injection (resource) container as config service
 	 *
 	 * @return Zend_Config
 	 */
 	protected function _initConfig()
 	{
-		return $this->getOptions();
-	}
-
-	/**
-	 * Initialize service container with a bunch of services
-	 *
-	 * @return void
-	 */
-	protected function _initServiceContainer()
-	{
-		// Retrieve the service container
-		$serviceContainer = $this->getContainer();
-
-		// Here, we create and register a new service called 'pdo.connection' in our service container. We create this
-		// service by using the Zend_Db component but we only retrieves from it the PDO object. By doing this, we can
-		// still use the Zend_Db configuration options style in our application.ini file. Also, it allow us to not use
-		// a specific event manager to configure the client charset for communication with the Database server.
-		// The ''pdo.connection' service will be injected in the 'doctrine' service when needed.
-		$serviceContainer->set('pdo.connection', $this->getPluginResource('db')->getDbAdapter()->getConnection());
-
-		// Ensuring that the 'cache' resource was bootstrapped
-		$this->bootstrap('cache');
-
-		// We register a 'cache' service  that will be injected in some others services (eg. service used by Doctrine)
-		$serviceContainer->set('cache', $this->getResource('cache'));
-
-		$this->bootstrap('FrontController');
-		$frontController = $this->getResource('FrontController');
-
-		$containerFiles = array(APPLICATION_PATH . '/configs');
-
-		//foreach ($frontController->getControllerDirectory() as $module => $containerDirectory) {
-		//	if ($containerFile = realpath($containerDirectory . "/../resources/configs")) {
-		//		$containerFiles[] = $containerFile;
-		//	}
-		//}
-
-		$fileLocator = new FileLocator($containerFiles);
-		$loader = new XmlFileLoader($serviceContainer, $fileLocator);
-		$loader->load('MainContainer.xml');
-
-		//$dumper = new Symfony\Component\DependencyInjection\Dumper\PhpDumper($serviceContainer);
-		//echo $dumper->dump(array('class' => 'iPMS_ServiceContainer'));
-	}
-
-	/**
-	 * Initialize cache implementation used in all application
-	 *
-	 * @return Doctrine\Common\Cache\ApcCache|Doctrine\Common\Cache\ArrayCache
-	 * @todo Allow to use other cache implementation
-	 */
-	protected function _initCache()
-	{
-		if (extension_loaded('apc') && ini_get('apc.enabled')) {
-			$cache = new \Doctrine\Common\Cache\ApcCache();
-		} else {
-			$cache = new \Doctrine\Common\Cache\ArrayCache();
-		}
-
-		$cache->setNamespace('iPMS');
-
-		return $cache;
+		return new Zend_Config($this->getOptions());
 	}
 
 	/**
@@ -203,6 +141,49 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	}
 
 	/**
+	 * Initialize service container with a bunch of services
+	 *
+	 * @return void
+	 */
+	protected function _initServiceContainer()
+	{
+		// Retrieve the service container
+		$serviceContainer = $this->getContainer();
+
+		// Here, we create and register a new service called 'pdo.connection' in our service container. We create this
+		// service by using the Zend_Db component but we only retrieves from it the PDO object. By doing this, we can
+		// still use the Zend_Db configuration options style in our application.ini file. Also, it allow us to not use
+		// a specific event manager to configure the client charset for communication with the Database server.
+		// The ''pdo.connection' service will be injected in the 'doctrine' service when needed.
+		$serviceContainer->set('pdo.connection', $this->getPluginResource('db')->getDbAdapter()->getConnection());
+
+		// Ensuring that the 'cache' resource was bootstrapped
+		$this->bootstrap('cache');
+
+		// We register a 'cache' service  that will be injected in some others services (eg. service used by Doctrine)
+		$serviceContainer->set('cache', $this->getResource('cache'));
+	}
+
+	/**
+	 * Initialize cache implementation used in all application
+	 *
+	 * @return Doctrine\Common\Cache\ApcCache|Doctrine\Common\Cache\ArrayCache
+	 * @todo Allow to use other cache implementation
+	 */
+	protected function _initCache()
+	{
+		if (extension_loaded('apc') && ini_get('apc.enabled')) {
+			$cache = new ApcCache();
+		} else {
+			$cache = new ArrayCache();
+		}
+
+		$cache->setNamespace('iPMS');
+
+		return $cache;
+	}
+
+	/**
 	 * Initialize view and register it in the service container
 	 *
 	 * @return Zend_View
@@ -247,8 +228,6 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 		$viewRenderer->setView($view)
 			->setViewBasePathSpec(THEME_PATH . '/default/templates/modules/:module');
 
-		//ZendX_JQuery_View_Helper_JQuery::enableNoConflictMode();
-
 		return $view;
 	}
 
@@ -268,4 +247,11 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 
 		return $router;
 	}
+
+    public function __initTest()
+    {
+        echo '<pre>';
+        print_r($this->getContainer()->get('kernel'));
+        exit;
+    }
 }

@@ -18,7 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @package     iPMS
- * @category    Bootstrap
+ * @package     Core
+ * @category    Kernel
  * @copyright   2011 by Laurent Declercq
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-pms.net i-PMS Home Site
@@ -26,10 +27,10 @@
  */
 
 /**
- * Check PHP version (5.3.0 or newer )
+ * Check PHP version (5.3.2 or newer )
  */
 if (version_compare(phpversion(), '5.3.2', '<') === true) {
-	die('Error: Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
+	die('Error: Your PHP version is ' . phpversion() . ". i-PMS requires PHP 5.3.2 or newer.\n");
 }
 
 defined('SERVER_NAME') || define('SERVER_NAME', $_SERVER['SERVER_NAME']);
@@ -44,9 +45,11 @@ defined('APPLICATION_ENV')
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(ROOT_PATH . '/library', get_include_path())));
 
-/** Zend_Application */
-require_once 'Zend/Application.php';
+/**
+ * @see ApplicationKernel
+ */
+require_once __DIR__.'/application/ApplicationKernel.php';
 
 // Create application, bootstrap, and run
-$app = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$app->bootstrap()->run();
+$kernel = new ApplicationKernel(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
+$kernel->loadClassCache()->run();

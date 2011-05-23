@@ -146,6 +146,7 @@ development:
                 Registry:
                 File:
                     -
-                #Database: [ ]
+                Database:
+                    -
                 #Html:
             jquery_path: http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js
