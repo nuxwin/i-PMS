@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+	<parameters>
+		<parameter key="doctrine.config.class">Doctrine\ORM\Configuration</parameter>
+		<parameter key="annotation.driver.class">Doctrine\ORM\Mapping\Driver\AnnotationDriver</parameter>
+		<parameter key="annotation.reader.class">Doctrine\Common\Annotations\AnnotationReader</parameter>
+		<parameter key="doctrine.class">Doctrine\ORM\EntityManager</parameter>
+		<parameter key="doctrine.factory-class">Doctrine\ORM\EntityManager</parameter>
+		<parameter key="root.path" type="constant">ROOT_PATH</parameter>
+	</parameters>
+	<services>
+
+		<!-- doctrine config service -->
+		<service id="doctrine.config" class="%doctrine.config.class%">
+			<call method="setMetadataCacheImpl">
+				<argument type="service" id="cache"/>
+			</call>
+			<call method="setQueryCacheImpl">
+				<argument type="service" id="cache"/>
+			</call>
+			<call method="setMetadataDriverImpl">
+				<argument type="service" id="annotation.driver"/>
+			</call>
+			<call method="setProxyDir">
+				<argument>%root.path%/data/proxies</argument>
+			</call>
+			<call method="setProxyNamespace">
+				<argument>Model\Proxy</argument>
+			</call>
+			<call method="setAutoGenerateProxyClasses">
+				<argument>true</argument>
+			</call>
+		</service>
+
+		<!-- cache service - we inject this service dynamically at runtime -->
+		<service id="cache" synthetic="true" />
+
+		<service id="annotation.driver" class="%annotation.driver.class%">
+			<argument type="service" id="annotation.reader"/>
+		</service>
+
+		<service id="annotation.reader" class="%annotation.reader.class%">
+			<call method="setDefaultAnnotationNamespace">
+				<argument>Doctrine\ORM\Mapping\</argument>
+			</call>
+		</service>
+
+		<!-- pdo.connection  - we inject this service dynamically at runtime -->
+		<service id="pdo.connection" synthetic="true" />
+
+		<service id="doctrine" class="%doctrine.class%" factory-class="%doctrine.factory-class%" factory-method="create">
+			<argument type="collection">
+				<argument key="pdo" type="service" id="pdo.connection"/>
+			</argument>
+			<argument type="service" id="doctrine.config"/>
+		</service>
+	</services>
+</container>

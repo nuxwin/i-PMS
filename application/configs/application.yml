@@ -1,0 +1,151 @@
+production:
+    imports:
+        - { resource: container.xml, ignore_errors: false }
+
+    parameters:
+        phpSettings:
+            display_startup_errors: 0
+            display_errors: 0
+            date:
+                timezone: UTC
+        bootstrap:
+            path: APPLICATION_PATH/Bootstrap.php
+            class: Bootstrap
+
+        # Autoloader namespaces (Without underscore to allow using namespaces)
+        autoloadernamespaces:
+            - iPMS
+            - Doctrine
+            - Symfony
+
+        # Front controller
+        resources:
+            # sets the locale that will be used as fallback value if autodetection fail
+            locale:
+                default: en_US
+                # if set to true, will bypass autodetection and uses default locale
+                force: true
+            frontController:
+                env: APPLICATION_ENV
+                moduleDirectory: APPLICATION_PATH/modules
+                defaultModule: Front
+                throwErrors: false
+                throwExceptions: false
+                params:
+                    displayExceptions: 0
+                actionHelperPaths:
+                    iPMS_Controller_Action_Helper: iPMS/Controller/Action/Helper
+
+                # plugins
+                #plugins:
+                    #init:
+                        #class: iPMS_Controller_Plugin_Init
+                        #stackIndex: 1
+                    #acl: Plugin_PermissionsCheck
+
+            # modules (needed to run per module bootstrap) and initialize per module namespaces
+            modules: ~
+
+            # layout
+            layout:
+                layoutPath: THEME_PATH/default/templates/layouts
+
+            # Application wide helpers path
+            view:
+                helperPath:
+                    iPMS_View_Helper: iPMS/View/Helper
+                # application wide filters path
+                filterPath:
+                    iPMS_View_Filter: iPMS/View/Filter
+                doctype: XHTML5
+                encoding: UTF-8
+                charset: UTF-8
+                # backward compatibility
+                contentType: text/html; charset=utf-8
+                lfiProtectionOn: true
+
+            # jQuery support
+            # see at http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
+            Jquery:
+                version: 1.5.2
+                uiEnable: true
+                uiVersion: 1.8.12
+                styleSheet: themes/default/css/jQuery/jQuery-ui.css
+
+            # database settings (to be moved in php file for security reasons)
+            db:
+                adapter: pdo_mysql
+                params:
+                    charset: utf8
+                    host: localhost
+                    username: root
+                    password: development
+                    dbname: site_test
+                    profiler: false
+                    persistent: true
+
+            # session
+            # Will be removed soon that Doctrine will be ready to use
+            #session:
+                #name: ipms
+                # Seem to be useless for now
+                #save_path: ROOT_PATH/data/sessions
+                #use_cookies: true
+                #use_only_cookies: true
+                #cookie_lifetime: 0
+                #use_trans_sid: false
+                #cookie_path: /
+                #cookie_domain: .SERVER_NAME
+                #remember_me_seconds: 864000
+                #gc_probability: 1
+                #gc_divisor: 100
+                #gc_maxlifetime: 1440
+
+                # session saveHandler
+                # Will be removed soon that Doctrine will be ready to use
+                #saveHandler:
+                    #options:
+                        #name: session
+                        #class: Zend_Session_SaveHandler_DbTable
+                        #primary: [ sid, save_path, name ]
+                        #primaryAssignment: [ sessionId, sessionSavePath, sessionName ]
+                        #modifiedColumn: "modified"
+                        #dataColumn: "data"
+                        #lifetimeColumn: "lifetime"
+                        #overrideLifetime: true
+staging:
+    _extends: production
+
+testing:
+    _extends: production
+    parameters:
+        phpSettings:
+            display_startup_errors: 1
+            display_errors: 1
+
+development:
+    _extends: production
+    parameters:
+        phpSettings:
+            display_startup_errors: 1
+            display_errors: 1
+
+        resources:
+            frontController:
+                throwExceptions: false
+                params:
+                    displayExceptions: 1
+
+        # zfdebug 1.5
+        zfdebug:
+            plugins:
+                Variables:
+                Time:
+                Memory:
+                Exception:
+                Registry:
+                File:
+                    -
+                #Database: [ ]
+                #Html:
+            jquery_path: http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js
