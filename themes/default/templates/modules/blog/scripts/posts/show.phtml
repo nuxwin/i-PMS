@@ -36,10 +36,9 @@
 		</div>
 
 <?php
-
-	echo $this->action('index', 'comments', 'comment', array('parent' => $this->post));
+	echo $this->action('index', 'comments', 'Comment', array('parent' => $this->post));
 	if($this->post->getAllowComments()) {
-		echo $this->action('add', 'comments', 'comment');
+		echo $this->action('add', 'comments', 'Comment');
 	}
 
 
