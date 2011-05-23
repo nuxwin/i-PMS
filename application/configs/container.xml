@@ -48,11 +48,11 @@
 		</service>
 
 		<!-- pdo.connection  - we inject this service dynamically at runtime -->
-		<service id="pdo.connection" synthetic="true" />
+		<service id="pdo" alias="" synthetic="true" />
 
 		<service id="doctrine" class="%doctrine.class%" factory-class="%doctrine.factory-class%" factory-method="create">
 			<argument type="collection">
-				<argument key="pdo" type="service" id="pdo.connection"/>
+				<argument key="pdo" type="service" id="pdo"/>
 			</argument>
 			<argument type="service" id="doctrine.config"/>
 		</service>

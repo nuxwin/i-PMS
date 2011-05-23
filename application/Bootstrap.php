@@ -49,7 +49,7 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 		if (php_sapi_name() == 'cli') {
 			new Zend_Application_Module_Autoloader(array(
 			                                            'namespace' => 'Core',
-			                                            'basePath' => APPLICATION_PATH . '/modules/core'));
+			                                            'basePath' => APPLICATION_PATH . '/modules/Core'));
 		}
 	}
 
@@ -64,23 +64,7 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Initialize debug mode according current environment
-	 *
-	 * @return void
-	 */
-	public function _initDebug()
-	{
-		if (!defined('DEBUG')) {
-			if ($this->getEnvironment() === 'development') {
-				define('DEBUG', true);
-			} else {
-				define('DEBUG', false);
-			}
-		}
-	}
-
-	/**
-	 * Initialize the looger and register it in service container
+	 * Initialize the logger and register it in dependency injection container
 	 *
 	 * Initialize the DEBUG constant to TRUE or FALSE based on current environment.
 	 * Also store a copy of Zend_Logger in the Registry for future references.
@@ -92,8 +76,6 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initLogger()
 	{
-		$this->bootstrap('Debug');
-
 		if ($this->hasPluginResource('Log')) {
 			$this->bootstrap('Log');
 			$logger = $this->getResource('Log');
@@ -106,66 +88,54 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 		return $logger;
 	}
 
+    /**
+     * Initializses ZFDebug if DEBUG mode is ON and register it in service container
+     *
+     * @return null|ZFDebug_Controller_Plugin_Debug
+     */
+    protected function _initZFDebug()
+    {
+        if ($this->hasOption('zfdebug')) {
+            // TODO to be removed
+            $autoloader = $this->_application->getAutoloader()->registerNamespace('ZFDebug_');
+            $this->bootstrap('FrontController');
+            // Retrieve the front controller from the resource (service) container
+            $frontController = $this->getResource('FrontController');
+
+            // Ensure database is initialized for auto discovery
+            //if ($this->hasPluginResource('db')) {
+            //	$this->bootstrap('db');
+            //}
+
+            // Create ZFDebug instance
+            $zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
+
+            // Register ZFDebug with the front controller
+            $frontController->registerPlugin($zfdebug);
+
+            return $zfdebug;
+        }
+
+        return null;
+    }
+
 	/**
-	 * Initializses ZFDebug if DEBUG mode is ON and register it in service container
-	 *
-	 * @return null|ZFDebug_Controller_Plugin_Debug
-	 */
-	protected function _initZFDebug()
+	 * Initializes pdo syntetics service and injects it in the dependency injection container
+     *
+     * @return Pdo
+     */
+	protected function _initPdo()
 	{
-		$this->bootstrap('debug');
-
-		$autoloader = $this->_application->getAutoloader()->registerNamespace('ZFDebug_');
-
-		$this->bootstrap('FrontController');
-
-		// Ensure database is initialized for auto discovery
-		//if ($this->hasPluginResource('db')) {
-		//	$this->bootstrap('db');
-		//}
-
-		// Retrieve the front controller from the resource (service) container
-		$frontController = $this->getResource('FrontController');
-
-		if ($this->hasOption('zfdebug')) {
-			// Create ZFDebug instance
-			$zfdebug = new ZFDebug_Controller_Plugin_Debug($this->getOption('zfdebug'));
-
-			// Register ZFDebug with the front controller
-			$frontController->registerPlugin($zfdebug);
-
-			return $zfdebug;
-		}
-
-		return null;
+		// Here, we create and register a new service called 'pdo'. We create this service by using the
+        // Zend_Db component but we only retrieves from it the PDO object. By doing this, we can still use the Zend_Db
+        // configuration options style in our global configuration file. Also, it allow us to not use a specific event
+        // manager to configure the client charset for communication with the Database server. The ''pdo' service will
+        // be injected in the 'doctrine' service when needed.
+        return $this->getPluginResource('db')->getDbAdapter()->getConnection();
 	}
 
 	/**
-	 * Initialize service container with a bunch of services
-	 *
-	 * @return void
-	 */
-	protected function _initServiceContainer()
-	{
-		// Retrieve the service container
-		$serviceContainer = $this->getContainer();
-
-		// Here, we create and register a new service called 'pdo.connection' in our service container. We create this
-		// service by using the Zend_Db component but we only retrieves from it the PDO object. By doing this, we can
-		// still use the Zend_Db configuration options style in our application.ini file. Also, it allow us to not use
-		// a specific event manager to configure the client charset for communication with the Database server.
-		// The ''pdo.connection' service will be injected in the 'doctrine' service when needed.
-		$serviceContainer->set('pdo.connection', $this->getPluginResource('db')->getDbAdapter()->getConnection());
-
-		// Ensuring that the 'cache' resource was bootstrapped
-		$this->bootstrap('cache');
-
-		// We register a 'cache' service  that will be injected in some others services (eg. service used by Doctrine)
-		$serviceContainer->set('cache', $this->getResource('cache'));
-	}
-
-	/**
-	 * Initialize cache implementation used in all application
+	 * Initialize the cache syntetic service and injets it in the dependency injection container
 	 *
 	 * @return Doctrine\Common\Cache\ApcCache|Doctrine\Common\Cache\ArrayCache
 	 * @todo Allow to use other cache implementation
@@ -184,7 +154,7 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Initialize view and register it in the service container
+	 * Initialize view and register it in the dependency injection container
 	 *
 	 * @return Zend_View
 	 * @todo Move this in a plugin resource
@@ -232,7 +202,7 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Initialize the router and register it in the service container
+	 * Initialize the router and register it in the dependency injection container
 	 *
 	 * @return Zend_Controller_Router_Interface
 	 * @todo move it to plugin resource
@@ -250,8 +220,14 @@ class Bootstrap extends iPMS_Application_Bootstrap_Bootstrap
 
     public function __initTest()
     {
+        /** @var Symfony\DepdendencyInjection\Container $dependencyInjectionContainer */
+        $dependencyInjectionContainer = $this->getContainer();
+
+        $ids = $dependencyInjectionContainer->getServiceIds();
+
         echo '<pre>';
-        print_r($this->getContainer()->get('kernel'));
+        print_r($ids);
+        echo '</pre>';
         exit;
     }
 }
