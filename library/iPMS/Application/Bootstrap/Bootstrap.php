@@ -46,7 +46,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	/**
-	 * Returns service container
+	 * Returns dependency injection container (also known as resource container)
 	 * 
 	 * @return Symfony\Component\DependencyInjection\ContainerBuilder
 	 */
@@ -59,7 +59,7 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
 	}
 
     /**
-     * Retrieve a resource from the container
+     * Retrieve a service/resource from the dependency injection container
      *
      * During bootstrap resource initialization, you may return a value. If
      * you do, it will be stored in the {@link setContainer() container}.
@@ -75,7 +75,6 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
         $resource  = strtolower($name);
         $container = $this->getContainer();
         if ($this->hasResource($resource)) {
-            //return $container->{$resource};
 	        return $container->get($resource);
         }
         return null;
@@ -95,7 +94,6 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
 	{
         $resource  = strtolower($name);
         $container = $this->getContainer();
-        //return isset($container->{$resource});
 		return $container->has($resource);
 	}
 
@@ -122,7 +120,7 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
         }
 
         if (isset($this->_started[$resourceName]) && $this->_started[$resourceName]) {
-            throw new Zend_Application_Bootstrap_Exception('Circular resource dependency detected');
+            throw new Zend_Application_Bootstrap_Exception('Circular resource/service dependency detected');
         }
 
         $classResources = $this->getClassResources();
@@ -134,7 +132,6 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
             $this->_markRun($resourceName);
 
             if (null !== $return) {
-                //$this->getContainer()->{$resourceName} = $return;
 	            $this->getContainer()->set($resourceName, $return);
             }
 
@@ -149,13 +146,12 @@ class iPMS_Application_Bootstrap_Bootstrap extends Zend_Application_Bootstrap_Bo
             $this->_markRun($resourceName);
 
             if (null !== $return) {
-                //$this->getContainer()->{$resourceName} = $return;
 	            $this->getContainer()->set($resourceName, $return);
             }
 
             return;
         }
 
-        throw new Zend_Application_Bootstrap_Exception('Resource matching "' . $resource . '" not found');
+        throw new Zend_Application_Bootstrap_Exception('Resource/Service matching "' . $resource . '" not found');
     }
 }
